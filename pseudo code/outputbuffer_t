@@ -3,33 +3,36 @@ struct outputbuffer_t
 int topLineIndex 
 int bottomLineIndex
 
-function Scroll(int lines)
-	int temp
+function Scroll(int numberOfLines, int direction)
+	int numberLinesScrolled
 	
-	if (lines < 0) then // scrolling upwards
+	switch(direction)
+		SCROLL_DIR_UP:
+			if(numberOfLines < topLineIndex) 
+				numberLinesScrolled := topLineIndex - numberOfLines
+			else
+				// subtracting numberOfLines from topLineIndex would
+				// result in a value less than 0, which we can't have
+				// because it's an index to a vector. So, to get a legal
+				// value that still works as desired, subtract topLineIndex
+				// from itself.
+				numberLinesScrolled := topLineIndex
+			end if
+			
+			topLineIndex -= numberOfLinesScrolled
+			bottomLineIndex -= numberOfLinesScrolled
+		
+		SCROLL_DIR_DOWN:
+			if(bottomLineIndex + numberOfLines < buffer.Length) 
+				numberOfLinesScrolled := numberOfLines
+			else
+				numberOfLinesScrolled := (buffer.Length - 1) - bottomLineIndex
+			end if
+			
+			topLineIndex += numberOfLinesScrolled
+			bottomLineIndex += numberOfLinesScrolled
+	end switch
 	
-		// calc the index of the top line.
-		temp := topLineIndex + lines;
-		if(temp < 0) then
-			topLineIndex := 0;
-		else
-			topLineIndex := temp;
-		end if
-		
-		bottomLineIndex += lines;
-		
-	else if(lines > 0)	// scrolling downwards
-		
-		// calc the index of the bottom line 
-		temp := bottomLineIndex + lines
-		if(temp >= buffer.Length) then
-			bottomLineIndex := buffer.Length - 1;
-		else
-			bottomLineIndex := temp;
-		end if
-		
-		topLineIndex += lines;
-	end if
 end function
 
 end struct
