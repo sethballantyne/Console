@@ -1,0 +1,35 @@
+struct outputbuffer_t
+
+int topLineIndex 
+int bottomLineIndex
+
+function Scroll(int lines)
+	int temp
+	
+	if (lines < 0) then // scrolling upwards
+	
+		// calc the index of the top line.
+		temp := topLineIndex + lines;
+		if(temp < 0) then
+			topLineIndex := 0;
+		else
+			topLineIndex := temp;
+		end if
+		
+		bottomLineIndex += lines;
+		
+	else if(lines > 0)	// scrolling downwards
+		
+		// calc the index of the bottom line 
+		temp := bottomLineIndex + lines
+		if(temp >= buffer.Length) then
+			bottomLineIndex := buffer.Length - 1;
+		else
+			bottomLineIndex := temp;
+		end if
+		
+		topLineIndex += lines;
+	end if
+end function
+
+end struct
