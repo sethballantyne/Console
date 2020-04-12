@@ -9,7 +9,7 @@ function Scroll(int numberOfLines, int direction)
 	switch(direction)
 		SCROLL_DIR_UP:
 			if(numberOfLines < topLineIndex) 
-				numberLinesScrolled := topLineIndex - numberOfLines
+				numberLinesScrolled := numberOfLines
 			else
 				// subtracting numberOfLines from topLineIndex would
 				// result in a value less than 0, which we can't have
@@ -26,7 +26,7 @@ function Scroll(int numberOfLines, int direction)
 			if(bottomLineIndex + numberOfLines < buffer.Length) 
 				numberOfLinesScrolled := numberOfLines
 			else
-				numberOfLinesScrolled := (buffer.Length - 1) - bottomLineIndex
+				numberOfLinesScrolled := buffer.Length - bottomLineIndex
 			end if
 			
 			topLineIndex += numberOfLinesScrolled
