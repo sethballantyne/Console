@@ -1,0 +1,58 @@
+class BitmapFont
+
+public FontSurface : SDL_Surface*
+
+private function Cleanup()
+	if(FontSurface)
+		SDL_FreeSurface(FontSurface)
+		FontSurface = nullptr
+	end if
+end function
+
+private function CreateFontSurface(glyphWidth : int, glyphHeight : int, numGlyphs : int, screenSurface : SDL_Surface*) : int
+	int fontSheetWidth := glyphWidth * numGlyphs
+	int bpp := screenSurface->bpp,
+	
+	FontSurface = SDL_CreateSurface(SDL_SWSURFACE, fontSheetWidth, glyphHeight, 
+				bpp, screenSurface->PixelFormat->rmask, 
+				screenSurface->PixelFormat->gmask, 
+				screenSurface->PixelFormat->bmask, 
+				screenSurface->PixelFormat->Amask)
+	if(!FontSurface)
+		return CONSOLE_RET_CREATE_SURFACE_FAIL;
+	end if
+	
+	return CONSOLE_RET_SUCCESS
+end function
+
+public function Initialise(chars:char[][][], glyphWidth:int, glyphHeight:int, numGlyphs : int, screenSurface : SDL_Surface*) : int
+
+	int result = CreateFontSurface(glyphWidth, glyphHeight, numGlyphs, screenSurface)
+	if(result != CONSOLE_RET_SUCCESS) 
+		return result
+	end if
+	
+	for(int i = 0; i < numGlyphs; i++)			// character
+		for(int j = 0; j < glyphHeight; j++)		// characters Y axis
+			for(int k = 0; k < glyphWidth; k++)	// characters X axis
+				if(chars[i][j][k] == '.')
+					Draw magenta pixel at xBasePosition + k, j     // <----- not neccesarily magenta; whatever the surface has been configured to use as transparency
+				else if([chars[i][j][k] == '#') 
+					Draw black pixel at xBasePosition + k, j 
+				end if
+			end for
+		end for
+		
+		// starting a new character, move to the appropriate position
+		// on the surface
+		xBasePosition = glyphWidth * (i + 1)  
+	end for
+	
+	return CONSOLE_RET_SUCCESS
+end function
+
+
+destructor BitmapFont()
+	Cleanup()
+end destructor
+end class
