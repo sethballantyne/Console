@@ -1,0 +1,36 @@
+class Console
+
+private function IsCommand(command : string) : bool
+	auto result = commands.find(command)
+	if(result != commands.end())
+		return true
+	end if
+	
+	return false
+end function 
+
+public function Initialise(SDL_Surface *screenSurface) int
+	int consoleWidth := screenSurface->w
+	int consoleHeight := screenSurface->h / 2
+	int bpp := screenSurface->bpp,
+	
+	surface = SDL_CreateSurface(SDL_SWSURFACE, consoleWidth, consoleHeight, 
+				bpp, screenSurface->PixelFormat->rmask, 
+				screenSurface->PixelFormat->gmask, 
+				screenSurface->PixelFormat->bmask, 
+				screenSurface->PixelFormat->Amask)
+	
+	if(!surface)
+	{
+		return CONSOLE_RET_CREATE_SURFACE_FAIL;
+	}
+	
+	int result = defaultBitmapFont.Initialise(defaultFont, DEFAULT_FONT_WIDTH, DEFAULT_FONT_HEIGHT, DEFAULT_FONT_NUM_GLYPHS, screenSurface)
+	if(result != CONSOLE_RET_SUCCESS)
+		return result
+	end if
+	
+	return CONSOLE_RET_SUCCESS
+end function
+
+end class
