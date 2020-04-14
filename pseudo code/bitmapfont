@@ -1,6 +1,8 @@
 class BitmapFont
 
 public FontSurface : SDL_Surface*
+private GlyphHeight : int
+private GlyphWidth : int
 
 private function Cleanup()
 	if(FontSurface)
@@ -28,6 +30,7 @@ end function
 public function Initialise(chars:char[][][], glyphWidth:int, glyphHeight:int, numGlyphs : int, screenSurface : SDL_Surface*) : int
 
 	int result = CreateFontSurface(glyphWidth, glyphHeight, numGlyphs, screenSurface)
+	
 	if(result != CONSOLE_RET_SUCCESS) 
 		return result
 	end if
@@ -50,7 +53,6 @@ public function Initialise(chars:char[][][], glyphWidth:int, glyphHeight:int, nu
 	
 	return CONSOLE_RET_SUCCESS
 end function
-
 
 destructor BitmapFont()
 	Cleanup()

@@ -1,5 +1,9 @@
 class Console
 
+private commands : map<string, void (*command_functionptr)(vector<string> &>)
+private surfaceRect : SDL_Rect
+public Surface : SDL_Surface*
+
 private function IsCommand(command : string) : bool
 	auto result = commands.find(command)
 	if(result != commands.end())
@@ -10,6 +14,7 @@ private function IsCommand(command : string) : bool
 end function 
 
 public function Initialise(SDL_Surface *screenSurface) int
+
 	int consoleWidth := screenSurface->w
 	int consoleHeight := screenSurface->h / 2
 	int bpp := screenSurface->bpp,
@@ -18,7 +23,7 @@ public function Initialise(SDL_Surface *screenSurface) int
 				bpp, screenSurface->PixelFormat->rmask, 
 				screenSurface->PixelFormat->gmask, 
 				screenSurface->PixelFormat->bmask, 
-				screenSurface->PixelFormat->Amask)
+				screenSurface->PixelFormat->amask)
 	
 	if(!surface)
 	{
@@ -30,7 +35,61 @@ public function Initialise(SDL_Surface *screenSurface) int
 		return result
 	end if
 	
+	defaultConsoleColour := SDL_MapRGB(screenSurface->fmt, DEFAULT_BACKROUND_COLOUR_R, DEFAULT_BACKGROUND_COLOUR_G, DEFAULT_BACKGROUND_COLOUR_B)
+
 	return CONSOLE_RET_SUCCESS
+end function
+
+public function RegisterCommand(name:string, (*command_functionptr)(vector<string> &):void) : int
+
+	if(!IsCommand(name))
+		return CONSOLE_RET_COMMAND_DOESNT_EXISTS
+	end if
+	
+	commands[name] = command_functionptr;
+	
+	return COSOLE_RET_SUCCESS
+end function
+
+public function ExecuteCommand(command:string, vector<string>& args) : void
+	if(!IsCommand(command))
+		return CONSOLE_RET_COMMAND_DOESNT_EXIST
+	end if
+	
+	commands.find("command")->second(args)
+end function
+
+public function ProcessInput(SDL_keysym keySymbol)
+
+	SDL_Rect glyph;
+	// only ASCII keys space bar to '~' supported.
+	if keySymbol->unicode >= 32 && <= 126)
+		inputbuffer.buffer += keySymbol.unicode // add the key to the buffer
+	else if(keySymbol = 8) // backspace
+		inputbuffer.buffer.popback() 	// remove the last char from the buffer
+	else if(keysymbol = 13) // enter
+		if(string[0] == '/') // all commands begin with /
+			string command
+			vector<string> args;
+			
+			inputbuffer.buffer += ' ' // delimit the end of the  string
+			SplitInput(command, args)
+			
+			inputbuffer.buffer.clear()
+			
+			ExecuteCommand(command, args);
+		end if
+	end if 
+end function
+
+public function Render()
+	SDL_FillRect(consoleSurface, &surfaceRect, defaultConsoleColour)
+	
+	outputbuffer->Render()
+	inputbuffer->Render()
+	
+	SDL_BlitSurface()
+	
 end function
 
 end class
