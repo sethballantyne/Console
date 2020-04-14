@@ -18,3 +18,10 @@ private function SplitInput(string& command, vector<string>& args) : void
 	args.erase(args.begin())
 	
 end function
+
+public function Render(SDL_Surface *consoleSurface, BitmapFont& font) : void
+	if(buffer.length() > maxBufferLength)
+		font->RenderLine(consoleSurface, buffer, x, y, bufferStartIndex, bufferFinishIndex)
+	else 
+		font->RenderLine(consoleSurface, buffer, x, y)
+end function

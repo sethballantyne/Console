@@ -54,6 +54,49 @@ public function Initialise(chars:char[][][], glyphWidth:int, glyphHeight:int, nu
 	return CONSOLE_RET_SUCCESS
 end function
 
+function RenderLine(SDL_Surface* consoleSurface, string line, int x, int y, int bufferStartIndex, int bufferFinishIndex)
+	int lineLength = line.length()
+	SDL_Rect srcRect = { 0, 0, GlyphWidth, GlyphHeight } 
+	SDL_Rect destRect = { x, y, GlyphWidth, GlyphHeight }
+	
+	int currentPosition = bufferStartIndex
+	// check to see if the line is partially off-screen
+	if(y < 0)
+		srcRect.Y = 0 + (y * 1) // only rendering part of each character
+						        //  multiplying by 1 because we need to turn the negative number in y to a positive
+	end if
+	
+	for int i = bufferStartIndex, i <= bufferFinishIndex, i++
+		srcRect.x = (line[i] - 32) * GlyphWidth
+		
+		SDL_BlitSurface(FontSurface, &srcRect, consoleSurface, &destRect)
+		
+		destRect.x += GlyphWidth
+	end for
+end function
+
+function RenderLine(SDL_Surface *consoleSurface, string line, int x, int y) : void
+
+	int lineLength = line.length()
+	SDL_Rect srcRect = { 0, 0, GlyphWidth, GlyphHeight } 
+	SDL_Rect destRect = { x, y, GlyphWidth, GlyphHeight }
+	
+	// check to see if the line is partially off-screen
+	if(y < 0)
+		srcRect.Y = 0 + (y * 1) // only rendering part of each character
+						        //  multiplying by 1 because we need to turn the negative number in y to a positive
+	end if
+	
+	for int i = 0, i < lineLength, i++
+		srcRect.x = (line[i] - 32) * GlyphWidth
+		
+		SDL_BlitSurface(FontSurface, &srcRect, consoleSurface, &destRect)
+		
+		destRect.x += GlyphWidth
+	end for
+	
+end function
+
 destructor BitmapFont()
 	Cleanup()
 end destructor

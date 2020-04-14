@@ -63,9 +63,28 @@ public function ProcessInput(SDL_keysym keySymbol)
 
 	SDL_Rect glyph;
 	// only ASCII keys space bar to '~' supported.
-	if keySymbol->unicode >= 32 && <= 126)
+	if keySymbol->unicode >= 32 && <= 126 && inputbuffer.length() < inputBuffer.maxBufferLength)
+		if(buffer.length() > maxNumCharactersToRender)
+		{
+			// can't fit all of the buffer on the screen.
+			// this is to support horizontally scrolling the buffer
+			inputBuffer.bufferStartIndex++
+			inputBuffer.bufferFinishIndex++
+		}
+		
 		inputbuffer.buffer += keySymbol.unicode // add the key to the buffer
+		
 	else if(keySymbol = 8) // backspace
+		if(buffer.length() > maxNumCharactersToRender)
+		{
+			// can't fit all of the buffer on the screen.
+			// this is to support horizontally scrolling the buffer
+			if(inputBuffer.BufferStartIndex > 0)
+				inputBuffer.bufferStartIndex--
+				inputBuffer.bufferFinishIndex--
+			end if
+		}
+		
 		inputbuffer.buffer.popback() 	// remove the last char from the buffer
 	else if(keysymbol = 13) // enter
 		if(string[0] == '/') // all commands begin with /
@@ -82,14 +101,23 @@ public function ProcessInput(SDL_keysym keySymbol)
 	end if 
 end function
 
-public function Render()
+public function Render(SDL_Surface *screenSurface, int x, int y)
+	SDL_Rect destRect = { x, y, consoleSurface->w, consoleSurface->h }
 	SDL_FillRect(consoleSurface, &surfaceRect, defaultConsoleColour)
 	
-	outputbuffer->Render()
-	inputbuffer->Render()
+	outputbuffer->Render(consoleSurface, font)
+	inputbuffer->Render(consoleSurface, font)
 	
-	SDL_BlitSurface()
+	SDL_BlitSurface(&surfaceRect, consoleSurface, &destRect, screenSurface)
 	
 end function
 
 end class
+
+
+	if(buffer.length() > maxNumCharactersToRender)
+	{
+		// can't fit all of the buffer on the screen.
+		// this is to support horizontally scrolling the buffer
+		
+	}
