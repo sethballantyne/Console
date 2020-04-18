@@ -40,6 +40,10 @@
 #define CONSOLE_SCROLL_DIR_UP		0
 #define CONSOLE_SCROLL_DIR_DOWN		1
 
+#define CONSOLE_VERSION_MAJOR	1
+#define CONSOLE_VERSION_MINOR	0
+
+
 namespace console
 {
 	struct BitmapFont
@@ -150,6 +154,8 @@ namespace console
 	bool Console_IsCommand(Console& console, std::string command);
 	int Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args);
 	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr command_ptr);
+
+	void console_command_version(Console& console, std::vector<std::string>& args);
 
 	void bitmapfont_render_line(SDL_Surface *console_surface, std::string line, int x, int y, int line_start_index, int line_finish_index);
 

@@ -256,28 +256,38 @@ void console::OutputBuffer_Render(Console& console)
 //	}
 //}
 
-int console::Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& consoleColour, 
-						 SDL_Colour& fontColour, SDL_Colour& transparencyColour)
+void console::console_command_version(Console& console, vector<string>& args)
 {
-	console.consoleSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, screen->w, screen->h / 2, 
-												   screen->format->BitsPerPixel, screen->format->Rmask,
-												   screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	Console_Print(console, "Console version " + to_string(CONSOLE_VERSION_MAJOR) + "." + to_string(CONSOLE_VERSION_MINOR));
+}
+
+int console::Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& consoleColour,
+						  SDL_Colour& fontColour, SDL_Colour& transparencyColour)
+{
+	console.consoleSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, screen->w, screen->h / 2,
+												  screen->format->BitsPerPixel, screen->format->Rmask,
+												  screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if(nullptr == console.consoleSurface)
 	{
 		return CONSOLE_RET_CREATE_SURFACE_FAIL;
 	}
 
 	int result = BitmapFont_Init(console.defaultBitmapFont, console.consoleSurface, DEFAULT_FONT_WIDTH, DEFAULT_FONT_HEIGHT, fontColour, transparencyColour);
-	if(CONSOLE_RET_SUCCESS != result) 
+	if(CONSOLE_RET_SUCCESS != result)
 	{
 		return result;
 	}
 
 	console.defaultConsoleColour = SDL_MapRGB(console.consoleSurface->format, consoleColour.r, consoleColour.g, consoleColour.b);
-	
+
 	InputBuffer_Init(console);
 	OutputBuffer_Init(console);
-	
+
+	if(CONSOLE_RET_SUCCESS != Console_RegisterCommand(console, "cv", console_command_version))
+	{
+		Console_Print(console, "Console_Init: failed to register command \'cv\'");
+	}
+
 	return CONSOLE_RET_SUCCESS;
 }
 
@@ -419,4 +429,6 @@ int console::Console_RegisterCommand(Console& console, string command, command_f
 	}
 
 	console.commands[command] = command_func_ptr;
+
+	return CONSOLE_RET_SUCCESS;
 }
