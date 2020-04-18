@@ -285,7 +285,7 @@ void console::OutputBuffer_Render(Console& console)
 
 void console::console_command_version(Console& console, vector<string>& args)
 {
-	Console_Print(console, "Console version " + to_string(CONSOLE_VERSION_MAJOR) + "." + to_string(CONSOLE_VERSION_MINOR));
+	Console_Print(console, "CONSOLE VERSION " + to_string(CONSOLE_VERSION_MAJOR) + "." + to_string(CONSOLE_VERSION_MINOR));
 }
 
 int console::Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& consoleColour,
