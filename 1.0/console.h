@@ -118,9 +118,6 @@ namespace console
 		// the colour of the consoles background
 		Uint32 defaultConsoleColour;
 
-		// the dimensions of the consoles surface.
-		SDL_Rect surfaceRect;
-
 		bool enabled;
 
 		~Console()
