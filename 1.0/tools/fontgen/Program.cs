@@ -119,11 +119,11 @@ namespace fontgen
             // throwing an ArgumentNotException. I'm handling both to be safe.
             // The handler for ArgumentException has a slightly different message
             // because it can be File.CreateText can throw it too.
-            catch (FileNotFoundException fnfe)
+            catch (FileNotFoundException)
             {
                 ExceptionPrompt("The specified font image couldn't be found.");
             }
-            catch (ArgumentException ae)
+            catch (ArgumentException)
             {
                 // ArgumentException generates a message along the lines of "the parameter is invalid"
                 // and it's not helpful in the least.
