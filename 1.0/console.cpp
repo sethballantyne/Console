@@ -226,17 +226,20 @@ void console::OutputBuffer_Render(Console& console)
 	int xPos = console.outputBuffer.startX;
 	int yPos = console.outputBuffer.startY;
 
-	for(int i = console.outputBuffer.bottomLineIndex; i >= console.outputBuffer.topLineIndex; i--)
+	if(console.outputBuffer.buffer.size() > 0)
 	{
-		BitmapFont_RenderLine(console, console.outputBuffer.buffer[i], xPos, yPos);
-		
-		if(yPos > 0)
+		for(int i = console.outputBuffer.bottomLineIndex; i >= console.outputBuffer.topLineIndex; i--)
 		{
-			yPos -= console.defaultBitmapFont.characterHeight;
-		}
-		else
-		{
-			break;
+			BitmapFont_RenderLine(console, console.outputBuffer.buffer[i], xPos, yPos);
+
+			if(yPos > 0)
+			{
+				yPos -= console.defaultBitmapFont.characterHeight;
+			}
+			else
+			{
+				break;
+			}
 		}
 	}
 }
@@ -319,8 +322,8 @@ void console::Console_Render(Console& console, SDL_Surface *screen)
 {
 	SDL_Rect rect;
 	rect.x = rect.y = 0;
-	rect.w = console.surfaceRect.w;
-	rect.h = console.surfaceRect.h;
+	rect.w = console.consoleSurface->w;
+	rect.h = console.consoleSurface->h;
 
 	SDL_FillRect(console.consoleSurface, &rect, console.defaultConsoleColour);
 
