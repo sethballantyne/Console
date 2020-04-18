@@ -41,58 +41,97 @@ namespace fontgen
 {
     class Program
     {
+        static void ExceptionPrompt(string message)
+        {
+            Console.WriteLine("Error: " + message);
+            Console.ReadLine();
+        }
+
         static void Main(string[] args)
         {
-            using(StreamWriter sw = File.CreateText("output.txt"))
+            try
             {
-                using (Bitmap font = new Bitmap("default_font.png"))
+                Console.WriteLine("  __            _   ");
+                Console.WriteLine(" / _|          | |  ");
+                Console.WriteLine("| |_ ___  _ __ | |_ __ _  ___ _ __  ");
+                Console.WriteLine("|  _/ _ \\| '_ \\| __/ _` |/ _ \\ '_ \\ ");
+                Console.WriteLine("| || (_) | | | | || (_| |  __/ | | |");
+                Console.WriteLine("|_| \\___/|_| |_|\\__\\__, |\\___|_| |_|");
+                Console.WriteLine("                    __/ |           ");
+                Console.WriteLine("                   |___/  v1.0      ");
+                using (StreamWriter sw = File.CreateText("output.txt"))
                 {
-                    byte charCounter = 32;
-                    int glyphWidth = 10;
-                    int glyphHeight = 14;
-                    int numChars = 95;
-                    int xpos = 3;
-
-                    sw.WriteLine("const char defaultFont[DEFAULT_FONT_NUM_GLYPHS][DEFAULT_FONT_HEIGHT][DEFAULT_FONT_WIDTH] = {");
-                    
-                    for (int i = 0; i < numChars; i++) 
+                    using (Bitmap font = new Bitmap("default_font.png"))
                     {
-                        sw.WriteLine("\t{");
-                        sw.WriteLine("\t\t/* {0} - {1} */", (char)charCounter, charCounter);
+                        byte charCounter = 32;
+                        int glyphWidth = 10;
+                        int glyphHeight = 14;
+                        int numChars = 95;
+                        int xpos = 3;
 
-                        for(int j = 2; j < glyphHeight + 2; j++) // Y axis
+                        sw.WriteLine("const char defaultFont[DEFAULT_FONT_NUM_GLYPHS][DEFAULT_FONT_HEIGHT][DEFAULT_FONT_WIDTH] = {");
+
+                        for (int i = 0; i < numChars; i++)
                         {
-                            sw.Write("\t\t{");
-                            for (int k = xpos; k < xpos + glyphWidth; k++) // X axis
+                            sw.WriteLine("\t{");
+                            sw.WriteLine("\t\t/* {0} - {1} */", (char)charCounter, charCounter);
+
+                            for (int j = 2; j < glyphHeight + 2; j++) // Y axis
                             {
-                                Color pixelColour = font.GetPixel(k, j);
-                                
-                                // individual RGB components are compared because Color.Black
-                                // and Color.White return values that contain an alpha value of 255.
-                                // it's possible when reading a pixel that an alpha value of 0 will be returned
-                                // for an otherwise valid black or white pixel, and the comparison will
-                                // will evaluate to false because of it. So, we're ignoring the alpha value.
-                                if (pixelColour.R == 0 && pixelColour.G == 0 && pixelColour.B == 0) // character pixel, black
+                                sw.Write("\t\t{");
+                                for (int k = xpos; k < xpos + glyphWidth; k++) // X axis
                                 {
-                                    sw.Write(".#',");
-                                }
-                                else if (pixelColour.R == 255 && pixelColour.G == 255 && 
-                                    pixelColour.B == 255) // transparency pixel, white
-                                {
-                                    sw.Write("'.',"); 
-                                }
-                            } // end X axis loop
+                                    Color pixelColour = font.GetPixel(k, j);
 
-                            sw.WriteLine("},");
-                        } // end Y axis loop
+                                    // individual RGB components are compared because Color.Black
+                                    // and Color.White return values that contain an alpha value of 255.
+                                    // it's possible when reading a pixel that an alpha value of 0 will be returned
+                                    // for an otherwise valid black or white pixel, and the comparison will
+                                    // will evaluate to false because of it. So, we're ignoring the alpha value.
+                                    if (pixelColour.R == 0 && pixelColour.G == 0 && pixelColour.B == 0) // character pixel, black
+                                    {
+                                        sw.Write(".#',");
+                                    }
+                                    else if (pixelColour.R == 255 && pixelColour.G == 255 &&
+                                        pixelColour.B == 255) // transparency pixel, white
+                                    {
+                                        sw.Write("'.',");
+                                    }
+                                } // end X axis loop
 
-                        xpos = (xpos + glyphWidth + 3);
-                        charCounter++;
-                        sw.WriteLine("\t},");
-                    } // end character loop
+                                sw.WriteLine("},");
+                            } // end Y axis loop
 
-                    sw.WriteLine("};");
+                            xpos = (xpos + glyphWidth + 3);
+                            charCounter++;
+                            sw.WriteLine("\t},");
+                        } // end character loop
+
+                        sw.WriteLine("};");
+                    }
                 }
+
+                Console.WriteLine("All done!");
+            }
+
+            // the documentation for the Bitmap constructor states that it throws
+            // an FileNotFoundException if the image can't be found, but it's actually
+            // throwing an ArgumentNotException. I'm handling both to be safe.
+            // The handler for ArgumentException has a slightly different message
+            // because it can be File.CreateText can throw it too.
+            catch (FileNotFoundException fnfe)
+            {
+                ExceptionPrompt("The specified font image couldn't be found.");
+            }
+            catch (ArgumentException ae)
+            {
+                // ArgumentException generates a message along the lines of "the parameter is invalid"
+                // and it's not helpful in the least.
+                ExceptionPrompt("the font image is missing or the output file is an invalid filename.");
+            }
+            catch (Exception e)
+            {
+                ExceptionPrompt(e.Message);
             }
         }
     }
