@@ -72,6 +72,8 @@ namespace fontgen
             foreach (string s in args)
             {
                 string[] splitStr = s.Split('=');
+                splitStr[0] = splitStr[0].ToLower();
+
                 if (splitStr.Length > 1)
                 {
                     switch (splitStr[0])
