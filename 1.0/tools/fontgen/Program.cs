@@ -74,7 +74,7 @@ namespace fontgen
                         for (int i = 0; i < numChars; i++)
                         {
                             sw.WriteLine("\t{");
-                            sw.WriteLine("\t\t/* {0} - {1} */", (char)charCounter, charCounter);
+                            sw.WriteLine("\t\t/* '{0}' - decimal {1} */", (char)charCounter, charCounter);
 
                             for (int j = 2; j < glyphHeight + 2; j++) // Y axis
                             {
