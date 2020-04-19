@@ -41,10 +41,99 @@ namespace fontgen
 {
     class Program
     {
+        // the name and path of the image containing the bitmap font
+        static string fontFile = "default_font.png";
+
+        // the path the output should be written to
+        static string output = "output.txt";
+
+        // the number of characters in the font
+        static int numChars = 95;
+
+        // the pixel width of each individual character
+        static byte glyphWidth = 10;
+
+        // the pixel height of each individual character
+        static byte glyphHeight = 14;
+
+        // the decimal value of the first character in the font.
+        // used for writing a comment at the top of each character
+        // in the output file.
+        static byte charCounter = 32;
+
         static void ExceptionPrompt(string message)
         {
             Console.WriteLine("Error: " + message);
             Console.ReadLine();
+        }
+
+        static void ParseCommandLineArgs(string[] args)
+        {
+            foreach (string s in args)
+            {
+                string[] splitStr = s.Split('=');
+                if (splitStr.Length > 1)
+                {
+                    switch (splitStr[0])
+                    {
+                        case "font":
+                            if (!String.IsNullOrEmpty(splitStr[1]))
+                            {
+                                fontFile = splitStr[1];
+                            }
+                            break;
+                        case "output":
+                            if (!String.IsNullOrEmpty(splitStr[1]))
+                            {
+                                output = splitStr[1];
+                            }
+                            break;
+                        case "numchars":
+                            try
+                            {
+                                numChars = Convert.ToInt32(splitStr[1]);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("the numchars argument contains an invalid value; using defaults.");
+                            }
+                            break;
+                        case "width":
+                            try
+                            {
+                                glyphWidth = Convert.ToByte(splitStr[1]);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("the width argument contains an invalid value; using defaults.");
+                            }
+                            break;
+                        case "height":
+                            try
+                            {
+                                glyphHeight = Convert.ToByte(splitStr[1]);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("the width argument contains an invalid value; using defaults.");
+                            }
+                            break;
+                        case "initial":
+                            try
+                            {
+                                charCounter = Convert.ToByte(splitStr[1]);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("the initial argument contains an invalid value; using defaults.");
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Unknown argument '{0}'", splitStr[0]);
+                            break;
+                    }
+                }
+            }
         }
 
         static void Main(string[] args)
@@ -59,14 +148,38 @@ namespace fontgen
                 Console.WriteLine("|_| \\___/|_| |_|\\__\\__, |\\___|_| |_|");
                 Console.WriteLine("                    __/ |           ");
                 Console.WriteLine("                   |___/  v1.0      ");
-                using (StreamWriter sw = File.CreateText("output.txt"))
+                Console.WriteLine();
+
+                ParseCommandLineArgs(args);
+
+                using (StreamWriter sw = File.CreateText(output))
                 {
-                    using (Bitmap font = new Bitmap("default_font.png"))
+                    using (Bitmap font = new Bitmap(fontFile))
                     {
-                        byte charCounter = 32;
-                        int glyphWidth = 10;
-                        int glyphHeight = 14;
-                        int numChars = 95;
+                        // basic error checking.
+                        // if we don't do this, Bitmap.GetPixel() will generate an ArgumentException
+                        // when trying to access a pixel outside the images dimenions and I want to avoid
+                        // that, because the handler for ArgumentException is catered towards Bitmap() or
+                        // File.CreateText() failing. See the comment above the catch statements as to why.
+                        // Docs claim Bitmap.GetPixel() generates an ArgumentOutOfRange Exception, but it's not.
+                        // Unlike when we parse the command line args, the variables in question aren't set to 
+                        // their defaults, because it's possible it'll result in garbage output anyway. 
+                        if (glyphWidth * numChars > font.Width)
+                        {
+                            throw new Exception("the specified value(s) for the character width and/or the number of characters used by the font are too big.");
+                        }
+                        else if (glyphHeight > font.Height)
+                        {
+                            throw new Exception("the specified height value is greater than the height of the font image.");
+                        }
+
+                        Console.WriteLine("Using font {0}", fontFile);
+                        Console.WriteLine("Writing output to {0}", output);
+                        Console.WriteLine("number of characters: {0}", numChars);
+                        Console.WriteLine("individual character width: {0}", glyphWidth);
+                        Console.WriteLine("individual character height: {0}", glyphHeight);
+                        Console.WriteLine();
+
                         int xpos = 3;
 
                         sw.WriteLine("const char defaultFont[DEFAULT_FONT_NUM_GLYPHS][DEFAULT_FONT_HEIGHT][DEFAULT_FONT_WIDTH] = {");
@@ -115,10 +228,10 @@ namespace fontgen
             }
 
             // the documentation for the Bitmap constructor states that it throws
-            // an FileNotFoundException if the image can't be found, but it's actually
-            // throwing an ArgumentNotException. I'm handling both to be safe.
+            // a FileNotFoundException if the image can't be found, but it's actually
+            // throwing an ArgumentException. I'm handling both to be safe.
             // The handler for ArgumentException has a slightly different message
-            // because it can be File.CreateText can throw it too.
+            // from the one in the FileNotFoundException handler, because File.CreateText can throw it too.
             catch (FileNotFoundException)
             {
                 ExceptionPrompt("The specified font image couldn't be found.");
