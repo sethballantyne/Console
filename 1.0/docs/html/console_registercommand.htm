@@ -37,10 +37,10 @@
 		}
 	</style>
 	<head>
-		<title>Console_Print</title>
+		<title>Console_RegisterCommand</title>
 		<meta charset="utf-8"/>
 		<meta name="author" content="Seth Ballantyne"/>
-		<meta name="description" content="documentation for the Console_Print function"/>
+		<meta name="description" content="Documentation for the Console_RegisterCommand function"/>
 	</head>
 	<body>
 		<!-------------------------------->
@@ -71,20 +71,55 @@
 		<!-------------------------------->
 		
 		<hr>
-		<h1>Console_Print</h1>
+		<h1>Console_RegisterCommand</h1>
 		<h2>Summary</h2>
-
-		<code>
-			#include "console.h"<br><br>
-			
-			void console::Console_Print(console::Console& console, std::string message);
-		</code>
+			<code>
+				#include "console.h"<br><br>
+				
+				int console::Console_RegisterCommand(console::Console& console, std::string command, command_func_ptr command_func_ptr);
+				
+			</code>
 		<h2>Description</h2>
-		
-		Prints <code>message</code> to the console. If the message is too big to fit a single line, it'll be split into multiple lines.
-		The console currently only supports ASCII characters 32 to 127 (space to '~'), so any characters outside of this range will not be printed.
+		Registers the specified command for use within the console. <code>command_func_ptr</code> points to the function that implements
+		the command and is declared as <code>typedef void(*command_func_ptr)(Console&, std::vector<std::string> &)</code>, so implementing
+		a command would like this:
+		<br>
+		<pre>
+		<code>
+void console_command_version(Console& console, vector&lt;string&gt;& args)
+{
+	Console_Print(console, "CONSOLE VERSION " + to_string(CONSOLE_VERSION_MAJOR) + "." + to_string(CONSOLE_VERSION_MINOR));
+}
+			
+...
+			
+int main(int argc, char *argv[])
+{
+	...
+	Console_RegisterCommand(console, "cv", console_command_version);
+	...
+}
+		</code>
+		</pre>
+		Note that commands can't currently return values, so whether they succeed or not needs to be handled within the command
+		itself.
 		<h2>Return Value</h2>
-		<code>Console_Print</code> doesn't return a value.
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">The command was sucessfully registered.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_COMMAND_EXISTS</code></td>
+						<td style="padding:0px 4px">A command of the same name already exists.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_NULLPTR_ARGUMENT</code></td>
+						<td style="padding:0px 4px"><code>command_func_ptr</code> evaluates to <code>nullptr</code>.</td>
+					</tr>
+				</tbody>
+			</table>
 		<hr>
 		
 		<!------------------------------------->

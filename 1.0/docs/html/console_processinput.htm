@@ -37,10 +37,10 @@
 		}
 	</style>
 	<head>
-		<title>Console_Print</title>
+		<title>Console_ProcessInput</title>
 		<meta charset="utf-8"/>
 		<meta name="author" content="Seth Ballantyne"/>
-		<meta name="description" content="documentation for the Console_Print function"/>
+		<meta name="description" content="documentation for the Console_ProcessInput function"/>
 	</head>
 	<body>
 		<!-------------------------------->
@@ -71,20 +71,28 @@
 		<!-------------------------------->
 		
 		<hr>
-		<h1>Console_Print</h1>
+		<h1>Console_ProcessInput</h1>
 		<h2>Summary</h2>
-
-		<code>
-			#include "console.h"<br><br>
-			
-			void console::Console_Print(console::Console& console, std::string message);
-		</code>
+			<code>
+				#include "console.h"<br><br>
+				
+				void console::Console_ProcessInput(console::Console& console, Uint16 unicode);
+			</code>
 		<h2>Description</h2>
-		
-		Prints <code>message</code> to the console. If the message is too big to fit a single line, it'll be split into multiple lines.
-		The console currently only supports ASCII characters 32 to 127 (space to '~'), so any characters outside of this range will not be printed.
+		<code>Console_ProcessInput</code> handles all user input when the console is visible; without calling this, the user will type and not see anything being printed in the input buffer. <code>unicode</code>
+		should be taken from <code>SDL_keysym</code> during a keyboard event in your event handler. As the name suggests, this is a unicode
+		value, so unicode must be enabled by calling <code>SDL_EnableUNICODE(1)</code> during your games initialization. Failing to do this will result in keypresses not
+		being detected. 
 		<h2>Return Value</h2>
-		<code>Console_Print</code> doesn't return a value.
+			<code>Console_ProcessInput</code> doesn't return any values.
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code></code></td>
+						<td style="padding:0px 4px"></td>
+					</tr>
+				</tbody>
+			</table>
 		<hr>
 		
 		<!------------------------------------->
