@@ -205,7 +205,7 @@ namespace fontgen
                                     // will evaluate to false because of it. So, we're ignoring the alpha value.
                                     if (pixelColour.R == 0 && pixelColour.G == 0 && pixelColour.B == 0) // character pixel, black
                                     {
-                                        sw.Write(".#',");
+                                        sw.Write("'#',");
                                     }
                                     else if (pixelColour.R == 255 && pixelColour.G == 255 &&
                                         pixelColour.B == 255) // transparency pixel, white
@@ -253,6 +253,7 @@ namespace fontgen
 }
 
 //      _        #
-//    _|_|_      #
+//    _|_|_  boO!#
 //    (o o)      #
 //ooO--(_)--Ooo--#
+
