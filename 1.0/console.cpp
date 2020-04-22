@@ -118,8 +118,11 @@ void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 //	return CONSOLE_RET_SUCCESS;
 //}
 
-int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface *consoleSurface, int characterWidth, int characterHeight, SDL_Colour fontColour, SDL_Colour transparencyColour)
+int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface, int characterWidth, int characterHeight, SDL_Colour* fontColour, SDL_Colour* transparencyColour)
 {
+	SDL_Colour defaultFontColour = { 255, 255, 255, 0 };
+	SDL_Colour defaultTransparencyColour = { 255, 0, 255, 0 };
+
 	int fontSheetWidth = DEFAULT_FONT_WIDTH * DEFAULT_FONT_NUM_GLYPHS;
 	bitmapfont.characterWidth = characterWidth;
 	bitmapfont.characterHeight = characterHeight;
@@ -132,9 +135,12 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface *consoleSurface
 		return CONSOLE_RET_CREATE_SURFACE_FAIL;
 	}
 
-	bitmapfont.fontColour = SDL_MapRGB(consoleSurface->format, fontColour.r, fontColour.g, fontColour.b);
-	bitmapfont.transparencyColour = SDL_MapRGB(consoleSurface->format, transparencyColour.r, 
-											   transparencyColour.g, transparencyColour.b);
+	SDL_Colour colour = (nullptr == fontColour) ? defaultFontColour : *fontColour;
+	bitmapfont.fontColour = SDL_MapRGB(consoleSurface->format, colour.r, colour.g, colour.b);
+
+	colour = (nullptr == transparencyColour) ? defaultTransparencyColour : *transparencyColour;
+	bitmapfont.transparencyColour = SDL_MapRGB(consoleSurface->format, colour.r, colour.g, colour.b);
+
 	SDL_SetColorKey(bitmapfont.fontSurface, SDL_SRCCOLORKEY, bitmapfont.transparencyColour);
 	int xBasePosition = 0;
 
@@ -333,9 +339,11 @@ int console::OutputBuffer_Render(Console& console)
 //}
 
 
-int console::Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& consoleColour,
-						  SDL_Colour& fontColour, SDL_Colour& transparencyColour)
+int console::Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* consoleColour,
+						  SDL_Colour* fontColour, SDL_Colour* transparencyColour)
 {
+	SDL_Colour defaultConsoleColour = { 0, 0, 0, 0 };
+
 	console.consoleSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, screen->w, screen->h / 2,
 												  screen->format->BitsPerPixel, screen->format->Rmask,
 												  screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
@@ -350,7 +358,8 @@ int console::Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& con
 		return result;
 	}
 
-	console.defaultConsoleColour = SDL_MapRGB(console.consoleSurface->format, consoleColour.r, consoleColour.g, consoleColour.b);
+	SDL_Colour colour = (nullptr == consoleColour) ? defaultConsoleColour : *consoleColour;
+	console.defaultConsoleColour = SDL_MapRGB(console.consoleSurface->format, colour.r, colour.g, colour.b);
 
 	InputBuffer_Init(console);
 	OutputBuffer_Init(console);

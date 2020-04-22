@@ -139,7 +139,7 @@ namespace console
 	void console_command_clear(Console& console, std::vector<std::string>& args);
 
 	// initialises the bitmap
-	int BitmapFont_Init(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, int characterHeight, SDL_Colour fontColour, SDL_Colour transparency);
+	int BitmapFont_Init(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, int characterHeight, SDL_Colour* fontColour, SDL_Colour* transparency);
 	int BitmapFont_RenderLine(Console& console, std::string line, int x, int y);
 	//int BitmapFont_CreateSurface(SDL_Surface *font_surface, SDL_Surface *consoleSurface, int numCharacters, int characterWidth, int characterHeight);
 
@@ -151,8 +151,8 @@ namespace console
 	int OutputBuffer_Render(Console& console);
 	//void OutputBuffer_Scroll(Console& console, int numberOfLines, int direction);
 
-	int Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& consoleColour, 
-					SDL_Colour& fontColour, SDL_Colour& transparencyColour);
+	int Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* consoleColour, 
+					SDL_Colour* fontColour, SDL_Colour* transparencyColour);
 
 	void Console_ProcessInput(Console& console, Uint16 unicode);
 	int Console_Render(Console& console, SDL_Surface *screen);
