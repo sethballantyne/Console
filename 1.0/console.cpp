@@ -199,8 +199,7 @@ void console::OutputBuffer_Init(Console& console)
 {
 	console.outputBuffer.startX = console.inputBuffer.x;
 
-	// minus 2 to factor in a gap between the bottom line of input and the input prompt.
-	console.outputBuffer.startY = console.inputBuffer.y - console.defaultBitmapFont.characterHeight - 2;
+	console.outputBuffer.startY = console.inputBuffer.y - console.defaultBitmapFont.characterHeight - CONSOLE_GAP_BETWEEN_BUFFERS;
 
 	float integral;
 	
