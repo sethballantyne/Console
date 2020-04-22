@@ -84,14 +84,24 @@
 			to be the same width as the <code>screen</code> parameter, and half its height.
 		<h2>Return Value</h2>
 		<table>
-				None but there should be!
 				<tbody>
 					<tr>
-						<td style="vertical-align:top"><code></code></td>
-						<td style="padding:0px 4px"></td>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">the function executed successfully without error.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_FILL_RECT_FAILED</code></td>
+						<td style="padding:0px 4px">a call to <code>SDL_FillRect</code> failed.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_BLIT_FAILED</code></td>
+						<td style="padding:0px 4px">a call to <code>SDL_BlitSurface</code> failed.</td>
 					</tr>
 				</tbody>
 			</table>
+			<br>
+			To get extended error information when <code>Console_Render</code> returns <code>CONSOLE_RET_FILL_RECT_FAILED</code> or <code>CONSOLE_RET_BLIT_FAILED</code>,
+			call <code>SDL_GetError</code>. See the SDL documentation for more information.
 		<hr>
 		
 		<!------------------------------------->
