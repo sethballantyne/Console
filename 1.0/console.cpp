@@ -126,7 +126,7 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface *consoleSurface
 	return CONSOLE_RET_SUCCESS;
 }
 
-void console::BitmapFont_RenderLine(Console& console, std::string line, int x, int y)
+int console::BitmapFont_RenderLine(Console& console, std::string line, int x, int y)
 {
 	int lineLength = line.length();
 	SDL_Rect srcRect;
@@ -155,13 +155,18 @@ void console::BitmapFont_RenderLine(Console& console, std::string line, int x, i
 	for(int i = 0; i < lineLength; i++)
 	{
 		srcRect.x = (line[i] - DEFAULT_FONT_FIRST_CHARACTER) * console.defaultBitmapFont.characterWidth;
-		
-		SDL_BlitSurface(console.defaultBitmapFont.fontSurface, &srcRect, console.consoleSurface,  &destRect);
+
+		int result = SDL_BlitSurface(console.defaultBitmapFont.fontSurface, &srcRect, console.consoleSurface, &destRect);
+		if(result != 0)
+		{
+			return CONSOLE_RET_BLIT_FAILED;
+		}
 
 		destRect.x += console.defaultBitmapFont.characterWidth;
 		//destRect.y -= console.defaultBitmapFont.characterHeight;
 	}
 
+	return CONSOLE_RET_SUCCESS;
 }
 
 void console::InputBuffer_SplitInput(InputBuffer& inputBuffer, string& command, vector<string>& args)
@@ -193,9 +198,9 @@ void console::InputBuffer_Init(Console& console)
 	console.inputBuffer.maxBufferLength = console.consoleSurface->w / console.defaultBitmapFont.characterWidth;
 }
 
-void console::InputBuffer_Render(Console& console)
+int console::InputBuffer_Render(Console& console)
 {
-	BitmapFont_RenderLine(console, console.inputBuffer.buffer, console.inputBuffer.x, console.inputBuffer.y);
+	return BitmapFont_RenderLine(console, console.inputBuffer.buffer, console.inputBuffer.x, console.inputBuffer.y);
 }
 
 void console::OutputBuffer_Init(Console& console)
@@ -223,7 +228,7 @@ void console::OutputBuffer_Init(Console& console)
 	console.outputBuffer.maxLineLength = console.consoleSurface->w / console.defaultBitmapFont.characterWidth;
 }
 
-void console::OutputBuffer_Render(Console& console)
+int console::OutputBuffer_Render(Console& console)
 {
 	int xPos = console.outputBuffer.startX;
 	int yPos = console.outputBuffer.startY;
@@ -232,7 +237,11 @@ void console::OutputBuffer_Render(Console& console)
 	{
 		for(int i = console.outputBuffer.bottomLineIndex; i >= console.outputBuffer.topLineIndex; i--)
 		{
-			BitmapFont_RenderLine(console, console.outputBuffer.buffer[i], xPos, yPos);
+			int result = BitmapFont_RenderLine(console, console.outputBuffer.buffer[i], xPos, yPos);
+			if(result != CONSOLE_RET_SUCCESS)
+			{
+				return result;
+			}
 
 			if(yPos > 0)
 			{
@@ -244,6 +253,8 @@ void console::OutputBuffer_Render(Console& console)
 			}
 		}
 	}
+
+	return CONSOLE_RET_SUCCESS;
 }
 
 //void console::OutputBuffer_Scroll(Console& console, int numberOfLines, int direction)
@@ -320,18 +331,38 @@ int console::Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& con
 	return CONSOLE_RET_SUCCESS;
 }
 
-void console::Console_Render(Console& console, SDL_Surface *screen)
+int console::Console_Render(Console& console, SDL_Surface *screen)
 {
 	SDL_Rect rect;
 	rect.x = rect.y = 0;
 	rect.w = console.consoleSurface->w;
 	rect.h = console.consoleSurface->h;
 
-	SDL_FillRect(console.consoleSurface, &rect, console.defaultConsoleColour);
+	int result = SDL_FillRect(console.consoleSurface, &rect, console.defaultConsoleColour);
+	if(-1 == result)
+	{
+		return CONSOLE_RET_FILL_RECT_FAILED;
+	}
 
-	InputBuffer_Render(console);
-	OutputBuffer_Render(console);
-	SDL_BlitSurface(console.consoleSurface, &rect, screen, &rect);
+	result = InputBuffer_Render(console);
+	if(result != CONSOLE_RET_SUCCESS)
+	{
+		return result;
+	}
+
+	result = OutputBuffer_Render(console);
+	if(result != CONSOLE_RET_SUCCESS)
+	{
+		return result;
+	}
+
+	result = SDL_BlitSurface(console.consoleSurface, &rect, screen, &rect);
+	if(0 != result)
+	{
+		return CONSOLE_RET_BLIT_FAILED;
+	}
+
+	return CONSOLE_RET_SUCCESS;
 }
 
 void console::Console_ProcessInput(Console& console, Uint16 unicode)

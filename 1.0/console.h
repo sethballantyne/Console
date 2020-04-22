@@ -36,6 +36,8 @@
 #define CONSOLE_RET_COMMAND_DOESNT_EXIST    2
 #define CONSOLE_RET_COMMAND_EXISTS          3
 #define CONSOLE_RET_NULLPTR_ARGUMENT        4
+#define CONSOLE_RET_FILL_RECT_FAILED        5
+#define CONSOLE_RET_BLIT_FAILED             6
 
 #define CONSOLE_SCROLL_DIR_UP               0
 #define CONSOLE_SCROLL_DIR_DOWN             1
@@ -133,22 +135,22 @@ namespace console
 
 	// initialises the bitmap
 	int BitmapFont_Init(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, int characterHeight, SDL_Colour fontColour, SDL_Colour transparency);
-	void BitmapFont_RenderLine(Console& console, std::string line, int x, int y);
+	int BitmapFont_RenderLine(Console& console, std::string line, int x, int y);
 	//int BitmapFont_CreateSurface(SDL_Surface *font_surface, SDL_Surface *consoleSurface, int numCharacters, int characterWidth, int characterHeight);
 
 	void InputBuffer_SplitInput(InputBuffer& inputBuffer, std::string& command, std::vector<std::string>& args);
 	void InputBuffer_Init(Console& console);
-	void InputBuffer_Render(Console& console);
+	int InputBuffer_Render(Console& console);
 
 	void OutputBuffer_Init(Console& console);
-	void OutputBuffer_Render(Console& console);
+	int OutputBuffer_Render(Console& console);
 	//void OutputBuffer_Scroll(Console& console, int numberOfLines, int direction);
 
 	int Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& consoleColour, 
 					SDL_Colour& fontColour, SDL_Colour& transparencyColour);
 
 	void Console_ProcessInput(Console& console, Uint16 unicode);
-	void Console_Render(Console& console, SDL_Surface *screen);
+	int Console_Render(Console& console, SDL_Surface *screen);
 	void Console_Print(Console& console, std::string line);
 	bool Console_IsCommand(Console& console, std::string command);
 	int Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args);
