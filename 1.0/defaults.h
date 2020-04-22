@@ -38,7 +38,10 @@
 #define DEFAULT_FONT_NUM_GLYPHS 95
 
 // decimal code of the first character in the font
-#define DEFAULT_FONT_STARTING_CHARACTER 32
+#define DEFAULT_FONT_FIRST_CHARACTER 32
+
+// decimal code of the last character in the font
+#define DEFAULT_FONT_LAST_CHARACTER 126
 
 // the built-in font
 const char defaultFont[DEFAULT_FONT_NUM_GLYPHS][DEFAULT_FONT_HEIGHT][DEFAULT_FONT_WIDTH] = {

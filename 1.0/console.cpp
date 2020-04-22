@@ -28,6 +28,9 @@
 #include <sstream>
 #include "console.h"
 
+#define KEY_ENTER    13
+#define KEY_BACKSPACE 8
+
 using namespace std;
 
 void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
@@ -151,7 +154,7 @@ void console::BitmapFont_RenderLine(Console& console, std::string line, int x, i
 
 	for(int i = 0; i < lineLength; i++)
 	{
-		srcRect.x = (line[i] - DEFAULT_FONT_STARTING_CHARACTER) * console.defaultBitmapFont.characterWidth;
+		srcRect.x = (line[i] - DEFAULT_FONT_FIRST_CHARACTER) * console.defaultBitmapFont.characterWidth;
 		
 		SDL_BlitSurface(console.defaultBitmapFont.fontSurface, &srcRect, console.consoleSurface,  &destRect);
 
@@ -336,20 +339,20 @@ void console::Console_ProcessInput(Console& console, Uint16 unicode)
 	SDL_Rect glyph;
 
 	// only ASCII characters space to '~' are supported
-	if(unicode >= DEFAULT_FONT_STARTING_CHARACTER &&
-	   unicode <= 126 &&
+	if(unicode >= DEFAULT_FONT_FIRST_CHARACTER &&
+	   unicode <= DEFAULT_FONT_LAST_CHARACTER &&
 	   console.inputBuffer.buffer.length() < console.inputBuffer.maxBufferLength)
 	{
 		console.inputBuffer.buffer += unicode;
 	}
-	else if(8 == unicode)	// backspace
+	else if(KEY_BACKSPACE == unicode)	// backspace
 	{
 		if(console.inputBuffer.buffer.length() > 0)
 		{
 			console.inputBuffer.buffer.erase(console.inputBuffer.buffer.length() - 1);
 		}
 	}
-	else if(13 == unicode)	// enter was pressed
+	else if(KEY_ENTER == unicode)	// enter was pressed
 	{
 		string command;
 		vector<string> args;

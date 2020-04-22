@@ -32,16 +32,16 @@
 
 // return values used by the console
 #define CONSOLE_RET_SUCCESS                 0
-#define CONSOLE_RET_CREATE_SURFACE_FAIL		1
-#define CONSOLE_RET_COMMAND_DOESNT_EXIST	2
+#define CONSOLE_RET_CREATE_SURFACE_FAIL     1
+#define CONSOLE_RET_COMMAND_DOESNT_EXIST    2
 #define CONSOLE_RET_COMMAND_EXISTS          3
 #define CONSOLE_RET_NULLPTR_ARGUMENT        4
 
-#define CONSOLE_SCROLL_DIR_UP		        0
-#define CONSOLE_SCROLL_DIR_DOWN		        1
+#define CONSOLE_SCROLL_DIR_UP               0
+#define CONSOLE_SCROLL_DIR_DOWN             1
 
-#define CONSOLE_VERSION_MAJOR	            1
-#define CONSOLE_VERSION_MINOR	            0
+#define CONSOLE_VERSION_MAJOR               1
+#define CONSOLE_VERSION_MINOR               0
 
 // the gap in pixels between the output buffer and the input buffer
 #define CONSOLE_GAP_BETWEEN_BUFFERS         2
