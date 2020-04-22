@@ -184,6 +184,12 @@ namespace fontgen
 
                         int xpos = 3;
 
+                        sw.WriteLine("#define DEFAULT_FONT_HEIGHT\t{0}", glyphHeight);
+                        sw.WriteLine("#define DEFAULT_FONT_WIDTH\t{0}", glyphWidth);
+                        sw.WriteLine("#define DEFAULT_FONT_NUM_GLYPHS {0}", numChars);
+                        sw.WriteLine("#define DEFAULT_FONT_FIRST_CHAR {0}", charCounter);
+                        sw.WriteLine("#define DEFAULT_FONT_LAST_CHAR {0}", charCounter + numChars - 1);
+                        sw.WriteLine();
                         sw.WriteLine("const char defaultFont[DEFAULT_FONT_NUM_GLYPHS][DEFAULT_FONT_HEIGHT][DEFAULT_FONT_WIDTH] = {");
 
                         for (int i = 0; i < numChars; i++)
