@@ -76,11 +76,11 @@
 			<code>
 				#include "console.h"<br><br>
 				
-				int console::Console_RegisterCommand(console::Console& console, std::string command, command_func_ptr command_func_ptr);
+				int console::Console_RegisterCommand(console::Console& console, std::string command, command_func_ptr commandFuncPtr);
 				
 			</code>
 		<h2>Description</h2>
-		Registers the specified command for use within the console. <code>command_func_ptr</code> points to the function that implements
+		Registers the specified command for use within the console. <code>commandFuncPtr</code> points to the function that implements
 		the command and is declared as <code>typedef void(*command_func_ptr)(Console&, std::vector<std::string> &)</code>, so implementing
 		a command would like this:
 		<br>
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>CONSOLE_RET_NULLPTR_ARGUMENT</code></td>
-						<td style="padding:0px 4px"><code>command_func_ptr</code> evaluates to <code>nullptr</code>.</td>
+						<td style="padding:0px 4px"><code>commandFuncPtr</code> evaluates to <code>nullptr</code>.</td>
 					</tr>
 				</tbody>
 			</table>

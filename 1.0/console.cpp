@@ -33,6 +33,42 @@
 
 using namespace std;
 
+//---------------------------------------------------------------------------
+// BUILT-IN COMMANDS
+//
+// These are registered in Console_Init.
+//---------------------------------------------------------------------------
+void console::console_command_version(Console& console, vector<string>& args)
+{
+	Console_Print(console, "CONSOLE VERSION " + to_string(CONSOLE_VERSION_MAJOR) + "." + to_string(CONSOLE_VERSION_MINOR));
+}
+
+void console::console_command_list_commands(Console& console, vector<string>& args)
+{
+	string commands;
+	int count = 0;
+
+	for(auto command : console.commands)
+	{
+		commands += command.first + " ";
+		count++;
+	}
+
+	Console_Print(console, commands);
+	Console_Print(console, to_string(count) + " commands available.");
+}
+
+void console::console_command_clear(Console& console, vector<string>& args)
+{
+	console.outputBuffer.buffer.clear();
+	console.outputBuffer.topLineIndex = console.outputBuffer.bottomLineIndex = 0;
+	
+}
+
+//---------------------------------------------------------------------------
+// END BUILT-IN COMMANDS
+//---------------------------------------------------------------------------
+
 void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
 	int bpp = surface->format->BytesPerPixel;
@@ -296,10 +332,6 @@ int console::OutputBuffer_Render(Console& console)
 //	}
 //}
 
-void console::console_command_version(Console& console, vector<string>& args)
-{
-	Console_Print(console, "CONSOLE VERSION " + to_string(CONSOLE_VERSION_MAJOR) + "." + to_string(CONSOLE_VERSION_MINOR));
-}
 
 int console::Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& consoleColour,
 						  SDL_Colour& fontColour, SDL_Colour& transparencyColour)
@@ -328,6 +360,16 @@ int console::Console_Init(Console& console, SDL_Surface *screen, SDL_Colour& con
 		Console_Print(console, "Console_Init: failed to register command \'cv\'");
 	}
 
+	if(CONSOLE_RET_SUCCESS != Console_RegisterCommand(console, "clist", console_command_list_commands))
+	{
+		Console_Print(console, "Console_Init: failed to register command \'clist\'");
+	}
+
+	if(CONSOLE_RET_SUCCESS != Console_RegisterCommand(console, "cls", console_command_clear))
+	{
+		Console_Print(console, "Console_Init: failed to register command \'cls\'");
+	}
+	
 	return CONSOLE_RET_SUCCESS;
 }
 
@@ -476,19 +518,19 @@ int console::Console_ExecuteCommand(Console& console, std::string command, std::
 	return CONSOLE_RET_SUCCESS;
 }
 
-int console::Console_RegisterCommand(Console& console, string command, command_func_ptr command_func_ptr)
+int console::Console_RegisterCommand(Console& console, string command, command_func_ptr commandFuncPtr)
 {
 	if(Console_IsCommand(console, command))
 	{
 		return CONSOLE_RET_COMMAND_EXISTS;
 	}
 
-	if(nullptr == command_func_ptr)
+	if(nullptr == commandFuncPtr)
 	{
 		return CONSOLE_RET_NULLPTR_ARGUMENT;
 	}
 
-	console.commands[command] = command_func_ptr;
+	console.commands[command] = commandFuncPtr;
 
 	return CONSOLE_RET_SUCCESS;
 }

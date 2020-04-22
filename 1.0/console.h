@@ -133,6 +133,11 @@ namespace console
 		}
 	};
 
+	// built in console commands
+	void console_command_version(Console& console, std::vector<std::string>& args);
+	void console_command_list_commands(Console& console, std::vector<std::string>& args);
+	void console_command_clear(Console& console, std::vector<std::string>& args);
+
 	// initialises the bitmap
 	int BitmapFont_Init(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, int characterHeight, SDL_Colour fontColour, SDL_Colour transparency);
 	int BitmapFont_RenderLine(Console& console, std::string line, int x, int y);
@@ -154,9 +159,7 @@ namespace console
 	void Console_Print(Console& console, std::string line);
 	bool Console_IsCommand(Console& console, std::string command);
 	int Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args);
-	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr command_ptr);
-
-	void console_command_version(Console& console, std::vector<std::string>& args);
+	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr commandFuncPtr);
 
 	void bitmapfont_render_line(SDL_Surface *console_surface, std::string line, int x, int y, int line_start_index, int line_finish_index);
 
