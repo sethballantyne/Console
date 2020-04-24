@@ -33,6 +33,19 @@
 
 using namespace std;
 
+// coverts any characters in str to lowercase and returns a new string
+string ToLower(string str)
+{
+	string temp;
+
+	for(char s : str)
+	{
+		temp += tolower(s);
+	}
+
+	return temp;
+}
+
 //---------------------------------------------------------------------------
 // BUILT-IN COMMANDS
 //
@@ -446,6 +459,7 @@ void console::Console_ProcessInput(Console& console, Uint16 unicode)
 
 		console.inputBuffer.buffer.clear();
 
+		command = ToLower(command);
 		Console_ExecuteCommand(console, command, args);
 	}
 }
@@ -529,6 +543,8 @@ int console::Console_ExecuteCommand(Console& console, std::string command, std::
 
 int console::Console_RegisterCommand(Console& console, string command, command_func_ptr commandFuncPtr)
 {
+	command = ToLower(command);
+
 	if(Console_IsCommand(console, command))
 	{
 		return CONSOLE_RET_COMMAND_EXISTS;

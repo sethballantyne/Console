@@ -86,7 +86,8 @@
 		is printed to the console and <code>CONSOLE_RET_COMMAND_DOESNT_EXIST</code> is returned.
 		<br><br>
 		There's currently no way to determine whether commands successfully execute, as commands don't have a return value; failure
-		or success as has to be managed within the command's implementation.
+		or success as has to be managed within the command's implementation. Note that any uppercase characters in <code>command</code>
+		will be converted to lowercase.
 	</p>
 		<h2>Return Value</h2>
 			<table>

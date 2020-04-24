@@ -102,7 +102,8 @@ int main(int argc, char *argv[])
 		</code>
 		</pre>
 		Note that commands can't currently return values, so whether they succeed or not needs to be handled within the command
-		itself.
+		itself. Console commands can be registered before <a href="console_init.htm"><code>Console_Init</code></a> is called. 
+		Commands that contain uppercase characters are automatically coverted to lowercase.
 		<h2>Return Value</h2>
 		<table>
 				<tbody>
