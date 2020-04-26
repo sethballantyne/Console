@@ -36,14 +36,14 @@ using namespace std;
 // coverts any characters in str to lowercase and returns a new string
 string ToLower(string str)
 {
-	string temp;
+	int length = str.length();
 
-	for(char s : str)
+	for(int i = 0; i < length; i++)
 	{
-		temp += tolower(s);
+		str[i] = tolower(str[i]);
 	}
-
-	return temp;
+	
+	return str;
 }
 
 //---------------------------------------------------------------------------
