@@ -79,17 +79,17 @@ namespace console
 		int x;
 		int y;
 		int maxBufferLength;
-		int bufferStartIndex = 0;
-		int buffeFinishIndex = 0;
-		char cursorChar;
+		//int bufferStartIndex = 0;
+		//int buffeFinishIndex = 0;
+		//char cursorChar;
 	};
 
 	struct OutputBuffer
 	{
 		std::vector<std::string> buffer;
-		int startX;
-		int startY;
-		int endY; // <--- depricated?
+		int x;
+		int y;
+		//int endY; // <--- depricated?
 		int bottomLineIndex = 0;
 		int topLineIndex = 0;
 		// the maximum number of lines that can be visible to the user.

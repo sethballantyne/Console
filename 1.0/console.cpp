@@ -154,7 +154,6 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface
 	colour = (nullptr == transparencyColour) ? defaultTransparencyColour : *transparencyColour;
 	bitmapfont.transparencyColour = SDL_MapRGB(consoleSurface->format, colour.r, colour.g, colour.b);
 
-	SDL_SetColorKey(bitmapfont.fontSurface, SDL_SRCCOLORKEY, bitmapfont.transparencyColour);
 	int xBasePosition = 0;
 
 	for(int i = 0; i < DEFAULT_FONT_NUM_GLYPHS; i++)
@@ -178,6 +177,9 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface
 		xBasePosition = DEFAULT_FONT_WIDTH * (i + 1);
 	}
 
+	// not checking for errors here, because the console can still function without the colour key.
+	SDL_SetColorKey(bitmapfont.fontSurface, SDL_SRCCOLORKEY, bitmapfont.transparencyColour);
+	
 	return CONSOLE_RET_SUCCESS;
 }
 
@@ -260,15 +262,15 @@ int console::InputBuffer_Render(Console& console)
 
 void console::OutputBuffer_Init(Console& console)
 {
-	console.outputBuffer.startX = console.inputBuffer.x;
+	console.outputBuffer.x = console.inputBuffer.x;
 
-	console.outputBuffer.startY = console.inputBuffer.y - console.defaultBitmapFont.characterHeight - CONSOLE_GAP_BETWEEN_BUFFERS;
+	console.outputBuffer.y = console.inputBuffer.y - console.defaultBitmapFont.characterHeight - CONSOLE_GAP_BETWEEN_BUFFERS;
 
 	float integral;
 	
 	// character height is being added to startY because if we divide from startY,
 	// we end up 1 line short.
-	int temp = console.outputBuffer.startY + console.defaultBitmapFont.characterHeight;
+	int temp = console.outputBuffer.y + console.defaultBitmapFont.characterHeight;
 
 	float result = (float)temp / (float)console.defaultBitmapFont.characterHeight;
 	float fractional = modf(result, &integral);
@@ -285,8 +287,8 @@ void console::OutputBuffer_Init(Console& console)
 
 int console::OutputBuffer_Render(Console& console)
 {
-	int xPos = console.outputBuffer.startX;
-	int yPos = console.outputBuffer.startY;
+	int xPos = console.outputBuffer.x;
+	int yPos = console.outputBuffer.y;
 
 	if(console.outputBuffer.buffer.size() > 0)
 	{
