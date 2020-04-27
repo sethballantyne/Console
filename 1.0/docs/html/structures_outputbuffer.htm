@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+		
+		.variable_field {
+			text-align:center;
+		}
+		
+		.type_field {
+			text-align:center;
+		}
+		
+		.table_guide_thing {
+			background: #E5C79B;
+		}
+	</style>
+	<head>
+		<title>OutputBuffer</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the OutputBuffer data structure"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Previous Page
+			<div class="navigation-centered-title">
+			Console documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Next Page
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="#">Table of Contents</a>
+			</div>
+			<a href="#">Previous</a>
+			<div class="navigation-right">
+				<a href="#">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>OutputBuffer</h1>
+		<h2>Namespace</h2>
+		console
+		<h2>Definition</h2>
+		<pre>
+			<code>
+struct OutputBuffer
+{
+	std::vector<std::string> buffer;
+	int x;
+	int y;
+	int bottomLineIndex = 0;
+	int topLineIndex = 0;
+	int maxNumLinesOnScreen; 
+	int maxLineLength;
+};
+			</code>
+		</pre>
+			<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>buffer</code></td>
+						<td style="padding:0px 4px">Holds all the consoles output. This isn't set to a specific size, so it'll go on forever
+						given the chance.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>x</code></td>
+						<td style="padding:0px 4px">The X axis coordinate on the console surface where the output will text start rendering.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>y<code></td>
+						<td style="padding:0px 4px">Same as <code>x</code>, but on the Y axis. All output text is rendered on the surface from the bottom up.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>bottomLineIndex</code></td>
+						<td style="padding:0px 4px">The index in <code>buffer</code> of the bottommost visible line.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>topLineIndex</code></td>
+						<td style="padding:0px 4px">The index in <code>buffer</code> of the topmost visible line. Even if the line has partially
+						scrolled off the screen, it's still considered visible.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>maxNumLinesOnScreen</code></td>
+						<td style="padding:0px 4px">The maximum number of lines that can be visible to the user. This is based on the size of the console and the font's height.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>maxLineLength</code></td>
+						<td style="padding:0px 4px">The maximum number of characters that can fit into one line.</td>
+					</tr>
+				</tbody>
+			</table>
+		<h2>Description</h2>
+		<code>OutputBuffer</code> is the counterpart to <a href="structures_inputbuffer.htm"><code>InputBuffer</code></a> and as the name suggests, it's used to manage all the consoles output. 
+		<code>OutputBuffer</code> has only been documented for completeness, as you won't need to directly interact with this structure when
+		incorporating the console to into a project. It's generally not a good idea to directly modify any of the structures 
+		members; leave them to the <code>Console_*</code> functions.
+		<hr>
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Previous Page
+			<div class="navigation-centered-title">
+			Console documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Next Page
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="#">Table of Contents</a>
+			</div>
+			<a href="#">Previous</a>
+			<div class="navigation-right">
+				<a href="#">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>
