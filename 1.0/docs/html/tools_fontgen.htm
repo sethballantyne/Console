@@ -77,8 +77,9 @@
 				fontgen [font=&lt;path&gt;] [output=&lt;path&gt;] [numchars=&lt;num&gt;] [width=&lt;character width&gt;] [height=&lt;character height&gt;] [initial=&lt;first character&gt;]
 			</code>
 		<h2>Description</h2>
-		fontgen takes an existing bitmap font and converts it into a three dimensional array that's usable within a C or C++ project. It will also write several <code>#define</code>'s based on the values
-		used to convert the font to source code: 
+		Fontgen is a program that's designed to make creating built-in fonts a little less time consuming, by taking an existing bitmap font and converting
+		it into a three dimensional C/C++ array that's usable by the console.  It will also write several <code>#define</code>'s based on the values
+		given to convert the font to source code: 
 		<br>
 		<dl>
 			<dt><code>DEFAULT_FONT_HEIGHT</code></dt>
@@ -92,7 +93,19 @@
 			<dt><code>DEFAULT_FONT_LAST_CHAR</code></dt>
 			<dd>The last character in the font. This is calculated by fontgen based on the decimal value passed for the initial character, plus the number of characters in the font, minus 1 (fontgen starts counting from the initial character).</dd>
 		</dl>
-		The bitmap font specified in the <code>font</code> argument must be laid out in a particular way; see <a href="built_in_fonts.htm">Using Built-in Fonts</a> for more information. 
+		The bitmap font specified in the <code>font</code> argument must be laid out in a particular way. Specifically, there must be:
+		<ul>
+			<li>A gap of 2 pixels above each character.</li>
+			<li>A gap of 3 pixels seperating each character; this includes the starting character, which must have a 3 pixel gap to its left.</li>
+			<li>All characters must be on the same row.</li>
+			<li>All characters must be ordered by their ASCII values, smallest to highest.
+		</ul>
+		Naturally, the required gaps are not factored into the size of each character and are not present in the resulting array that's generated
+		by fontgen.<br><br>
+		Below is an example of how a font should be formatted: the green highlights the 2 pixel gap required at the top, and the magenta
+		highlights the 3 pixel gap required of all characters. The first character in the font is a space character (hence why it's blank), and also
+		has a 3 pixel gap to its left.<br><br>
+		<img src="imgs/font_example.png"/>
 		<h2>Arguments</h2>
 		Every argument that fontgen accepts is optional; when an argument isn't passed via command line, a default value will be used.
 		<br><br>
@@ -100,7 +113,8 @@
 				<tbody>
 					<tr>
 						<td style="vertical-align:top"><code>font</code></td>
-						<td style="padding:0px 4px">the path (including filename) of the font to convert. The default for this option is to look for <code>default_font.png</code> in the same directory as fontgen.</td>
+						<td style="padding:0px 4px">the path (including filename) of the font to convert. The default for this option is to look for <code>default_font.png</code> in the same directory as fontgen.
+						The image can be either BMP, GIF, EXIF, JPG, PNG or TIFF format.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>output</code></td>
