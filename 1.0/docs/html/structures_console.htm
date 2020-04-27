@@ -92,17 +92,11 @@
 struct Console
 {
 	std::map&lt;std::string, command_func_ptr&gt; commands;
-
 	BitmapFont defaultBitmapFont;
-
 	SDL_Surface *consoleSurface = nullptr;
-
 	InputBuffer inputBuffer;
-
 	OutputBuffer outputBuffer;
-
 	Uint32 defaultConsoleColour;
-
 	bool enabled;
 
 	~Console()
