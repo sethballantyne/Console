@@ -34,7 +34,7 @@
 using namespace std;
 
 // coverts any characters in str to lowercase and returns a new string
-string ToLower(string str)
+string ToLower(string& str)
 {
 	int length = str.length();
 
@@ -183,7 +183,7 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface
 	return CONSOLE_RET_SUCCESS;
 }
 
-int console::BitmapFont_RenderLine(Console& console, std::string line, int x, int y)
+int console::BitmapFont_RenderLine(Console& console, std::string& line, int x, int y)
 {
 	int lineLength = line.length();
 	SDL_Rect srcRect;
@@ -209,9 +209,9 @@ int console::BitmapFont_RenderLine(Console& console, std::string line, int x, in
 		destRect.y = 0;
 	}
 
-	for(int i = 0; i < lineLength; i++)
+	for(auto i : line)
 	{
-		srcRect.x = (line[i] - DEFAULT_FONT_FIRST_CHARACTER) * console.defaultBitmapFont.characterWidth;
+		srcRect.x = (i - DEFAULT_FONT_FIRST_CHARACTER) * console.defaultBitmapFont.characterWidth;
 
 		int result = SDL_BlitSurface(console.defaultBitmapFont.fontSurface, &srcRect, console.consoleSurface, &destRect);
 		if(result != 0)
@@ -220,8 +220,21 @@ int console::BitmapFont_RenderLine(Console& console, std::string line, int x, in
 		}
 
 		destRect.x += console.defaultBitmapFont.characterWidth;
-		//destRect.y -= console.defaultBitmapFont.characterHeight;
 	}
+
+	//for(int i = 0; i < lineLength; i++)
+	//{
+	//	srcRect.x = (line[i] - DEFAULT_FONT_FIRST_CHARACTER) * console.defaultBitmapFont.characterWidth;
+
+	//	int result = SDL_BlitSurface(console.defaultBitmapFont.fontSurface, &srcRect, console.consoleSurface, &destRect);
+	//	if(result != 0)
+	//	{
+	//		return CONSOLE_RET_BLIT_FAILED;
+	//	}
+
+	//	destRect.x += console.defaultBitmapFont.characterWidth;
+	//	//destRect.y -= console.defaultBitmapFont.characterHeight;
+	//}
 
 	return CONSOLE_RET_SUCCESS;
 }
@@ -253,6 +266,8 @@ void console::InputBuffer_Init(Console& console)
 	console.inputBuffer.x = 0;
 	console.inputBuffer.y = console.consoleSurface->h - console.defaultBitmapFont.characterHeight;
 	console.inputBuffer.maxBufferLength = console.consoleSurface->w / console.defaultBitmapFont.characterWidth;
+
+	console.inputBuffer.buffer.reserve(console.inputBuffer.maxBufferLength);
 }
 
 int console::InputBuffer_Render(Console& console)

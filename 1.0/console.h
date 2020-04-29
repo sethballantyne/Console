@@ -145,7 +145,7 @@ namespace console
 
 	/// PRIVATE BITMAP FUNCTIONS //////////////////////////////////////////////////////
 	int BitmapFont_Init(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, int characterHeight, SDL_Colour* fontColour, SDL_Colour* transparency);
-	int BitmapFont_RenderLine(Console& console, std::string line, int x, int y);
+	int BitmapFont_RenderLine(Console& console, std::string& line, int x, int y);
 
 	/// PRIVATE INPUTBUFFER FUNCTIONS ////////////////////////////////////////////////
 	void InputBuffer_SplitInput(InputBuffer& inputBuffer, std::string& command, std::vector<std::string>& args);
