@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Console_ProcessInput</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the Console_ProcessInput function"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_Print
+			<div class="navigation-centered-title">
+			Console 1.0 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_RegisterCommand
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_print.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_registercommand.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console_ProcessInput</h1>
+		<h2>Summary</h2>
+			<code>
+				#include "console.h"<br><br>
+				
+				void console::Console_ProcessInput(console::Console& console, Uint16 unicode);
+			</code>
+		<h2>Description</h2>
+		<code>Console_ProcessInput</code> handles all user input when the console is visible; without calling this, the user will type and not see anything being printed in the input buffer. <code>unicode</code>
+		should be taken from <code>SDL_keysym</code> during a keyboard event in your event handler. As the name suggests, this is a unicode
+		value, so unicode must be enabled by calling <code>SDL_EnableUNICODE(1)</code> during your games initialization. Failing to do this will result in keypresses not
+		being detected. 
+		<h2>Return Value</h2>
+			<code>Console_ProcessInput</code> doesn't return any values.
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code></code></td>
+						<td style="padding:0px 4px"></td>
+					</tr>
+				</tbody>
+			</table>
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_Print
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_RegisterCommand
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_print.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_registercommand.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+		
+		.variable_field {
+			text-align:center;
+		}
+		
+		.type_field {
+			text-align:center;
+		}
+		
+		.table_guide_thing {
+			background: #E5C79B;
+		}
+	</style>
+	<head>
+		<title>Console</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the Console data structure"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Structures
+			<div class="navigation-centered-title">
+			Console 1.0 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				InputBuffer
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="structures.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="structures_inputbuffer.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console</h1>
+		<h2>Namespace</h2>
+		console
+		<h2>Definition</h2>
+		<pre>
+			<code>
+struct Console
+{
+	std::map&lt;std::string, command_func_ptr&gt; commands;
+	BitmapFont defaultBitmapFont;
+	SDL_Surface *consoleSurface = nullptr;
+	InputBuffer inputBuffer;
+	OutputBuffer outputBuffer;
+	Uint32 defaultConsoleColour;
+	bool enabled;
+
+	~Console()
+	{
+		if(nullptr != consoleSurface)
+		{
+			SDL_FreeSurface(consoleSurface);
+		}
+	}
+};
+			</code>
+		</pre>
+			<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>commands</code></td>
+						<td style="padding:0px 4px">Holds all commands registered via <code><a href="console_registercommand.htm">Console_RegisterCommand</a></code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>consoleSurface</code></td>
+						<td style="padding:0px 4px">The surface the font is blitted to when the text is entered into the console. 
+						This is blitted to another surface (usually the screen), when <a href="console_render.htm"><code>Console_Render</code></a> is called.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>inputBuffer<code></td>
+						<td style="padding:0px 4px">Properties related to the space on the console where input is entered. See <a href="structures_inputbuffer.htm"><code>InputBuffer</code></a> for details.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>outputBuffer</code></td>
+						<td style="padding:0px 4px">Same as <var>inputBuffer</var>, but related to the space where all output is written. See <a href="structures_outputbuffer.htm"><code>OutputBuffer</code></a> for details.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>defaultConsoleColour</code></td>
+						<td style="padding:0px 4px">The background colour that the console will be filled with. This value is generated
+						by a call to <code>SDL_MapRGB</code> during intitialization.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>enabled</code></td>
+						<td style="padding:0px 4px">This is an optional variable that can be used to determine whether the console is currently visible or not. 
+						The console itself doesn't make use of it; it exists purely for your convenience.</td>
+					</tr>
+				</tbody>
+			</table>
+		<h2>Description</h2>
+		As the name suggests, <code>Console</code> is the structure that reprensents the console itself and it's generally the only
+		structure you'll need to work with when using the console. All members except for <code>commands</code> and <code>enabled</code>
+		are set when <a href="console_init.htm"><code>Console_Init</code></a> is called. Avoid manually modifying these if you don't want to be disappointed.
+		<hr>
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Structures
+			<div class="navigation-centered">
+			<a href="structures.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				InputBuffer
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="structures.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="structures_inputbuffer.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

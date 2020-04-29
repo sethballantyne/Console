@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Console_Init</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the Console_Init function."/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_ExecuteCommand
+			<div class="navigation-centered-title">
+			Console 1.0 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_IsCommand
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_executecommand.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_iscommand.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console_Init</h1>
+		<h2>Summary</h2>
+	    <code>
+			#include "console.h"<br><br>
+			
+			int console::Console_Init(console::Console& console, SDL_Surface* screen, SDL_Colour* consoleColour, SDL_Colour* fontColour, SDL_Colour* transparencyColour);
+		</code>
+		<h2>Description</h2>
+		Initializes the console as a software surface; this function also creates the built-in font as an <code>SDL_Surface</code>.
+		During initialization, the console's width will be set to the same as <code>screen</code>, but half its height. If <code>nullptr</code>
+		is passed for any of the colour arguments, a default colour will be used for that argument.
+		<br><br>
+		
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>screen</code></td>
+						<td style="padding:0px 4px">The <code>SDL_Surface</code> being used to render to the screen.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>consoleColour</code></td>
+						<td style="padding:0px 4px">The desired background colour of the console. If <code>nullptr</code> is passed, black is used.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>fontColour</code></td>
+						<td style="padding:0px 4px">The desired colour of each character in the built-in font. If <code>nullptr</code> is passed, white is used.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>transparencyColour</code></td>
+						<td style="padding:0px 4px">The colour being used for transparency during blits; this is required for blitting the font. If <code>nullptr</code> is passed,
+						magenta (R=255, G=0, B=255) is used.</td>
+					</tr>
+				</tbody>
+		</table>
+		<h2>Return Value</h2>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">The console was successfully initialized.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_CREATE_SURFACE_FAIL</code></td>
+						<td style="padding:0px 4px"><code>SDL_CreateRGBSurface</code> failed to create the consoles surface or the
+						surface for the built-in font.
+						Each surface is created using <code>screen</code>'s pixel format along with its width and height, so
+						verify these are valid. Otherwise, check the implementation of <code>Console_Init</code>: it could be the flags
+						passed to <code>SDL_CreateRGBSurface</code> which are <code>SDL_SWSURFACE | SDL_SRCCOLORKEY</code> at the time of writing.</td>
+					</tr>
+				</tbody>
+			</table>
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_ExecuteCommand
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_IsCommand
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_executecommand.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_iscommand.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

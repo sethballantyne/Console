@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Introduction</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="console documentation introduction"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Table of Contents
+			<div class="navigation-centered-title">
+			Console 1.0 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Overview of the Console
+			</div>
+		</div>
+		<div class="navigation">
+			<!--<div class="navigation-centered">
+				<a href="#">Table of Contents</a>
+			</div>-->
+			<a href="../index.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="overview_of_the_console.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>1. Introduction</h1>
+		<p>
+		Console is a quake-style drop down console written in C++ 11, using SDL 1.2.
+		Given the nature of the project, it's assumed users will want/need to customize Console.
+		For this reason, there's no pre-built libraries, but instead 3 source files that can 
+		be added to an existing code base. Console has been designed so it's relatively fail safe: it contains
+		a built in font and uses solid colours to render the console's background. A tool exists to generate
+		fonts from bitmap files into the required 3 dimensional array if you wish to customize the font; see <a href="#">fontgen</a> for
+		details. <a href="#">Section 1.2</a> also describes how fonts are formatted.
+		<br><br>
+		Console is written by <a href="mailto:seth.ballantyne@gmail.com">Seth Ballantyne</a> and released under the <a href="#">MIT license</a>.
+		The latest version can be found on the projects <a href="https://www.github.com/sethballantyne/Console">Github repository</a>.
+		</p>
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Table of Contents
+			<!--<div class="navigation-centered-title">
+			Console documentation
+			</div>-->
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Overview of the Console
+			</div>
+		</div>
+		<div class="navigation">
+			<!-- <div class="navigation-centered">
+				<a href="#">Table of Contents</a>
+			</div>-->
+			<a href="../index.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="overview_of_the_console.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+		
+		.variable_field {
+			text-align:center;
+		}
+		
+		.type_field {
+			text-align:center;
+		}
+		
+		.table_guide_thing {
+			background: #E5C79B;
+		}
+	</style>
+	<head>
+		<title>BitmapFont</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the BitmapFont data structure"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			OutputBuffer
+			<div class="navigation-centered-title">
+			Console 1.0 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Functions
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="structures_outputbuffer.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="functions.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>BitmapFont</h1>
+		<h2>Namespace</h2>
+		console
+		<h2>Definition</h2>
+		<pre>
+			<code>
+struct BitmapFont
+{
+	SDL_Surface *fontSurface = nullptr;
+	Uint32 fontColour;
+	Uint32 transparencyColour;
+	int characterHeight;
+	int characterWidth;
+	
+	~BitmapFont()
+	{
+		if(nullptr != fontSurface)
+		{
+			SDL_FreeSurface(fontSurface);
+		}
+	}
+};
+			</code>
+		</pre>
+			<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>fontSurface</code></td>
+						<td style="padding:0px 4px">The surface containing the font itself.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>fontColour</code></td>
+						<td style="padding:0px 4px">The colour of each character in the font. It's converted to a <code>Uint32</code> via a call to <code>SDL_MapRGB</code> during intialization.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>transparencyColour<code></td>
+						<td style="padding:0px 4px">The colour key being used by your sprites for transparency. Like <code>fontColour</code>, this is set during Intialization via a call to <code>SDL_MapRGB</code>.
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>characterHeight</code></td>
+						<td style="padding:0px 4px">The height of each character in pixels.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>characterWidth</code></td>
+						<td style="padding:0px 4px">How wide each character is in pixels.
+					</tr>
+				</tbody>
+			</table>
+		<h2>Description</h2>
+		BitmapFont is used to store the result of converting a built-in font to a format that's usable by SDL. The resulting font stored
+		in <code>fontSurface</code> is formatted in such a way that each character is rendered on a single row with no gaps
+		between each character. Generally speaking, you won't need to interact with this structure directly, so it's only documented for completeness.
+		<hr>
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			OutputBuffer
+			<div class="navigation-centered">
+			<a href="structures.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Functions
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="structures_outputbuffer.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="functions.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

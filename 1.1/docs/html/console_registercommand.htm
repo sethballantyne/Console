@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Console_RegisterCommand</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="Documentation for the Console_RegisterCommand function"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Command_ProcessInput
+			<div class="navigation-centered-title">
+			Console 1.0 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_Render
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_processinput.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_render.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console_RegisterCommand</h1>
+		<h2>Summary</h2>
+			<code>
+				#include "console.h"<br><br>
+				
+				int console::Console_RegisterCommand(console::Console& console, std::string command, command_func_ptr commandFuncPtr);
+				
+			</code>
+		<h2>Description</h2>
+		Registers the specified command for use within the console. <code>commandFuncPtr</code> points to the function that implements
+		the command and is declared as <code>typedef void(*command_func_ptr)(Console&, std::vector<std::string> &)</code>, so implementing
+		a command would like this:
+		<br>
+		<pre>
+		<code>
+void console_command_version(Console& console, vector&lt;string&gt;& args)
+{
+	Console_Print(console, "CONSOLE VERSION " + to_string(CONSOLE_VERSION_MAJOR) + "." + to_string(CONSOLE_VERSION_MINOR));
+}
+			
+...
+			
+int main(int argc, char *argv[])
+{
+	...
+	Console_RegisterCommand(console, "cv", console_command_version);
+	...
+}
+		</code>
+		</pre>
+		Note that commands can't currently return values, so whether they succeed or not needs to be handled within the command
+		itself. Console commands can be registered before <a href="console_init.htm"><code>Console_Init</code></a> is called. 
+		Commands that contain uppercase characters are automatically coverted to lowercase.
+		<h2>Return Value</h2>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">The command was sucessfully registered.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_COMMAND_EXISTS</code></td>
+						<td style="padding:0px 4px">A command of the same name already exists.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_NULLPTR_ARGUMENT</code></td>
+						<td style="padding:0px 4px"><code>commandFuncPtr</code> evaluates to <code>nullptr</code>.</td>
+					</tr>
+				</tbody>
+			</table>
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Command_ProcessInput
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_Render
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_processinput.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_render.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

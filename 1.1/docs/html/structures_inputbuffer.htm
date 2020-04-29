@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+		
+		.variable_field {
+			text-align:center;
+		}
+		
+		.type_field {
+			text-align:center;
+		}
+		
+		.table_guide_thing {
+			background: #E5C79B;
+		}
+	</style>
+	<head>
+		<title>InputBuffer</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the InputBuffer data structure"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console
+			<div class="navigation-centered-title">
+			Console 1.0 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				OutputBuffer
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="structures_console.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="structures_outputbuffer.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>InputBuffer</h1>
+		<h2>Namespace</h2>
+		console
+		<h2>Definition</h2>
+		<pre>
+			<code>
+struct InputBuffer
+{
+	std::string buffer;
+	int x;
+	int y;
+	int maxBufferLength;
+};
+			</code>
+		</pre>
+			<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>buffer</code></td>
+						<td style="padding:0px 4px">Holds all user input as it's typed.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>x</code></td>
+						<td style="padding:0px 4px">The X axis coordinate on the console surface where text will be rendered.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>y<code></td>
+						<td style="padding:0px 4px">Same as <code>x</code>, but on the Y axis. At the time of writing, this is
+						calculated as being the bottom of the console surface, minus the height of the font.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>maxBufferLength</code></td>
+						<td style="padding:0px 4px">The maximum number of characters that can fit into the buffer. At the time
+						of writing, this is simply based on the width of the consoles surface, divided by the fonts character width.</td>
+					</tr>
+				</tbody>
+			</table>
+		<h2>Description</h2>
+		InputBuffer is used by Console to manage user input and where it's rendered; it's documented only for completeness as you generally
+		wont need to interact with this structure.  With the exception of <code>buffer</code>, all fields are set when Console_Init is called.
+		Manually setting <code>maxBufferLength</code> to a higher value will result in disappointment, as the buffer doesn't scroll. The general
+		rule of thumb is don't mess with anything in this structure.
+		<hr>
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console
+			<div class="navigation-centered">
+			<a href="structures.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				OutputBuffer
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="structures_console.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="structures_outputbuffer.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>
