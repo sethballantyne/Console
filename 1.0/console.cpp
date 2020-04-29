@@ -133,8 +133,8 @@ void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 
 int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface, int characterWidth, int characterHeight, SDL_Colour* fontColour, SDL_Colour* transparencyColour)
 {
-	SDL_Colour defaultFontColour = { 255, 255, 255, 0 };
-	SDL_Colour defaultTransparencyColour = { 255, 0, 255, 0 };
+	SDL_Colour defaultFontColour = { DEFAULT_FONT_COLOUR_R, DEFAULT_FONT_COLOUR_G, DEFAULT_FONT_COLOUR_B, 0 };
+	SDL_Colour defaultTransparencyColour = { DEFAULT_COLOUR_KEY_R, DEFAULT_COLOUR_KEY_G, DEFAULT_COLOUR_KEY_B, 0 };
 
 	int fontSheetWidth = DEFAULT_FONT_WIDTH * DEFAULT_FONT_NUM_GLYPHS;
 	bitmapfont.characterWidth = characterWidth;
@@ -176,10 +176,10 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface
 		// starting on a new character, move to the appropriate position on the surface.
 		xBasePosition = DEFAULT_FONT_WIDTH * (i + 1);
 	}
-
+	
 	// not checking for errors here, because the console can still function without the colour key.
 	SDL_SetColorKey(bitmapfont.fontSurface, SDL_SRCCOLORKEY, bitmapfont.transparencyColour);
-	
+
 	return CONSOLE_RET_SUCCESS;
 }
 
@@ -272,10 +272,11 @@ void console::OutputBuffer_Init(Console& console)
 	// we end up 1 line short.
 	int temp = console.outputBuffer.y + console.defaultBitmapFont.characterHeight;
 
-	float result = (float)temp / (float)console.defaultBitmapFont.characterHeight;
-	float fractional = modf(result, &integral);
-	console.outputBuffer.maxNumLinesOnScreen = integral;
-	if(fractional > 0)
+	int result = temp / console.defaultBitmapFont.characterHeight;
+	console.outputBuffer.maxNumLinesOnScreen = result;
+
+	result = temp % console.defaultBitmapFont.characterHeight;
+	if(result > 0)
 	{
 		// there's not enough room to render the top most line, so it'll be partially
 		// obscured. It's still considered a visible line.
@@ -357,7 +358,10 @@ int console::OutputBuffer_Render(Console& console)
 int console::Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* consoleColour,
 						  SDL_Colour* fontColour, SDL_Colour* transparencyColour)
 {
-	SDL_Colour defaultConsoleColour = { 0, 0, 0, 0 };
+	float dresult = 354 % 14;
+
+	SDL_Colour defaultConsoleColour = { DEFAULT_BACKGROUND_COLOUR_R, DEFAULT_BACKGROUND_COLOUR_G, 
+		DEFAULT_BACKGROUND_COLOUR_B, DEFAULT_BACKGROUND_COLOUR_A };
 
 	console.consoleSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, screen->w, screen->h / 2,
 												  screen->format->BitsPerPixel, screen->format->Rmask,

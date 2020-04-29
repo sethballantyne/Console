@@ -133,24 +133,37 @@ namespace console
 		}
 	};
 
-	// built in console commands
+	/**********************************************************************************
+	 * INTERNAL FUNCTIONS - GENERALLY NOT MEANT FOR EXTERNAL USE
+	 **********************************************************************************/
+
+	/// BUILT-IN COMMANDS /////////////////////////////////////////////////////////////
 	void console_command_version(Console& console, std::vector<std::string>& args);
 	void console_command_list_commands(Console& console, std::vector<std::string>& args);
 	void console_command_clear(Console& console, std::vector<std::string>& args);
 
-	// initialises the bitmap
+
+	/// PRIVATE BITMAP FUNCTIONS //////////////////////////////////////////////////////
 	int BitmapFont_Init(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, int characterHeight, SDL_Colour* fontColour, SDL_Colour* transparency);
 	int BitmapFont_RenderLine(Console& console, std::string line, int x, int y);
-	//int BitmapFont_CreateSurface(SDL_Surface *font_surface, SDL_Surface *consoleSurface, int numCharacters, int characterWidth, int characterHeight);
 
+	/// PRIVATE INPUTBUFFER FUNCTIONS ////////////////////////////////////////////////
 	void InputBuffer_SplitInput(InputBuffer& inputBuffer, std::string& command, std::vector<std::string>& args);
 	void InputBuffer_Init(Console& console);
 	int InputBuffer_Render(Console& console);
 
+	/// PRIVATE OUTPUTBUFFER FUNCTIONS //////////////////////////////////////////////
 	void OutputBuffer_Init(Console& console);
 	int OutputBuffer_Render(Console& console);
 	//void OutputBuffer_Scroll(Console& console, int numberOfLines, int direction);
 
+	/********************************************************************************
+     * END INTERNAL FUNCTIONS
+	 ********************************************************************************/
+
+	/********************************************************************************
+	 * CONSOLE FUNCTIONS FOR HAX0RS
+	 ********************************************************************************/
 	int Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* consoleColour, 
 					SDL_Colour* fontColour, SDL_Colour* transparencyColour);
 
@@ -160,8 +173,5 @@ namespace console
 	bool Console_IsCommand(Console& console, std::string command);
 	int Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args);
 	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr commandFuncPtr);
-
-	void bitmapfont_render_line(SDL_Surface *console_surface, std::string line, int x, int y, int line_start_index, int line_finish_index);
-
 }
 

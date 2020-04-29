@@ -27,6 +27,16 @@
 #define DEFAULT_BACKGROUND_COLOUR_R 0
 #define DEFAULT_BACKGROUND_COLOUR_G 0
 #define DEFAULT_BACKGROUND_COLOUR_B 0
+#define DEFAULT_BACKGROUND_COLOUR_A 0
+
+// used for the built-in font
+#define DEFAULT_FONT_COLOUR_R 255
+#define DEFAULT_FONT_COLOUR_G 255
+#define DEFAULT_FONT_COLOUR_B 255
+
+#define DEFAULT_COLOUR_KEY_R 255
+#define DEFAULT_COLOUR_KEY_G   0
+#define DEFAULT_COLOUR_KEY_B 255
 
 // height in pixels of the built-in font
 #define DEFAULT_FONT_HEIGHT     14
