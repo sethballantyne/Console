@@ -59,4 +59,4 @@ Console_RegisterCommand(con, "custom_command", CustomCommandFunc);
 
 You can programmatically execute a command by calling `Console_ExecuteCommand`, though typically you won't need to do this because part of the job `Console_ProcessInput` is to detect whether commands have been entered and executing them.
 
-For more information, see the docs!
+A fully working example exists in the documentation. For more information on the API and how the console works, see the documentation. Comments and suggestions can be sent here: seth.ballantyne@gmail.com or leave a message in the issues section.
