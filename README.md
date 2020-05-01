@@ -49,11 +49,16 @@ To register a command, you have to pass a name for the command and the address o
 the command, like so:
 
 ```
-void CustomConsoleCommand(Console& console, vector<string>& args)
+// functions that implement commands must have the signature
+// void <func_name>(Console&, vector<string>&)
+void CustomCommandFunc(Console& console, vector<string>& args)
 {
 	Console_Print(console, "HACK THE PLANET!!!!");
 }
 
+// when the user types custom_command into the console,
+// CustomCommandFunc will be executed. If the user entered any arguments,
+// they'll be present in the functions vector argument.
 Console_RegisterCommand(con, "custom_command", CustomCommandFunc);
 ```
 
