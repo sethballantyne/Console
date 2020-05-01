@@ -622,11 +622,6 @@ void console::Console_SetBackground(Console& console, SDL_Surface* imageSurface)
 int console::Console_SetFont(Console &console, SDL_Surface* fontSurface, unsigned int numChars,
 							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar)
 {
-	if(!fontSurface)
-	{
-		return CONSOLE_RET_NULLPTR_ARGUMENT;
-	}
-
 	console.externalBitmapFont.fontSurface = fontSurface;
 	console.externalBitmapFont.characterHeight = charHeight;
 	console.externalBitmapFont.characterWidth = charWidth;
@@ -635,12 +630,25 @@ int console::Console_SetFont(Console &console, SDL_Surface* fontSurface, unsigne
 	console.externalBitmapFont.transparencyColour = console.defaultBitmapFont.transparencyColour;
 
 	// changing fonts requires a few things to be recalculated
-	// so the font renders properly.
+	// so the font renders properly; even if fontSurface evaluates to nullptr
+	// this still needs to be done, because if it does, we're falling back to the default font.
 	InputBuffer_Init(console);
 	OutputBuffer_Init(console);
 
-	SDL_SetColorKey(console.externalBitmapFont.fontSurface, SDL_SRCCOLORKEY, 
-					console.externalBitmapFont.transparencyColour);
+	if(fontSurface != nullptr)
+	{
+		SDL_SetColorKey(console.externalBitmapFont.fontSurface, SDL_SRCCOLORKEY,
+						console.externalBitmapFont.transparencyColour);
+	}
 
-	return CONSOLE_RET_SUCCESS;
+	// no need to set the colour key for the default font, this is done during initilization
+
+	if(fontSurface != nullptr)
+	{
+		return CONSOLE_RET_SUCCESS;
+	}
+	else
+	{
+		return CONSOLE_RET_NULLPTR_ARGUMENT;
+	}
 }
