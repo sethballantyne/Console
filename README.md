@@ -32,7 +32,7 @@ case SDL_KEYDOWN:
   if(con.enabled)
   {
     event is the SDL_Event instance you're using to handle events. 
-    Console.ProcessInput(con, event.key.keysym.unicode);
+    Console_ProcessInput(con, event.key.keysym.unicode);
   }
 break;
 ... // continue handling other events`
@@ -64,4 +64,4 @@ Console_RegisterCommand(con, "custom_command", CustomCommandFunc);
 
 You can programmatically execute a command by calling `Console_ExecuteCommand`, though typically you won't need to do this because part of the job `Console_ProcessInput` is to detect whether commands have been entered and executing them.
 
-A fully working example exists in the documentation. For more information on the API and how the console works, see the documentation. Comments and suggestions can be sent here: seth.ballantyne@gmail.com or leave a message in the issues section.
+A fully working example exists in the documentation. For more information on the API and how the console works, see the documentation. Comments and suggestions can be sent to seth.ballantyne@gmail.com, or leave a message in the issues section.
