@@ -43,7 +43,7 @@
 #define CONSOLE_SCROLL_DIR_DOWN             1
 
 #define CONSOLE_VERSION_MAJOR               1
-#define CONSOLE_VERSION_MINOR               0
+#define CONSOLE_VERSION_MINOR               1
 
 // the gap in pixels between the output buffer and the input buffer
 #define CONSOLE_GAP_BETWEEN_BUFFERS         2
