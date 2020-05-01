@@ -19,7 +19,7 @@ if(result != CONSOLE_RET_SUCCESS)
 screen is obviously the `SDL_Surface` instance you're using to render to the screen. The `nullptr`'s are telling the Console
 to use the default colours for the console's background, font colour and colour key.
 
-3. Enable Unicode in SDL. The console uses this to retrieve the ASCII values of keys pressed.
+3. Enable Unicode in SDL. The console uses this to retrieve the ASCII values of keys pressed. The irony of using unicode to retrieve ASCII values is not lost on me. ;)
 ```
 SDL_EnableUNICODE(1);
 ```
