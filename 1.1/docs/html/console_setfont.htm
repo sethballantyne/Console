@@ -37,10 +37,10 @@
 		}
 	</style>
 	<head>
-		<title>Console_SetBackground</title>
+		<title>Console_SetFont</title>
 		<meta charset="utf-8"/>
 		<meta name="author" content="Seth Ballantyne"/>
-		<meta name="description" content="documentation for the Console_SetBackground function"/>
+		<meta name="description" content="documentation for the Console_SetFont function"/>
 	</head>
 	<body>
 		<!-------------------------------->
@@ -48,22 +48,22 @@
 		<!-------------------------------->
 		<div class="navigation">
 		<!-- Left-aligned links (default) -->
-			Console_Render
+			Console_SetBackground
 			<div class="navigation-centered-title">
 			Console 1.1 Documentation
 			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
-				Console_SetFont
+				Built-in Commands
 			</div>
 		</div>
 		<div class="navigation">
 			<div class="navigation-centered">
 				<a href="../index.htm">Table of Contents</a>
 			</div>
-			<a href="console_render.htm">Previous</a>
+			<a href="console_setbackground.htm">Previous</a>
 			<div class="navigation-right">
-				<a href="console_setfont.htm">Next</a>
+				<a href="built_in_commands.htm">Next</a>
 			</div>
 		</div>
 		<!-------------------------------->
@@ -71,31 +71,36 @@
 		<!-------------------------------->
 		
 		<hr>
-		<h1>Console_SetBackground</h1>
+		<h1>Console_SetFont</h1>
 		<h2>Summary</h2>
 		<code>
-	    #include "console.h"
-	    <br><br>
-		void console::Console_SetBackground(Console& console, SDL_Surface* imageSurface)
+		#include "console.h"
+		<br><br>
+		int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars,
+							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar)
 		</code>
 		<h2>Description</h2>
-		Sets the console background to the image specified in <code>imageSurface</code>. Passing <code>nullptr</code> will effectively
-		clear the image, forcing the console to use a solid colour background. The colour of the background will be the colour specified
-		during initilization; see <a href="console_init.htm"><code>Console_Init</code></a> for more information.
+		Sets the console font to the bitmap font specified in <code>fontSurface</code>. If <code>fontSurface</code> evaluates to 
+		<code>nullptr</code>, the console will fallback to the built-in font; this also means that <code>nullptr</code> can be used
+		to clear the current font if you wish. In this case, it's safe to pass 0 for the arguments <code>numChars</code>, <code>charWidth</code>,
+		<code>charWidth</code>, and <code>startingChar</code>.
 		<br><br>
-		At no point does the console free the surface passed via <code>imageSurface</code>; this is up to the programmer. It's assumed
-		the image being used is the same size as the console.
+		Note that the surface supplied via <code>fontSurface</code> must be using the same colour key supplied during initialization.
+		See <a href="console_init.htm"><code>Console_Init</code></a>.
 		<h2>Return Value</h2>
-		<code>Console_SetBackground</code> doesn't return a value.
-		<!--<table>
+		<table>
 				<tbody>
 					<tr>
-						<td style="vertical-align:top"><code>return value</code></td>
-						<td style="padding:0px 4px">return value description</td>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">The console's font was successfully changed to the specified font in <code>fontSurface</code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_NULLPTR_ARGUMENT</code></td>
+						<td style="padding:0px 4px"><code>fontSurface</code> evaluated to <code>nullptr</code>, resulting in the console
+						falling back to the built-in font.</td>
 					</tr>
 				</tbody>
 			</table>
-		-->
 		<hr>
 		
 		<!------------------------------------->
@@ -103,22 +108,22 @@
 		<!------------------------------------->
 		<div class="navigation">
 		<!-- Left-aligned links (default) -->
-			Console_Render
+			Console_SetBackground
 			<div class="navigation-centered">
 			<a href="functions.htm">Up</a>
 			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
-				Console_SetFont
+				Built-in Commands
 			</div>
 		</div>
 		<div class="navigation">
 			<div class="navigation-centered">
 				<a href="../index.htm">Table of Contents</a>
 			</div>
-			<a href="console_render.htm">Previous</a>
+			<a href="console_setbackground.htm">Previous</a>
 			<div class="navigation-right">
-				<a href="console_setfont.htm">Next</a>
+				<a href="built_in_commands.htm">Next</a>
 			</div>
 		</div>
 		<!------------------------------------->
