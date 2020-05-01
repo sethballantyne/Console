@@ -131,14 +131,16 @@ void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 //	return CONSOLE_RET_SUCCESS;
 //}
 
-int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface, int characterWidth, int characterHeight, SDL_Colour* fontColour, SDL_Colour* transparencyColour)
+int console::BitmapFont_InitBuiltInFont(BitmapFont& bitmapfont, SDL_Surface* consoleSurface, int numChars, int characterWidth, int characterHeight, char startingChar, SDL_Colour* fontColour, SDL_Colour* transparencyColour)
 {
 	SDL_Colour defaultFontColour = { DEFAULT_FONT_COLOUR_R, DEFAULT_FONT_COLOUR_G, DEFAULT_FONT_COLOUR_B, 0 };
 	SDL_Colour defaultTransparencyColour = { DEFAULT_COLOUR_KEY_R, DEFAULT_COLOUR_KEY_G, DEFAULT_COLOUR_KEY_B, 0 };
 
-	int fontSheetWidth = DEFAULT_FONT_WIDTH * DEFAULT_FONT_NUM_GLYPHS;
+	int fontSheetWidth = characterWidth * numChars;
 	bitmapfont.characterWidth = characterWidth;
 	bitmapfont.characterHeight = characterHeight;
+	bitmapfont.startingChar = startingChar;
+	bitmapfont.numberOfChars = numChars;
 
 	bitmapfont.fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, fontSheetWidth,
 												  DEFAULT_FONT_HEIGHT, consoleSurface->format->BitsPerPixel, consoleSurface->format->Rmask,
@@ -156,11 +158,11 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface
 
 	int xBasePosition = 0;
 
-	for(int i = 0; i < DEFAULT_FONT_NUM_GLYPHS; i++)
+	for(int i = 0; i < numChars; i++)
 	{
-		for(int j = 0; j < DEFAULT_FONT_HEIGHT; j++)
+		for(int j = 0; j < characterHeight; j++)
 		{
-			for(int k = 0; k < DEFAULT_FONT_WIDTH; k++)
+			for(int k = 0; k < characterWidth; k++)
 			{
 				if('.' == defaultFont[i][j][k]) // transparency pixel
 				{
@@ -174,7 +176,7 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface
 		}
 
 		// starting on a new character, move to the appropriate position on the surface.
-		xBasePosition = DEFAULT_FONT_WIDTH * (i + 1);
+		xBasePosition = characterWidth * (i + 1);
 	}
 	
 	// not checking for errors here, because the console can still function without the colour key.
@@ -183,15 +185,21 @@ int console::BitmapFont_Init(BitmapFont& bitmapfont, SDL_Surface* consoleSurface
 	return CONSOLE_RET_SUCCESS;
 }
 
-int console::BitmapFont_RenderLine(Console& console, std::string& line, int x, int y)
+int console::BitmapFont_RenderLine(Console& console, BitmapFont& font, string& line, int x, int y)
 {
 	int lineLength = line.length();
+
+	if(lineLength == 0)
+	{
+		return CONSOLE_RET_SUCCESS;
+	}
+
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
 
 	srcRect.x = srcRect.y = 0;
-	srcRect.w = console.defaultBitmapFont.characterWidth;
-	srcRect.h = console.defaultBitmapFont.characterHeight;
+	srcRect.w = font.characterWidth;
+	srcRect.h = font.characterHeight;
 	destRect.x = x;
 	destRect.y = y;
 	destRect.w = srcRect.w;
@@ -205,38 +213,36 @@ int console::BitmapFont_RenderLine(Console& console, std::string& line, int x, i
 		// has scrolled off the screen. Multiplying by 1 because we need to
 		// make the negative number positive.
 		srcRect.y = 0 + (y * -1);
-		srcRect.h = DEFAULT_FONT_HEIGHT - srcRect.y;
+		srcRect.h = font.characterHeight - srcRect.y;
 		destRect.y = 0;
 	}
 
-	for(auto i : line)
+	for(char c : line)
 	{
-		srcRect.x = (i - DEFAULT_FONT_FIRST_CHARACTER) * console.defaultBitmapFont.characterWidth;
+		srcRect.x = (c - font.startingChar) * font.characterWidth;
 
-		int result = SDL_BlitSurface(console.defaultBitmapFont.fontSurface, &srcRect, console.consoleSurface, &destRect);
+		int result = SDL_BlitSurface(font.fontSurface, &srcRect, console.consoleSurface, &destRect);
 		if(result != 0)
 		{
 			return CONSOLE_RET_BLIT_FAILED;
 		}
 
-		destRect.x += console.defaultBitmapFont.characterWidth;
+		destRect.x += font.characterWidth;
 	}
 
-	//for(int i = 0; i < lineLength; i++)
-	//{
-	//	srcRect.x = (line[i] - DEFAULT_FONT_FIRST_CHARACTER) * console.defaultBitmapFont.characterWidth;
-
-	//	int result = SDL_BlitSurface(console.defaultBitmapFont.fontSurface, &srcRect, console.consoleSurface, &destRect);
-	//	if(result != 0)
-	//	{
-	//		return CONSOLE_RET_BLIT_FAILED;
-	//	}
-
-	//	destRect.x += console.defaultBitmapFont.characterWidth;
-	//	//destRect.y -= console.defaultBitmapFont.characterHeight;
-	//}
-
 	return CONSOLE_RET_SUCCESS;
+}
+
+int console::BitmapFont_RenderLine(Console& console, std::string& line, int x, int y)
+{
+	if(console.externalBitmapFont.fontSurface != nullptr)
+	{
+		return BitmapFont_RenderLine(console, console.externalBitmapFont, line, x, y);
+	}
+	else
+	{
+		return BitmapFont_RenderLine(console, console.defaultBitmapFont, line, x, y);
+	}
 }
 
 void console::InputBuffer_SplitInput(InputBuffer& inputBuffer, string& command, vector<string>& args)
@@ -264,8 +270,17 @@ void console::InputBuffer_SplitInput(InputBuffer& inputBuffer, string& command, 
 void console::InputBuffer_Init(Console& console)
 {
 	console.inputBuffer.x = 0;
-	console.inputBuffer.y = console.consoleSurface->h - console.defaultBitmapFont.characterHeight;
-	console.inputBuffer.maxBufferLength = console.consoleSurface->w / console.defaultBitmapFont.characterWidth;
+
+	if(console.externalBitmapFont.fontSurface != nullptr)
+	{
+		console.inputBuffer.y = console.consoleSurface->h - console.externalBitmapFont.characterHeight;
+		console.inputBuffer.maxBufferLength = console.consoleSurface->w / console.externalBitmapFont.characterWidth;
+	}
+	else
+	{
+		console.inputBuffer.y = console.consoleSurface->h - console.defaultBitmapFont.characterHeight;
+		console.inputBuffer.maxBufferLength = console.consoleSurface->w / console.defaultBitmapFont.characterWidth;
+	}
 
 	console.inputBuffer.buffer.reserve(console.inputBuffer.maxBufferLength);
 }
@@ -277,20 +292,20 @@ int console::InputBuffer_Render(Console& console)
 
 void console::OutputBuffer_Init(Console& console)
 {
+	BitmapFont& font = (console.externalBitmapFont.fontSurface != nullptr) ? console.externalBitmapFont : console.defaultBitmapFont;
+
 	console.outputBuffer.x = console.inputBuffer.x;
 
-	console.outputBuffer.y = console.inputBuffer.y - console.defaultBitmapFont.characterHeight - CONSOLE_GAP_BETWEEN_BUFFERS;
-
-	float integral;
+	console.outputBuffer.y = console.inputBuffer.y - font.characterHeight - CONSOLE_GAP_BETWEEN_BUFFERS;
 	
-	// character height is being added to startY because if we divide from startY,
+	// character height is being added to Y because if we divide from Y,
 	// we end up 1 line short.
-	int temp = console.outputBuffer.y + console.defaultBitmapFont.characterHeight;
+	int temp = console.outputBuffer.y + font.characterHeight;
 
-	int result = temp / console.defaultBitmapFont.characterHeight;
+	int result = temp / font.characterHeight;
 	console.outputBuffer.maxNumLinesOnScreen = result;
 
-	result = temp % console.defaultBitmapFont.characterHeight;
+	result = temp % font.characterHeight;
 	if(result > 0)
 	{
 		// there's not enough room to render the top most line, so it'll be partially
@@ -298,13 +313,14 @@ void console::OutputBuffer_Init(Console& console)
 		console.outputBuffer.maxNumLinesOnScreen++;
 	}
 
-	console.outputBuffer.maxLineLength = console.consoleSurface->w / console.defaultBitmapFont.characterWidth;
+	console.outputBuffer.maxLineLength = console.consoleSurface->w / font.characterWidth;
 }
 
 int console::OutputBuffer_Render(Console& console)
 {
 	int xPos = console.outputBuffer.x;
 	int yPos = console.outputBuffer.y;
+	BitmapFont& font = (console.externalBitmapFont.fontSurface != nullptr) ? console.externalBitmapFont : console.defaultBitmapFont;
 
 	if(console.outputBuffer.buffer.size() > 0)
 	{
@@ -318,7 +334,7 @@ int console::OutputBuffer_Render(Console& console)
 
 			if(yPos > 0)
 			{
-				yPos -= console.defaultBitmapFont.characterHeight;
+				yPos -= font.characterHeight;
 			}
 			else
 			{
@@ -386,7 +402,9 @@ int console::Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* con
 		return CONSOLE_RET_CREATE_SURFACE_FAIL;
 	}
 
-	int result = BitmapFont_Init(console.defaultBitmapFont, console.consoleSurface, DEFAULT_FONT_WIDTH, DEFAULT_FONT_HEIGHT, fontColour, transparencyColour);
+	int result = BitmapFont_InitBuiltInFont(console.defaultBitmapFont, console.consoleSurface, DEFAULT_FONT_NUM_GLYPHS, 
+											DEFAULT_FONT_WIDTH, DEFAULT_FONT_HEIGHT, DEFAULT_FONT_FIRST_CHARACTER, fontColour, 
+											transparencyColour);
 	if(CONSOLE_RET_SUCCESS != result)
 	{
 		return result;
@@ -423,10 +441,25 @@ int console::Console_Render(Console& console, SDL_Surface *screen)
 	rect.w = console.consoleSurface->w;
 	rect.h = console.consoleSurface->h;
 
-	int result = SDL_FillRect(console.consoleSurface, &rect, console.defaultConsoleColour);
-	if(-1 == result)
+	int result;
+
+	if(console.backgroundSuface != nullptr)
 	{
-		return CONSOLE_RET_FILL_RECT_FAILED;
+
+		result = SDL_BlitSurface(console.backgroundSuface, &rect, console.consoleSurface, &rect);
+		if(result != 0)
+		{
+			return CONSOLE_RET_BLIT_FAILED;
+		}
+	}
+	else
+	{
+		result = SDL_FillRect(console.consoleSurface, &rect, console.defaultConsoleColour);
+		if(-1 == result)
+		{
+			return CONSOLE_RET_FILL_RECT_FAILED;
+		}
+
 	}
 
 	result = InputBuffer_Render(console);
@@ -442,7 +475,7 @@ int console::Console_Render(Console& console, SDL_Surface *screen)
 	}
 
 	result = SDL_BlitSurface(console.consoleSurface, &rect, screen, &rect);
-	if(0 != result)
+	if(result != 0)
 	{
 		return CONSOLE_RET_BLIT_FAILED;
 	}
@@ -577,6 +610,37 @@ int console::Console_RegisterCommand(Console& console, string command, command_f
 	}
 
 	console.commands[command] = commandFuncPtr;
+
+	return CONSOLE_RET_SUCCESS;
+}
+
+void console::Console_SetBackground(Console& console, SDL_Surface* imageSurface)
+{
+	console.backgroundSuface = imageSurface;
+}
+
+int console::Console_SetFont(Console &console, SDL_Surface* fontSurface, unsigned int numChars,
+							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar)
+{
+	if(!fontSurface)
+	{
+		return CONSOLE_RET_NULLPTR_ARGUMENT;
+	}
+
+	console.externalBitmapFont.fontSurface = fontSurface;
+	console.externalBitmapFont.characterHeight = charHeight;
+	console.externalBitmapFont.characterWidth = charWidth;
+	console.externalBitmapFont.startingChar = startingChar;
+	console.externalBitmapFont.numberOfChars = numChars;
+	console.externalBitmapFont.transparencyColour = console.defaultBitmapFont.transparencyColour;
+
+	// changing fonts requires a few things to be recalculated
+	// so the font renders properly.
+	InputBuffer_Init(console);
+	OutputBuffer_Init(console);
+
+	SDL_SetColorKey(console.externalBitmapFont.fontSurface, SDL_SRCCOLORKEY, 
+					console.externalBitmapFont.transparencyColour);
 
 	return CONSOLE_RET_SUCCESS;
 }

@@ -64,6 +64,12 @@ namespace console
 		// the witdth of each character in pixels
 		int characterWidth;
 
+		int numberOfChars;
+
+		// only used for external fonts loaded in via
+		// Console_SetFont.
+		char startingChar;
+
 		~BitmapFont()
 		{
 			if(nullptr != fontSurface)
@@ -110,8 +116,14 @@ namespace console
 		// the built in bitmap font
 		BitmapFont defaultBitmapFont;
 
+		// font loaded in via Console_SetFont
+		BitmapFont externalBitmapFont;
+
 		// the background, output buffer and input buffers render to this surface.
 		SDL_Surface *consoleSurface = nullptr;
+
+		// surface for the background image.
+		SDL_Surface *backgroundSuface = nullptr;
 
 		// stores the users input and determines how the buffer is rendered to the console surface
 		InputBuffer inputBuffer;
@@ -144,7 +156,9 @@ namespace console
 
 
 	/// PRIVATE BITMAP FUNCTIONS //////////////////////////////////////////////////////
-	int BitmapFont_Init(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, int characterHeight, SDL_Colour* fontColour, SDL_Colour* transparency);
+	int BitmapFont_InitBuiltInFont(BitmapFont& bitmapFont, SDL_Surface *screen, int numChars, int characterWidth, 
+								   int characterHeight, char startingChar, SDL_Colour* fontColour, SDL_Colour* transparency);
+	int BitmapFont_RenderLine(Console& console, BitmapFont& font, std::string& line, int x, int y);
 	int BitmapFont_RenderLine(Console& console, std::string& line, int x, int y);
 
 	/// PRIVATE INPUTBUFFER FUNCTIONS ////////////////////////////////////////////////
@@ -173,5 +187,8 @@ namespace console
 	bool Console_IsCommand(Console& console, std::string command);
 	int Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args);
 	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr commandFuncPtr);
+	void Console_SetBackground(Console& console, SDL_Surface* imageSurface);
+	int Console_SetFont(Console &console, SDL_Surface* fontSurface, unsigned int numChars, 
+						 unsigned int charWidth, unsigned int charHeight, unsigned int startingChar);
 }
 
