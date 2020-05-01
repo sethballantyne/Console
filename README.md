@@ -1,5 +1,5 @@
 # Console
-Console is a quake-style console written in C++ using SDL 1.2. It's designed to be lightweight and easy to use: the API only consists of 8 functions and there's no libraries to link against; just drop `console.cpp`, `console.h` and `defaults.h` into your project and you're ready to go. Full HTML documentation also exists if you like to read. :P
+Console is a quake-style console written in C++ using SDL 1.2. It's designed to be lightweight and easy to use: the API only consists of 10 functions and there's no libraries to link against; just drop `console.cpp`, `console.h` and `defaults.h` into your project and you're ready to go. Full HTML documentation also exists if you like to read. :P
 
 Including the console into a project is fairly simple:
 
