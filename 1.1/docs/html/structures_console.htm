@@ -94,6 +94,7 @@ struct Console
 	std::map&lt;std::string, command_func_ptr&gt; commands;
 	BitmapFont defaultBitmapFont;
 	SDL_Surface *consoleSurface = nullptr;
+	SDL_Surface *backgroundSurface = nullptr;
 	InputBuffer inputBuffer;
 	OutputBuffer outputBuffer;
 	Uint32 defaultConsoleColour;
@@ -121,12 +122,17 @@ struct Console
 						This is blitted to another surface (usually the screen), when <a href="console_render.htm"><code>Console_Render</code></a> is called.</td>
 					</tr>
 					<tr>
+						<td style="vertical-align:top"><code>backgroundSurface</code></td>
+						<td style="padding:0px 4px">The background image provided by a call to <code>Console_SetBackground</code>. If this evaluates to <code>nullptr</code>, the console will 
+						fallback to using a solid colour rectangle, the colour of which is specified in <code>defaultConsoleColour</code>.</td>
+					</tr>
+					<tr>
 						<td style="vertical-align:top"><code>inputBuffer<code></td>
 						<td style="padding:0px 4px">Properties related to the space on the console where input is entered. See <a href="structures_inputbuffer.htm"><code>InputBuffer</code></a> for details.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>outputBuffer</code></td>
-						<td style="padding:0px 4px">Same as <var>inputBuffer</var>, but related to the space where all output is written. See <a href="structures_outputbuffer.htm"><code>OutputBuffer</code></a> for details.</td>
+						<td style="padding:0px 4px">Same as <code>inputBuffer</code>, but related to the space where all output is written. See <a href="structures_outputbuffer.htm"><code>OutputBuffer</code></a> for details.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>defaultConsoleColour</code></td>
