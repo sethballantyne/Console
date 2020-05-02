@@ -85,8 +85,43 @@
 		to clear the current font if you wish. In this case, it's safe to pass 0 for the arguments <code>numChars</code>, <code>charWidth</code>,
 		<code>charWidth</code>, and <code>startingChar</code>.
 		<br><br>
-		Note that the surface supplied via <code>fontSurface</code> must be using the same colour key supplied during initialization.
-		See <a href="console_init.htm"><code>Console_Init</code></a>.
+		Bitmap fonts passed to Console_SetFont must be formatted thusly:
+		<ul>
+			<li>The first character begins at pixel coordinate 0,0.</li>
+			<li>Each character is assumed to be <code>charWidth</code> x <code>charHeight</code> in size, with each character directly following
+			the previous; there should be no gaps between characters.</li>
+			<li>Every character must be placed on a single horizontal line.</li>
+			<li>Characters must be ordered by their ASCII values, smallest to largest.</li>
+			<li>If using a colour key, it should be using the same colour specified during initilization; see <a href="console_init.htm"><code>Console_Init</code></a>.
+		</ul>
+		An example of a valid bitmap font can be found <a href="imgs/console_setfont_font_example.png">here</a>. This font contains 95 characters starting 
+		from decimal 32 (space) and ending at decimal 126 (the '~' character). Each character is 18x18 pixels in size.
+		<br><br>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>fontSurface</code></td>
+						<td style="padding:0px 4px">the bitmap font the console should use; it's up to the programmer to create
+						this instance of <code>SDL_Surface</code> before calling <code>Console_SetFont</code> and free it when it's no longer needed.
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>numChars</code></td>
+						<td style="padding:0px 4px">the number of characters in the font.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>charWidth</code></td>
+						<td style="padding:0px 4px">the character width of the font, in pixels.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>charHeight</code></td>
+						<td style="padding:0px 4px">the character height of the font, in pixels.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>startingChar</code></td>
+						<td style="padding:0px 4px">the ASCII value of the first character in the font.</td>
+					</tr>
+				</tbody>
+		</table>
 		<h2>Return Value</h2>
 		<table>
 				<tbody>
@@ -100,7 +135,7 @@
 						falling back to the built-in font.</td>
 					</tr>
 				</tbody>
-			</table>
+		</table>
 		<hr>
 		
 		<!------------------------------------->
