@@ -443,10 +443,10 @@ int console::Console_Render(Console& console, SDL_Surface *screen)
 
 	int result;
 
-	if(console.backgroundSuface != nullptr)
+	if(console.backgroundSurface != nullptr)
 	{
 
-		result = SDL_BlitSurface(console.backgroundSuface, &rect, console.consoleSurface, &rect);
+		result = SDL_BlitSurface(console.backgroundSurface, &rect, console.consoleSurface, &rect);
 		if(result != 0)
 		{
 			return CONSOLE_RET_BLIT_FAILED;
@@ -616,10 +616,10 @@ int console::Console_RegisterCommand(Console& console, string command, command_f
 
 void console::Console_SetBackground(Console& console, SDL_Surface* imageSurface)
 {
-	console.backgroundSuface = imageSurface;
+	console.backgroundSurface = imageSurface;
 }
 
-int console::Console_SetFont(Console &console, SDL_Surface* fontSurface, unsigned int numChars,
+int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars,
 							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar)
 {
 	console.externalBitmapFont.fontSurface = fontSurface;
