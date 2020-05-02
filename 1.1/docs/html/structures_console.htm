@@ -93,6 +93,7 @@ struct Console
 {
 	std::map&lt;std::string, command_func_ptr&gt; commands;
 	BitmapFont defaultBitmapFont;
+	BitmapFont externalBitmapFont;
 	SDL_Surface *consoleSurface = nullptr;
 	SDL_Surface *backgroundSurface = nullptr;
 	InputBuffer inputBuffer;
@@ -115,6 +116,12 @@ struct Console
 					<tr>
 						<td style="vertical-align:top"><code>commands</code></td>
 						<td style="padding:0px 4px">Holds all commands registered via <code><a href="console_registercommand.htm">Console_RegisterCommand</a></code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>externalBitmapFont</code></td>
+						<td style="padding:0px 4px">contains the font loaded into the console via <code><a href="console_setfont.htm">Console_SetFont</code></a>. When rendering
+						text, the console will attempt to render using this font; if its <code><a href="structures_bitmapfont.htm">fontSurface</a></code> member evaluates to <code>nullptr</code>,
+						it'll fallback to using the built-in font in <code>defaultBitmapFont</code>.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>consoleSurface</code></td>
