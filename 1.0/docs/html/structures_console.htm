@@ -116,6 +116,11 @@ struct Console
 						<td style="padding:0px 4px">Holds all commands registered via <code><a href="console_registercommand.htm">Console_RegisterCommand</a></code>.</td>
 					</tr>
 					<tr>
+						<td style="vertical-align:top"><code>defaultBitmapFont</code></td>
+						<td style="padding:0px 4px">Initialized when <a href="console_init.htm"><code>Console_Init</code></a> is called, this member holds a version of the built-in font that's
+						usable by SDL.</td>
+					</tr>
+					<tr>
 						<td style="vertical-align:top"><code>consoleSurface</code></td>
 						<td style="padding:0px 4px">The surface the font is blitted to when the text is entered into the console. 
 						This is blitted to another surface (usually the screen), when <a href="console_render.htm"><code>Console_Render</code></a> is called.</td>
