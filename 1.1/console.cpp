@@ -346,6 +346,43 @@ int console::OutputBuffer_Render(Console& console)
 	return CONSOLE_RET_SUCCESS;
 }
 
+void console::OutputBuffer_ResizeText(Console& console)
+{
+	vector<string> newBuffer;
+
+	for(auto i = console.outputBuffer.buffer.begin(); i != console.outputBuffer.buffer.end(); i++)
+	{
+		if(i->length() > console.inputBuffer.maxBufferLength)
+		{
+			int from = console.inputBuffer.maxBufferLength;
+			int to = from + (i->length() - console.inputBuffer.maxBufferLength);
+			string newLine = i->substr(from, to);
+			i->resize(from);
+			newBuffer.push_back(*i);
+			newBuffer.push_back(newLine);
+		}
+		else
+		{
+			newBuffer.push_back(*i);
+		}
+	}
+
+	console.outputBuffer.buffer = newBuffer;
+	console.outputBuffer.bottomLineIndex = console.outputBuffer.buffer.size() - 1;
+
+	if(console.outputBuffer.buffer.size() > console.outputBuffer.maxNumLinesOnScreen)
+	{
+		// we're showing the max number of lines that can appear on the screen at any one time.
+		// incrementing this gives the appearance that the text is scrolling.
+		//console.outputBuffer.topLineIndex++;
+		console.outputBuffer.topLineIndex = console.outputBuffer.bottomLineIndex - console.outputBuffer.maxNumLinesOnScreen;
+	}
+	else
+	{
+		console.outputBuffer.topLineIndex = 0;
+	}
+}
+
 //void console::OutputBuffer_Scroll(Console& console, int numberOfLines, int direction)
 //{
 //	int numberOfLinesScrolled;
@@ -460,7 +497,6 @@ int console::Console_Render(Console& console, SDL_Surface *screen)
 
 	if(console.backgroundSurface != nullptr)
 	{
-
 		result = SDL_BlitSurface(console.backgroundSurface, &rect, console.consoleSurface, &rect);
 		if(result != 0)
 		{
@@ -631,6 +667,11 @@ int console::Console_RegisterCommand(Console& console, string command, command_f
 void console::Console_SetBackground(Console& console, SDL_Surface* imageSurface)
 {
 	console.backgroundSurface = imageSurface;
+
+	if(imageSurface != nullptr)
+	{
+		SDL_SetAlpha(console.backgroundSurface, 0, 255);
+	}
 }
 
 int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars,
@@ -717,6 +758,24 @@ int console::Console_CreateCursor(console::Console& console, SDL_Colour* colour)
 	{
 		return CONSOLE_RET_FILL_RECT_FAILED;
 	}
+
+	return CONSOLE_RET_SUCCESS;
+}
+
+int console::Console_ResolutionChanged(Console& console, SDL_Surface *screen)
+{
+    SDL_FreeSurface(console.consoleSurface);
+	console.consoleSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, screen->w, screen->h / 2, screen->format->BitsPerPixel,
+												  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	if(!console.consoleSurface)
+	{
+		return CONSOLE_RET_CREATE_SURFACE_FAIL;
+	}
+
+	InputBuffer_Init(console);
+	OutputBuffer_Init(console);
+
+	OutputBuffer_ResizeText(console);
 
 	return CONSOLE_RET_SUCCESS;
 }

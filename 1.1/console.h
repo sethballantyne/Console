@@ -172,6 +172,7 @@ namespace console
 	/// INTERNAL OUTPUTBUFFER FUNCTIONS //////////////////////////////////////////////
 	void OutputBuffer_Init(Console& console);
 	int OutputBuffer_Render(Console& console);
+	void OutputBuffer_ResizeText(Console& console);
 	//void OutputBuffer_Scroll(Console& console, int numberOfLines, int direction);
 
 	/// INTERNAL CURSOR FUNCTIONS ////////////////////////////////////////////////////
@@ -198,5 +199,6 @@ namespace console
 						 unsigned int charWidth, unsigned int charHeight, unsigned int startingChar,
 						 SDL_Colour* cursorColour);
 	int Console_CreateCursor(Console& console, SDL_Colour* colour);
+	int Console_ResolutionChanged(Console& console, SDL_Surface *screen);
 }
 
