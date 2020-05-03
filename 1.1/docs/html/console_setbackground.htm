@@ -84,7 +84,8 @@
 		during initilization; see <a href="console_init.htm"><code>Console_Init</code></a> for more information.
 		<br><br>
 		At no point does the console free the surface passed via <code>imageSurface</code>; this is up to the programmer. It's assumed
-		the image being used is the same size as the console.
+		the image being used is the same size as the console. Note that alpha blending is disabled for the surface when <code>Console_SetBackground</code>
+		is called.
 		<h2>Return Value</h2>
 		<code>Console_SetBackground</code> doesn't return a value.
 		<!--<table>
