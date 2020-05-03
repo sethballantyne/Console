@@ -350,20 +350,23 @@ void console::OutputBuffer_ResizeText(Console& console)
 {
 	vector<string> newBuffer;
 
-	for(auto i = console.outputBuffer.buffer.begin(); i != console.outputBuffer.buffer.end(); i++)
+	for(auto line : console.outputBuffer.buffer)
 	{
-		if(i->length() > console.inputBuffer.maxBufferLength)
+		int lineLength = line.length();
+
+		if(lineLength > console.inputBuffer.maxBufferLength)
 		{
 			int from = console.inputBuffer.maxBufferLength;
-			int to = from + (i->length() - console.inputBuffer.maxBufferLength);
-			string newLine = i->substr(from, to);
-			i->resize(from);
-			newBuffer.push_back(*i);
+			int to = from + (lineLength - console.inputBuffer.maxBufferLength);
+			string newLine = line.substr(from, to);
+
+			line.resize(from);
+			newBuffer.push_back(line);
 			newBuffer.push_back(newLine);
 		}
 		else
 		{
-			newBuffer.push_back(*i);
+			newBuffer.push_back(line);
 		}
 	}
 
