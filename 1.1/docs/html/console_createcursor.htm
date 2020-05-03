@@ -37,10 +37,10 @@
 		}
 	</style>
 	<head>
-		<title>Functions</title>
+		<title>Console_CreateCursor</title>
 		<meta charset="utf-8"/>
 		<meta name="author" content="Seth Ballantyne"/>
-		<meta name="description" content="Console functions documentation"/>
+		<meta name="description" content="documentation for the Console_CreateCursor function"/>
 	</head>
 	<body>
 		<!-------------------------------->
@@ -48,22 +48,22 @@
 		<!-------------------------------->
 		<div class="navigation">
 		<!-- Left-aligned links (default) -->
-			BitmapFont
+			Functions
 			<div class="navigation-centered-title">
 			Console 1.1 Documentation
 			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
-				Console_CreateCursor
+				Console_ExecuteCommand
 			</div>
 		</div>
 		<div class="navigation">
 			<div class="navigation-centered">
 				<a href="../index.htm">Table of Contents</a>
 			</div>
-			<a href="structures_bitmapfont.htm">Previous</a>
+			<a href="functions.htm">Previous</a>
 			<div class="navigation-right">
-				<a href="console_createcursor.htm">Next</a>
+				<a href="console_executecommand.htm">Next</a>
 			</div>
 		</div>
 		<!-------------------------------->
@@ -71,20 +71,33 @@
 		<!-------------------------------->
 		
 		<hr>
-		<h1>Functions</h1>
-		<ul style="list-style-type:none">
-			<li><a href="console_executecommand.htm">Console_ExecuteCommand</a></li>
-			<li><a href="console_init.htm">Console_Init</a></li>
-			<li><a href="console_iscommand.htm">Console_IsCommand</a></li>
-			<li><a href="console_print.htm">Console_Print</a></li>
-			<li><a href="console_processinput.htm">Console_ProcessInput</a></li>
-			<li><a href="console_registercommand.htm">Console_RegisterCommand</a></li>
-			<li><a href="console_render.htm">Console_Render</a></li>
-		</ul>
-		
-		This section details the functions used to control the console. With the exception of the Console_*Command functions, you must
-		call <code><a href="console_init.htm">Console_Init</code></a> before using the other functions. The <a href="structures_inputbuffer.htm"><code>InputBuffer</code></a>, <code><a href="structures_outputbuffer.htm">OutputBuffer</a></code> and <a href="structures_bitmapfont.htm"><code>BitmapFont</code></a> data structures described in the previous section 
-		have their own associated functions, but these are intended for internal use only.
+		<h1>Console_CreateCursor</h1>
+		<h2>Summary</h2>
+			<code>
+				#include "console.h"
+				<br><br>
+				int console::Console_CreateCursor(Console& console, SDL_Colour* colour)
+			</code>
+		<h2>Description</h2>
+		Creates a cursor for the input buffer.The cursor will be the same size as the current font and filled with <code>colour</code>. If <code>colour</code> evaluates to <code>nullptr</code>,
+		the function falls back to the default font colour specified in <code>defaults.h</code>. Generally, you won't need to call <code>Console_CreateCursor</code> as 
+		the console generates a default cursor during initialization for use with the built-in font, and calls to <a href="console_setfont.htm"><code>Console_SetFont</code></a> will result
+		in a cursor being generated for use with the new font.
+		<h2>Return Value</h2>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">A new cursor was succesfully created.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_FILL_RECT_FAILED</code></td>
+						<td style="padding:0px 4px">A call to <code>SDL_FillRect</code> failed. While this value technically denotes an error,
+						it's not meant to confer a catastrophic error; at most, the cursor may render incorrectly (if at all), but the console
+						can continue to function.</td>
+					</tr>
+				</tbody>
+			</table>
 		<hr>
 		
 		<!------------------------------------->
@@ -92,22 +105,22 @@
 		<!------------------------------------->
 		<div class="navigation">
 		<!-- Left-aligned links (default) -->
-			BitmapFont
+			Functions
 			<div class="navigation-centered">
-			<a href="the_api.htm">Up</a>
+			<a href="functions.htm">Up</a>
 			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
-				Console_CreateCursor
+				Console_ExecuteCommand
 			</div>
 		</div>
 		<div class="navigation">
 			<div class="navigation-centered">
 				<a href="../index.htm">Table of Contents</a>
 			</div>
-			<a href="structures_bitmapfont.htm">Previous</a>
+			<a href="functions.htm">Previous</a>
 			<div class="navigation-right">
-				<a href="console_createcursor.htm">Next</a>
+				<a href="console_executecommand.htm">Next</a>
 			</div>
 		</div>
 		<!------------------------------------->

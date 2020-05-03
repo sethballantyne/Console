@@ -81,7 +81,8 @@
 		<h2>Description</h2>
 		Initializes the console as a software surface; this function also creates the built-in font as an <code>SDL_Surface</code>.
 		During initialization, the console's width will be set to the same as <code>screen</code>, but half its height. If <code>nullptr</code>
-		is passed for any of the colour arguments, a default colour will be used for that argument.
+		is passed for any of the colour arguments, a default colour will be used for that argument. <code>Console_Init</code> will also create a cursor for the font which
+		will be the same size and colour as the font.
 		<br><br>
 		
 		<table>

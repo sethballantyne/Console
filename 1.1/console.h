@@ -196,7 +196,7 @@ namespace console
 	void Console_SetBackground(Console& console, SDL_Surface* imageSurface);
 	int Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars, 
 						 unsigned int charWidth, unsigned int charHeight, unsigned int startingChar,
-						 SDL_Colour* colour);
+						 SDL_Colour* cursorColour);
 	int Console_CreateCursor(Console& console, SDL_Colour* colour);
 }
 

@@ -77,13 +77,14 @@
 		#include "console.h"
 		<br><br>
 		int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars,
-							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar)
+							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar, SDL_Colour* cursorColour)
 		</code>
 		<h2>Description</h2>
 		Sets the console font to the bitmap font specified in <code>fontSurface</code>. If <code>fontSurface</code> evaluates to 
 		<code>nullptr</code>, the console will fallback to the built-in font; this also means that <code>nullptr</code> can be used
-		to clear the current font if you wish. In this case, it's safe to pass 0 for the arguments <code>numChars</code>, <code>charWidth</code>,
-		<code>charWidth</code>, and <code>startingChar</code>.
+		to clear the current font if you wish. In this case, the values passed to <code>numChars</code>, <code>charWidth</code>,
+		<code>charHeight</code>, <code>startingChar</code> and <code>cursorColour</code> are disregarded. Note that if the console falls back to the default font, you don't need to 
+		create a cursor for it; the console will create one.
 		<br><br>
 		Bitmap fonts passed to Console_SetFont must be formatted thusly:
 		<ul>
@@ -119,6 +120,11 @@
 					<tr>
 						<td style="vertical-align:top"><code>startingChar</code></td>
 						<td style="padding:0px 4px">the ASCII value of the first character in the font.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>cursorColour</code></td>
+						<td style="padding:0px 4px">the desired colour of the cursor for the new font. If <code>nullptr</code> is passed,
+						the default font colour specified in <code>defaults.h</code> is used.</td>
 					</tr>
 				</tbody>
 		</table>
