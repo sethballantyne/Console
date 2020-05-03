@@ -89,12 +89,15 @@
 		console command <a href="command_cls.htm"><code>cls</code></a> will clear the output buffer when desired.
 		<br><br>
 		As noted in the API section, with the exception of the command-related fuctions, <a href="console_init.htm"><code>Console_Init</code></a> must be called before any of the 
-		other functions are used. Unless you're modifying the console, the only structure you'll need to worry about is the Console structure.
+		other functions are used. Unless you're modifying the console, the only structure you'll need to worry about is the <a href="structures_console.htm"><code>Console</code></a> structure.
 		You'll never directly interact with the <a href="structures_inputbuffer.htm"><code>InputBuffer</code></a> and <a href="structures_outputbuffer.htm"><code>OutputBuffer</code></a> structures.
 		<br><br>
 		The console uses a built in font, which you'll find in the defaults header. a <a href="tools_fontgen.htm">tool</a> exists that generates fonts for use by the console if you wish to modify or replace
 		this font. All characters in the font must be of the same width and height; if you change the width or height of the existing font or replace the font entirely,
 		don't forget to update the relevant defines in the defaults header. Hint: use the tool!
+		<br><br>
+		v1.1 introduces the ability to use images as console backgrounds and external bitmap fonts. For more information on these features,
+		see <a href="console_setbackground.htm"><code>Console_SetBackground</code></a> and <a href="console_setfont.htm"><code>Console_SetFont</code></a>.
 		<br><br>
 		
 		<hr>
