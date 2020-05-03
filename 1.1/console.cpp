@@ -273,12 +273,12 @@ void console::InputBuffer_Init(Console& console)
 
 	if(console.externalBitmapFont.fontSurface != nullptr)
 	{
-		console.inputBuffer.y = console.consoleSurface->h - console.externalBitmapFont.characterHeight;
+		console.inputBuffer.y = console.consoleSurface->h - console.externalBitmapFont.characterHeight - CONSOLE_GAP_BELOW_INPUT_BUFFER;
 		console.inputBuffer.maxBufferLength = console.consoleSurface->w / console.externalBitmapFont.characterWidth;
 	}
 	else
 	{
-		console.inputBuffer.y = console.consoleSurface->h - console.defaultBitmapFont.characterHeight;
+		console.inputBuffer.y = console.consoleSurface->h - console.defaultBitmapFont.characterHeight - CONSOLE_GAP_BELOW_INPUT_BUFFER;
 		console.inputBuffer.maxBufferLength = console.consoleSurface->w / console.defaultBitmapFont.characterWidth;
 	}
 
@@ -385,12 +385,25 @@ int console::OutputBuffer_Render(Console& console)
 //	}
 //}
 
+void console::Cursor_Render(Console& console)
+{
+	BitmapFont& font = (console.externalBitmapFont.fontSurface != nullptr) ? console.externalBitmapFont : console.defaultBitmapFont;
+	
+	int x = (console.inputBuffer.buffer.length() * font.characterWidth) + console.inputBuffer.x;
+	int y = console.inputBuffer.y;
+	SDL_Rect dest;
+
+	dest.x = x;
+	dest.y = y;
+	dest.h = console.cursorSurface->h;
+	dest.w = console.cursorSurface->w;
+
+	SDL_BlitSurface(console.cursorSurface, NULL, console.consoleSurface, &dest);
+}
 
 int console::Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* consoleColour,
 						  SDL_Colour* fontColour, SDL_Colour* transparencyColour)
 {
-	float dresult = 354 % 14;
-
 	SDL_Colour defaultConsoleColour = { DEFAULT_BACKGROUND_COLOUR_R, DEFAULT_BACKGROUND_COLOUR_G, 
 		DEFAULT_BACKGROUND_COLOUR_B, DEFAULT_BACKGROUND_COLOUR_A };
 
@@ -412,6 +425,8 @@ int console::Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* con
 
 	SDL_Colour colour = (nullptr == consoleColour) ? defaultConsoleColour : *consoleColour;
 	console.defaultConsoleColour = SDL_MapRGB(console.consoleSurface->format, colour.r, colour.g, colour.b);
+
+	Console_CreateCursor(console, fontColour);
 
 	InputBuffer_Init(console);
 	OutputBuffer_Init(console);
@@ -468,6 +483,7 @@ int console::Console_Render(Console& console, SDL_Surface *screen)
 		return result;
 	}
 
+	Cursor_Render(console);
 	result = OutputBuffer_Render(console);
 	if(result != CONSOLE_RET_SUCCESS)
 	{
@@ -485,8 +501,6 @@ int console::Console_Render(Console& console, SDL_Surface *screen)
 
 void console::Console_ProcessInput(Console& console, Uint16 unicode)
 {
-	SDL_Rect glyph;
-
 	// only ASCII characters space to '~' are supported
 	if(unicode >= DEFAULT_FONT_FIRST_CHARACTER &&
 	   unicode <= DEFAULT_FONT_LAST_CHARACTER &&
@@ -620,7 +634,8 @@ void console::Console_SetBackground(Console& console, SDL_Surface* imageSurface)
 }
 
 int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars,
-							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar)
+							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar,
+							  SDL_Colour* cursorColour)
 {
 	console.externalBitmapFont.fontSurface = fontSurface;
 	console.externalBitmapFont.characterHeight = charHeight;
@@ -632,6 +647,8 @@ int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigne
 	// changing fonts requires a few things to be recalculated
 	// so the font renders properly; even if fontSurface evaluates to nullptr
 	// this still needs to be done, because if it does, we're falling back to the default font.
+	// It's not obvious here, but the two calls below will detect if we've passed a nullptr
+	// for the font argument and reconfigure the console to use the built-in font.
 	InputBuffer_Init(console);
 	OutputBuffer_Init(console);
 
@@ -643,6 +660,8 @@ int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigne
 
 	// no need to set the colour key for the default font, this is done during initilization
 
+	Console_CreateCursor(console, cursorColour);
+
 	if(fontSurface != nullptr)
 	{
 		return CONSOLE_RET_SUCCESS;
@@ -651,4 +670,53 @@ int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigne
 	{
 		return CONSOLE_RET_NULLPTR_ARGUMENT;
 	}
+}
+
+int console::Console_CreateCursor(console::Console& console, SDL_Colour* colour)
+{
+	int width, height;
+
+	if(console.externalBitmapFont.fontSurface != nullptr)
+	{ 
+		width = console.externalBitmapFont.characterWidth;
+		height = console.externalBitmapFont.characterHeight;
+	}
+	else
+	{
+		width = console.defaultBitmapFont.characterWidth;
+		height = console.defaultBitmapFont.characterHeight;
+	}
+
+	if(console.cursorSurface != nullptr)
+	{
+		SDL_FreeSurface(console.cursorSurface);
+		console.cursorSurface = nullptr;
+	}
+
+	console.cursorSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, console.consoleSurface->format->BitsPerPixel,
+												 console.consoleSurface->format->Rmask, console.consoleSurface->format->Gmask, 
+												 console.consoleSurface->format->Bmask, console.consoleSurface->format->Amask);
+	if(!console.cursorSurface)
+	{
+		return CONSOLE_RET_CREATE_SURFACE_FAIL;
+	}
+
+	SDL_Colour defaultColour = { DEFAULT_FONT_COLOUR_R, DEFAULT_FONT_COLOUR_G, DEFAULT_FONT_COLOUR_B, 0 };
+	Uint32 convertedColour;
+	if(colour != nullptr)
+	{
+		convertedColour = SDL_MapRGB(console.consoleSurface->format, colour->r, colour->g, colour->b);
+	}
+	else
+	{
+		convertedColour = SDL_MapRGB(console.consoleSurface->format, defaultColour.r, defaultColour.g, defaultColour.b);
+	}
+	
+	int result = SDL_FillRect(console.cursorSurface, NULL, convertedColour);
+	if(result != 0)
+	{
+		return CONSOLE_RET_FILL_RECT_FAILED;
+	}
+
+	return CONSOLE_RET_SUCCESS;
 }
