@@ -43,11 +43,12 @@
 #define CONSOLE_SCROLL_DIR_DOWN             1
 
 #define CONSOLE_VERSION_MAJOR               1
-#define CONSOLE_VERSION_MINOR               0
+#define CONSOLE_VERSION_MINOR               1
 
 // the gap in pixels between the output buffer and the input buffer
 #define CONSOLE_GAP_BETWEEN_BUFFERS         2
 
+#define CONSOLE_GAP_BELOW_INPUT_BUFFER      1
 namespace console
 {
 	struct BitmapFont
@@ -63,6 +64,12 @@ namespace console
 
 		// the witdth of each character in pixels
 		int characterWidth;
+
+		int numberOfChars;
+
+		// only used for external fonts loaded in via
+		// Console_SetFont.
+		char startingChar;
 
 		~BitmapFont()
 		{
@@ -110,8 +117,16 @@ namespace console
 		// the built in bitmap font
 		BitmapFont defaultBitmapFont;
 
+		// font loaded in via Console_SetFont
+		BitmapFont externalBitmapFont;
+
 		// the background, output buffer and input buffers render to this surface.
 		SDL_Surface *consoleSurface = nullptr;
+
+		// surface for the background image.
+		SDL_Surface *backgroundSurface = nullptr;
+
+		SDL_Surface *cursorSurface = nullptr;
 
 		// stores the users input and determines how the buffer is rendered to the console surface
 		InputBuffer inputBuffer;
@@ -143,19 +158,25 @@ namespace console
 	void console_command_clear(Console& console, std::vector<std::string>& args);
 
 
-	/// PRIVATE BITMAP FUNCTIONS //////////////////////////////////////////////////////
-	int BitmapFont_Init(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, int characterHeight, SDL_Colour* fontColour, SDL_Colour* transparency);
+	/// INTERNAL BITMAP FONT FUNCTIONS ////////////////////////////////////////////////
+	int BitmapFont_InitBuiltInFont(BitmapFont& bitmapFont, SDL_Surface *screen, int numChars, int characterWidth, 
+								   int characterHeight, char startingChar, SDL_Colour* fontColour, SDL_Colour* transparency);
+	int BitmapFont_RenderLine(Console& console, BitmapFont& font, std::string& line, int x, int y);
 	int BitmapFont_RenderLine(Console& console, std::string& line, int x, int y);
 
-	/// PRIVATE INPUTBUFFER FUNCTIONS ////////////////////////////////////////////////
+	/// INTERNAL INPUTBUFFER FUNCTIONS ////////////////////////////////////////////////
 	void InputBuffer_SplitInput(InputBuffer& inputBuffer, std::string& command, std::vector<std::string>& args);
 	void InputBuffer_Init(Console& console);
 	int InputBuffer_Render(Console& console);
 
-	/// PRIVATE OUTPUTBUFFER FUNCTIONS //////////////////////////////////////////////
+	/// INTERNAL OUTPUTBUFFER FUNCTIONS //////////////////////////////////////////////
 	void OutputBuffer_Init(Console& console);
 	int OutputBuffer_Render(Console& console);
+	void OutputBuffer_ResizeText(Console& console);
 	//void OutputBuffer_Scroll(Console& console, int numberOfLines, int direction);
+
+	/// INTERNAL CURSOR FUNCTIONS ////////////////////////////////////////////////////
+	void Cursor_Render(Console& console);
 
 	/********************************************************************************
      * END INTERNAL FUNCTIONS
@@ -173,5 +194,11 @@ namespace console
 	bool Console_IsCommand(Console& console, std::string command);
 	int Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args);
 	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr commandFuncPtr);
+	void Console_SetBackground(Console& console, SDL_Surface* imageSurface);
+	int Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars, 
+						 unsigned int charWidth, unsigned int charHeight, unsigned int startingChar,
+						 SDL_Colour* cursorColour);
+	int Console_CreateCursor(Console& console, SDL_Colour* colour);
+	int Console_ResolutionChanged(Console& console, SDL_Surface *screen);
 }
 

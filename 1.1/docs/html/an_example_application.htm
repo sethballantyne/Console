@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>An Example Application</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="An example of how to use the Connsol API"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Fontgen
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				License
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="tools_fontgen.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="license.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>5. An Example Application</h1>
+		Below is a fully working example of how to incorporate the console into an SDL project.
+		<ul> 
+		<li>Press the tab key to toggle the console.</li>
+		<li> Press the escape key to terminate the program.</li>
+		</ul>
+		<pre>
+			<code>
+#include &lt;SDL.h&gt;
+#include &lt;iostream&gt;
+#include "console.h"
+
+using namespace std;
+
+// all Console_* functions and data structures are stored in the
+// console namespace.
+using namespace console; 
+
+SDL_Surface *screen = nullptr;
+Console con;
+
+void CleanUp()
+{
+	if(screen != nullptr)
+	{
+		SDL_FreeSurface(screen);
+	}
+
+	SDL_Quit();
+}
+
+// Implementation of the custom command "cust".
+void CustomConsoleCommand(Console& console, vector&lt;string&gt;& args)
+{
+	Console_Print(console, "HACK THE PLANET!!!!");
+}
+
+int main(int argc, char *argv[])
+{
+	int result = SDL_Init(SDL_INIT_VIDEO);
+	if(result < 0)
+	{
+		cout << "failed to init video. " << endl;
+	}
+
+	screen = SDL_SetVideoMode(1024, 768, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	if(!screen)
+	{
+		cout << "Failed to set video mode. " << endl;
+		CleanUp();
+
+		return -1;
+	}
+
+	// unicode must be enabled so the user can type stuff!
+	SDL_EnableUNICODE(1);
+
+	// passing nullptr's means we're going to use the default colours
+	// for the background, font and the font's colour key.
+	result = Console_Init(con, screen, nullptr, nullptr, nullptr);
+	if(result != CONSOLE_RET_SUCCESS)
+	{
+		cout << "failed to init console." << endl;
+		CleanUp();
+
+		return -1;
+	}
+
+	// Register the command "cust", implemented in CustomConsoleCommand.
+	Console_RegisterCommand(con, "cust", CustomConsoleCommand);
+	
+	bool quit = false;
+	SDL_Event event;
+
+	// the colour the window will be filled each time the window is cleared.
+	Uint32 windowColour = SDL_MapRGB(screen->format, 64, 128, 128);
+
+	while(!quit)
+	{
+		if(SDL_PollEvent(&event) > 0)
+		{
+			switch(event.type)
+			{
+				case SDL_KEYDOWN:
+					if(con.enabled)
+					{
+						// if you don't call Console_ProcessInput, no input will be 
+						// printed to the input buffer when keys are pressed.
+						Console_ProcessInput(con, event.key.keysym.unicode);
+					}
+					break;
+
+				case SDL_KEYUP:
+					switch(event.key.keysym.sym)
+					{
+						case SDLK_ESCAPE:
+							quit = true;
+							break;
+
+						case SDLK_F1:
+							break;
+
+						case SDLK_TAB:
+							con.enabled = !con.enabled;
+							break;
+						default:
+							break;
+					}
+					break;
+
+				case SDL_QUIT:
+					quit = true;
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		// clear the screen with the colour in windowColour
+		SDL_FillRect(screen, NULL, windowColour);
+
+		if(con.enabled)
+		{
+			Console_Render(con, screen);
+		}
+
+		SDL_Flip(screen);
+		SDL_Delay(30);
+	}
+
+	CleanUp();
+	return 0;
+}
+			</code>
+		</pre>
+		
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Fontgen
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				License
+			</div>
+		</div>
+		<div class="navigation">
+			<a href="tools_fontgen.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="license.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

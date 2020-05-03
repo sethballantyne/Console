@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Console_SetBackground</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the Console_SetBackground function"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_ResolutionChanged
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_SetFont
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_resolutionchanged.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_setfont.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console_SetBackground</h1>
+		<h2>Summary</h2>
+		<code>
+	    #include "console.h"
+	    <br><br>
+		void console::Console_SetBackground(Console& console, SDL_Surface* imageSurface)
+		</code>
+		<h2>Description</h2>
+		Sets the console background to the image specified in <code>imageSurface</code>. Passing <code>nullptr</code> will effectively
+		clear the image, forcing the console to use a solid colour background. The colour of the background will be the colour specified
+		during initilization; see <a href="console_init.htm"><code>Console_Init</code></a> for more information.
+		<br><br>
+		At no point does the console free the surface passed via <code>imageSurface</code>; this is up to the programmer. It's assumed
+		the image being used is the same size as the console. Note that alpha blending is disabled for the surface when <code>Console_SetBackground</code>
+		is called.
+		<h2>Return Value</h2>
+		<code>Console_SetBackground</code> doesn't return a value.
+		<!--<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>return value</code></td>
+						<td style="padding:0px 4px">return value description</td>
+					</tr>
+				</tbody>
+			</table>
+		-->
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_ResolutionChanged
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_SetFont
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_resolutionchanged.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_setfont.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

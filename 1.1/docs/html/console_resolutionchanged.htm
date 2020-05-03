@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Console_ResolutionChanged</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the Console_ResolutionChanged function"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_Render
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_SetBackground
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_render.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_setbackground.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console_ResolutionChanged</h1>
+		<h2>Summary</h2>
+		<code>
+			#include "console.h"
+			<br><br>
+			int console::Console_ResolutionChanged(Console& console, SDL_Surface* screen)
+		</code>
+		<h2>Description</h2>
+			<code>Console_ResolutionChanged</code> reconfigures the console based on the width and height of the surface passed into <code>screen</code>. 
+			As the name suggests, this function needs to be called after a resolution change has occurred; failing to do so will result in the console
+			not operating correctly. Note that this function does not resize images used as console backgrounds; if a custom background
+			is being used, you may need to load in a new image to reflect the change in size by calling <a href="console_setbackground.htm"><code>Console_SetBackground</code></a>
+			after <code>Console_ResolutionChanged</code> has executed. The same applies to extenal bitmap fonts loaded in via <a href="console_setfont.htm"><code>Console_SetFont</code></a>.
+		<h2>Return Value</h2>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">The console was successfully reconfigured.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_CREATE_SURFACE_FAIL</code></td>
+						<td style="padding:0px 4px">A call to <code>SDL_CreateSurface</code> failed while attempting to resize the console.</td>
+					</tr>
+				</tbody>
+			</table>
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_Render
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_SetBackground
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_render.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_setbackground.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

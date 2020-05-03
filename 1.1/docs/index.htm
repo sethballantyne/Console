@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+		
+		ul.no-style {
+			list-style-type:none;
+			
+		}
+	</style>
+	<head>
+		<title>Table of Contents</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="Console documentation table of contents"/>
+	</head>
+	<body>
+		
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Introduction
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-right">
+				<a href="html/introduction.htm">Next</a>
+			</div>
+  
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Table of Contents</h1>
+		<ol type="1">
+			<li><a href="html/introduction.htm">Introduction</a></li>
+			<ul class="no-style">
+				<li><a href="html/overview_of_the_console.htm">Overview of the Console</a></li>
+			</ul>
+			<li><a href="html/the_api.htm">The API</a></li>
+			<ul class="no-style">
+				<li><a href="html/structures.htm">Structures</a></li>
+				<ul class="no-style">
+					<li><a href="html/structures_console.htm">Console</a></li>
+					<li><a href="html/structures_inputbuffer.htm">InputBuffer</a></li>
+					<li><a href="html/structures_outputbuffer.htm">OutputBuffer</a></li>
+					<li><a href="html/structures_bitmapfont.htm">BitmapFont</a></li>
+				</ul>
+				<li><a href="html/functions.htm">Functions</a></li>
+				<ul class="no-style">
+					<li><a href="html/console_createcursor.htm">Console_CreateCursor</a></li>
+					<li><a href="html/console_executecommand.htm">Console_ExecuteCommand</a></li>
+					<li><a href="html/console_init.htm">Console_Init</a></li>
+					<li><a href="html/console_iscommand.htm">Console_IsCommand</a></li>
+					<li><a href="html/console_print.htm">Console_Print</a></li>
+					<li><a href="html/console_processinput.htm">Console_ProcessInput</a></li>
+					<li><a href="html/console_registercommand.htm">Console_RegisterCommand</a></li>
+					<li><a href="html/console_render.htm">Console_Render</a></li>
+					<li><a href="html/console_resolutionchanged.htm">Console_ResolutionChanged</a></li>
+					<li><a href="html/console_setbackground.htm">Console_SetBackground</a></li>
+					<li><a href="html/console_setfont.htm">Console_SetFont</a></li>
+				</ul>
+			</ul>
+			<li value="3"><a href="html/built_in_commands.htm">Built-in Commands</a></li>
+			<ul class="no-style">
+				<li><a href="html/command_clist.htm">clist</a></li>
+				<li><a href="html/command_cls.htm">cls</a></li>
+				<li><a href="html/command_cv.htm">cv</a></li>
+			</ul>
+			<li value="4"><a href="html/tools_fontgen.htm">Fontgen</a></li>
+			<li value="5"><a href="html/an_example_application.htm">An Example Application</a></li>
+			<li value="6"><a href="html/license.htm">License</a></li>
+		</ol>
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Introduction
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-right">
+				<a href="html/introduction.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!-------------------------------------> 
+	</body>
+</html>

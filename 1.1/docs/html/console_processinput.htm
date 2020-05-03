@@ -37,10 +37,10 @@
 		}
 	</style>
 	<head>
-		<title>Introduction</title>
+		<title>Console_ProcessInput</title>
 		<meta charset="utf-8"/>
 		<meta name="author" content="Seth Ballantyne"/>
-		<meta name="description" content="console documentation introduction"/>
+		<meta name="description" content="documentation for the Console_ProcessInput function"/>
 	</head>
 	<body>
 		<!-------------------------------->
@@ -48,22 +48,22 @@
 		<!-------------------------------->
 		<div class="navigation">
 		<!-- Left-aligned links (default) -->
-			Table of Contents
+			Console_Print
 			<div class="navigation-centered-title">
-			Console 1.0 Documentation
+			Console 1.1 Documentation
 			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
-				Overview of the Console
+				Console_RegisterCommand
 			</div>
 		</div>
 		<div class="navigation">
-			<!--<div class="navigation-centered">
-				<a href="#">Table of Contents</a>
-			</div>-->
-			<a href="../index.htm">Previous</a>
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_print.htm">Previous</a>
 			<div class="navigation-right">
-				<a href="overview_of_the_console.htm">Next</a>
+				<a href="console_registercommand.htm">Next</a>
 			</div>
 		</div>
 		<!-------------------------------->
@@ -71,19 +71,28 @@
 		<!-------------------------------->
 		
 		<hr>
-		<h1>1. Introduction</h1>
-		<p>
-		Console is a quake-style drop down console written in C++ 11, using SDL 1.2.
-		Given the nature of the project, it's assumed users will want/need to customize Console.
-		For this reason, there's no pre-built libraries, but instead 3 source files that can 
-		be added to an existing code base. Console has been designed so it's relatively fail safe: it contains
-		a built in font and uses solid colours to render the console's background. A tool exists to generate
-		fonts from bitmap files into the required 3 dimensional array if you wish to customize the font; see <a href="tools_fontgen.htm">fontgen</a> for
-		details. 
-		<br><br>
-		Console is written by <a href="mailto:seth.ballantyne@gmail.com">Seth Ballantyne</a> and released under the <a href="license.htm">MIT license</a>.
-		The latest version can be found on the projects <a href="https://www.github.com/sethballantyne/Console">Github repository</a>.
-		</p>
+		<h1>Console_ProcessInput</h1>
+		<h2>Summary</h2>
+			<code>
+				#include "console.h"<br><br>
+				
+				void console::Console_ProcessInput(console::Console& console, Uint16 unicode);
+			</code>
+		<h2>Description</h2>
+		<code>Console_ProcessInput</code> handles all user input when the console is visible; without calling this, the user will type and not see anything being printed in the input buffer. <code>unicode</code>
+		should be taken from <code>SDL_keysym</code> during a keyboard event in your event handler. As the name suggests, this is a unicode
+		value, so unicode must be enabled by calling <code>SDL_EnableUNICODE(1)</code> during your games initialization. Failing to do this will result in keypresses not
+		being detected. 
+		<h2>Return Value</h2>
+			<code>Console_ProcessInput</code> doesn't return any values.
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code></code></td>
+						<td style="padding:0px 4px"></td>
+					</tr>
+				</tbody>
+			</table>
 		<hr>
 		
 		<!------------------------------------->
@@ -91,22 +100,22 @@
 		<!------------------------------------->
 		<div class="navigation">
 		<!-- Left-aligned links (default) -->
-			Table of Contents
-			<!--<div class="navigation-centered-title">
-			Console documentation
-			</div>-->
+			Console_Print
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
-				Overview of the Console
+				Console_RegisterCommand
 			</div>
 		</div>
 		<div class="navigation">
-			<!-- <div class="navigation-centered">
-				<a href="#">Table of Contents</a>
-			</div>-->
-			<a href="../index.htm">Previous</a>
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_print.htm">Previous</a>
 			<div class="navigation-right">
-				<a href="overview_of_the_console.htm">Next</a>
+				<a href="console_registercommand.htm">Next</a>
 			</div>
 		</div>
 		<!------------------------------------->

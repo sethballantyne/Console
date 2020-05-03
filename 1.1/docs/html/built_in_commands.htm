@@ -37,10 +37,10 @@
 		}
 	</style>
 	<head>
-		<title>Introduction</title>
+		<title>Built-in Commands</title>
 		<meta charset="utf-8"/>
 		<meta name="author" content="Seth Ballantyne"/>
-		<meta name="description" content="console documentation introduction"/>
+		<meta name="description" content="Introduction to the built in console commands"/>
 	</head>
 	<body>
 		<!-------------------------------->
@@ -48,22 +48,22 @@
 		<!-------------------------------->
 		<div class="navigation">
 		<!-- Left-aligned links (default) -->
-			Table of Contents
+			Console_SetFont
 			<div class="navigation-centered-title">
-			Console 1.0 Documentation
+			Console 1.1 Documentation
 			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
-				Overview of the Console
+				clist
 			</div>
 		</div>
 		<div class="navigation">
-			<!--<div class="navigation-centered">
-				<a href="#">Table of Contents</a>
-			</div>-->
-			<a href="../index.htm">Previous</a>
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_setfont.htm">Previous</a>
 			<div class="navigation-right">
-				<a href="overview_of_the_console.htm">Next</a>
+				<a href="command_clist.htm">Next</a>
 			</div>
 		</div>
 		<!-------------------------------->
@@ -71,19 +71,9 @@
 		<!-------------------------------->
 		
 		<hr>
-		<h1>1. Introduction</h1>
-		<p>
-		Console is a quake-style drop down console written in C++ 11, using SDL 1.2.
-		Given the nature of the project, it's assumed users will want/need to customize Console.
-		For this reason, there's no pre-built libraries, but instead 3 source files that can 
-		be added to an existing code base. Console has been designed so it's relatively fail safe: it contains
-		a built in font and uses solid colours to render the console's background. A tool exists to generate
-		fonts from bitmap files into the required 3 dimensional array if you wish to customize the font; see <a href="tools_fontgen.htm">fontgen</a> for
-		details. 
-		<br><br>
-		Console is written by <a href="mailto:seth.ballantyne@gmail.com">Seth Ballantyne</a> and released under the <a href="license.htm">MIT license</a>.
-		The latest version can be found on the projects <a href="https://www.github.com/sethballantyne/Console">Github repository</a>.
-		</p>
+		<h1>3. Built-in Commands</h1>
+		The console has a number of built-in commands, which are described in this section. 
+		All the following commands are created when <code><a href="console_init.htm">Console_Init</a></code> is called, and can be removed or modified as needed.
 		<hr>
 		
 		<!------------------------------------->
@@ -91,22 +81,22 @@
 		<!------------------------------------->
 		<div class="navigation">
 		<!-- Left-aligned links (default) -->
-			Table of Contents
+			Console_SetFont
 			<!--<div class="navigation-centered-title">
-			Console documentation
+			Console 1.0 Documentation
 			</div>-->
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
-				Overview of the Console
+				clist
 			</div>
 		</div>
 		<div class="navigation">
-			<!-- <div class="navigation-centered">
-				<a href="#">Table of Contents</a>
-			</div>-->
-			<a href="../index.htm">Previous</a>
+			<a href="console_setfont.htm">Previous</a>
 			<div class="navigation-right">
-				<a href="overview_of_the_console.htm">Next</a>
+				<a href="command_clist.htm">Next</a>
 			</div>
 		</div>
 		<!------------------------------------->

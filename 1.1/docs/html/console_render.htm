@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Console_Render</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentatio for the Console_Render function"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_RegisterCommand
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_ResolutionChanged
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_registercommand.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_resolutionchanged.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console_Render</h1>
+		<h2>Summary</h2>
+		<code>
+			#include "console.h"<br><br>
+			
+			void console::Console_Render(console::Console& console, SDL_Surface *screen)
+		</code>
+		<h2>Description</h2>
+			Blits the console surface to coordinates 0,0 on the specified surface in <code>screen</code>. As noted
+			in <a href="console_init.htm"><code>Console_Init</code></a>, the dimensions of the console are set during initialization
+			to be the same width as the <code>screen</code> parameter, and half its height.
+		<h2>Return Value</h2>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">the function executed successfully without error.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_FILL_RECT_FAILED</code></td>
+						<td style="padding:0px 4px">a call to <code>SDL_FillRect</code> failed.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_BLIT_FAILED</code></td>
+						<td style="padding:0px 4px">a call to <code>SDL_BlitSurface</code> failed.</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			To get extended error information when <code>Console_Render</code> returns <code>CONSOLE_RET_FILL_RECT_FAILED</code> or <code>CONSOLE_RET_BLIT_FAILED</code>,
+			call <code>SDL_GetError</code>. See the SDL documentation for more information.
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_RegisterCommand
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_ResolutionChanged
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_registercommand.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_resolutionchanged.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

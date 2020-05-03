@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Console_ExecuteCommand</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the Console_ExecuteCommand function"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_CreateCursor
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_Init
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_createcursor.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_init.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console_ExecuteCommand</h1>
+		<h2>Summary</h2>
+			<code>
+				#include "console.h"<br><br>
+				
+				int console::Console_ExecuteCommand(console::Console& console, std::string command, std::vector&lt;std::string&gt;& args);
+			</code>
+		<h2>Description</h2>
+	<p>
+		Executes the console command specified in <code>command</code> with the specified arguments in <code>args.</code> This function
+		is mainly for internal use by the console; <code><a href="console_processinput.htm">Command_ProcessInput</a></code> uses it
+		to execute commands when the user hits the enter key. If the specified command can't be found, an error message
+		is printed to the console and <code>CONSOLE_RET_COMMAND_DOESNT_EXIST</code> is returned.
+		<br><br>
+		There's currently no way to determine whether commands successfully execute, as commands don't have a return value; failure
+		or success as has to be managed within the command's implementation. Note that any uppercase characters in <code>command</code>
+		will be converted to lowercase.
+	</p>
+		<h2>Return Value</h2>
+			<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">the function executed the specified command.
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_NULLPTR_ARGUMENT</code></td>
+						<td style="padding:0px 4px">the function pointer that points to the function implementing the command evaluates to <code>nullptr</code>; this is probably because
+						a <code>nullptr</code> or garbage value was passed to the <code>command_func_ptr</code> parameter in <code><a href="console_registercommand.htm">Console_RegisterCommand.</a></code></td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_COMMAND_DOESNT_EXIST</code></td>
+						<td style="padding:0px 4px">the specified command doesn't exist; register it with <code><a href="console_registercommand.htm">Console_RegisterCommand.</code></td>
+					</tr>
+				</tbody>
+			</table>
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_CreateCursor
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_Init
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_createcursor.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_init.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

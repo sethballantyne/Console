@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>fontgen</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the fontgen tool"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			cv
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				An Example Application
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="command_cv.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="an_example_application.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>4. Fontgen</h1>
+		<h2>Summary</h2>
+			<code>
+				fontgen [font=&lt;path&gt;] [output=&lt;path&gt;] [numchars=&lt;num&gt;] [width=&lt;character width&gt;] [height=&lt;character height&gt;] [initial=&lt;first character&gt;]
+			</code>
+		<h2>Description</h2>
+		Fontgen is a program that's designed to make creating built-in fonts a little less time consuming, by taking an existing bitmap font and converting
+		it into a three dimensional C/C++ array that's usable by the console.  It will also write several <code>#define</code>'s based on the values
+		given to convert the font to source code: 
+		<br>
+		<dl>
+			<dt><code>DEFAULT_FONT_HEIGHT</code></dt>
+			<dd>the height of the font in pixels.</dd>
+			<dt><code>DEFAULT_FONT_WIDTH</code></dt>
+			<dd>the pixel width of each character in the font.</dd>
+			<dt><code>DEFAULT_FONT_NUM_GLYPHS</code></dt>
+			<dd>the specified number of characters in the font.</dd>
+			<dt><code>DEFAULT_FONT_FIRST_CHAR</code></dt>
+			<dd>The first character in the font.</dd>
+			<dt><code>DEFAULT_FONT_LAST_CHAR</code></dt>
+			<dd>The last character in the font. This is calculated by fontgen based on the decimal value passed for the initial character, plus the number of characters in the font, minus 1 (fontgen starts counting from the initial character).</dd>
+		</dl>
+		The bitmap font specified in the <code>font</code> argument must be laid out in a particular way. Specifically, there must be:
+		<ul>
+			<li>A gap of 2 pixels above each character.</li>
+			<li>A gap of 3 pixels seperating each character; this includes the starting character, which must have a 3 pixel gap to its left.</li>
+			<li>All characters must be on the same row.</li>
+			<li>All characters must be ordered by their ASCII values, smallest to highest.
+		</ul>
+		Naturally, the required gaps are not factored into the size of each character and are not present in the resulting array that's generated
+		by fontgen.<br><br>
+		Below is an example of how a font should be formatted: the green highlights the 2 pixel gap required at the top, and the magenta
+		highlights the 3 pixel gap required of all characters. The first character in the font is a space character (hence why it's blank), and also
+		has a 3 pixel gap to its left.<br><br>
+		<img src="imgs/font_example.png" alt="example of a valid bitmap font that can be passed to fontgen." width="464" height="256"/>
+		<h2>Arguments</h2>
+		Every argument that fontgen accepts is optional; when an argument isn't passed via command line, a default value will be used.
+		<br><br>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>font</code></td>
+						<td style="padding:0px 4px">the path (including filename) of the font to convert. The default for this option is to look for <code>default_font.png</code> in the same directory as fontgen.
+						The image can be either BMP, GIF, EXIF, JPG, PNG or TIFF format.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>output</code></td>
+						<td style="padding:0px 4px">the path (including filename) of the file to write the generated font to. <em><strong>Note: if the file at the specified path already exists, it'll be automatically overwritten.</strong></em>
+						The default for this option is to write to <code>output.txt</code> in the same directory as fontgen.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>numchars</code></td>
+						<td style="padding:0px 4px">the number of characters in the font; the default is <code>95</code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>width</code></td>
+						<td style="padding:0px 4px">How wide each character is in pixels; the default is <code>10</code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>height</code></td>
+						<td style="padding:0px 4px">how high each character is in pixels; the default is <code>14</code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>initial</code></td>
+						<td style="padding:0px 4px">the decimal value of the first character in the font; the default is <code>32</code> (ASCII code for the space key).</td>
+					</tr>
+				</tbody>
+			</table>
+			<h2>Example</h2>
+				<code>
+					fontgen font=C:\dir\font.png output=C:\dir\font.txt width=12 height=14 initial=33
+				</code>
+				<br><br>
+				This loads the font from <code>C:\dir\font.png</code>. Each character has been configured to have a width of 12 pixels and a height of 14
+				pixels. The first character in the font is decimal 33 (the '!' character) and the generated source code will be written to <code>C:\dir\font.txt</code>.
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			cv
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				An Example Application
+			</div>
+		</div>
+		<div class="navigation">
+			<a href="command_cv.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="an_example_application.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

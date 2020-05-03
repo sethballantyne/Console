@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Functions</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="Console functions documentation"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			BitmapFont
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_CreateCursor
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="structures_bitmapfont.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_createcursor.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Functions</h1>
+		<ul style="list-style-type:none">
+			<li><a href="console_createcursor.htm">Console_CreateCursor</a></li>
+			<li><a href="console_executecommand.htm">Console_ExecuteCommand</a></li>
+			<li><a href="console_init.htm">Console_Init</a></li>
+			<li><a href="console_iscommand.htm">Console_IsCommand</a></li>
+			<li><a href="console_print.htm">Console_Print</a></li>
+			<li><a href="console_processinput.htm">Console_ProcessInput</a></li>
+			<li><a href="console_registercommand.htm">Console_RegisterCommand</a></li>
+			<li><a href="console_render.htm">Console_Render</a></li>
+			<li><a href="console_resolutionchanged.htm">Console_ResolutionChanged</a>
+			<li><a href="console_setbackground.htm">Console_SetBackground</a></li>
+			<li><a href="console_setfont.htm">Console_SetFont</a></li>
+		</ul>
+		
+		This section details the functions used to control the console. With the exception of the Console_*Command functions, you must
+		call <code><a href="console_init.htm">Console_Init</code></a> before using the other functions. The <a href="structures_inputbuffer.htm"><code>InputBuffer</code></a>, <code><a href="structures_outputbuffer.htm">OutputBuffer</a></code> and <a href="structures_bitmapfont.htm"><code>BitmapFont</code></a> data structures described in the previous section 
+		have their own associated functions, but these are intended for internal use only.
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			BitmapFont
+			<div class="navigation-centered">
+			<a href="the_api.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Console_CreateCursor
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="structures_bitmapfont.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="console_createcursor.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

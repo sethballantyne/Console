@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>The API</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="Introduction to the console API"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Overview of the Console
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Structures
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="overview_of_the_console.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="structures.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>2. The API</h1>
+		This section describes how to incorporate the console into an existing project. Before any functions are called, you must
+		create an instance of the <a href="structures_console.htm">Console</a> structure. Once this is done, you're free to 
+		<a href="console_init.htm">initialize</a> the console, <a href="console_processinput.htm">poll for input</a> and
+		<a href="console_render.htm">render</a> it to the screen or another instance SDL_Surface. The console supports 
+		custom commands should be they be needed; these can be created by calling <a href="console_registercommand.htm"><code>Console_RegisterCommand</code></a> and are executed 
+		by calling <a href="console_executecommand.htm"><code>Console_ExecuteCommand</code></a>. The console must be initialised before any other functions
+		can be called, with the exception of the command-related functions 
+		<a href="console_iscommand.htm"><code>Console_IsCommand</code></a>, <a href="console_registercommand.htm"><code>Console_RegisterCommand</code></a> and <a href="console_executecommand.htm"><code>Console_ExecuteCommand</a></code>.
+		<br><br>
+		You'll only ever need to interact with the <a href="structures_console.htm">Console</a> structure if you're not planning on modifying the source code. There
+		are several other structures within the project that are used internally however, and these have been documented for completeness.
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Overview of the Console
+			<!-- <div class="navigation-centered-title">
+			</div> -->
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Structures
+			</div>
+		</div>
+		<div class="navigation">
+			<!--<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>-->
+			<a href="overview_of_the_console.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="structures.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>

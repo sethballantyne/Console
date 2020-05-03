@@ -62,7 +62,7 @@
 		<!-- Left-aligned links (default) -->
 			Structures
 			<div class="navigation-centered-title">
-			Console 1.0 Documentation
+			Console 1.1 Documentation
 			</div>
 			<!-- Right-aligned links -->
 			<div class="navigation-right">
@@ -93,7 +93,10 @@ struct Console
 {
 	std::map&lt;std::string, command_func_ptr&gt; commands;
 	BitmapFont defaultBitmapFont;
-	SDL_Surface *consoleSurface = nullptr;
+	BitmapFont externalBitmapFont;
+	SDL_Surface* consoleSurface = nullptr;
+	SDL_Surface* backgroundSurface = nullptr;
+	SDL_Surface* cursorSurface = nullptr;
 	InputBuffer inputBuffer;
 	OutputBuffer outputBuffer;
 	Uint32 defaultConsoleColour;
@@ -121,9 +124,24 @@ struct Console
 						usable by SDL.</td>
 					</tr>
 					<tr>
+						<td style="vertical-align:top"><code>externalBitmapFont</code></td>
+						<td style="padding:0px 4px">contains the font loaded into the console via <code><a href="console_setfont.htm">Console_SetFont</code></a>. When rendering
+						text, the console will attempt to render using this font; if its <code><a href="structures_bitmapfont.htm">fontSurface</a></code> member evaluates to <code>nullptr</code>,
+						it'll fallback to using the built-in font in <code>defaultBitmapFont</code>.</td>
+					</tr>
+					<tr>
 						<td style="vertical-align:top"><code>consoleSurface</code></td>
 						<td style="padding:0px 4px">The surface the font is blitted to when the text is entered into the console. 
 						This is blitted to another surface (usually the screen), when <a href="console_render.htm"><code>Console_Render</code></a> is called.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>backgroundSurface</code></td>
+						<td style="padding:0px 4px">The background image provided by a call to <code>Console_SetBackground</code>. If this evaluates to <code>nullptr</code>, the console will 
+						fallback to using a solid colour rectangle, the colour of which is specified in <code>defaultConsoleColour</code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>cursorSurface</code></td>
+						<td style="padding:0px 4px">Surface containing the cursor. A new cursor is created every time the font changes.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>inputBuffer<code></td>
@@ -131,7 +149,7 @@ struct Console
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>outputBuffer</code></td>
-						<td style="padding:0px 4px">Same as <var>inputBuffer</var>, but related to the space where all output is written. See <a href="structures_outputbuffer.htm"><code>OutputBuffer</code></a> for details.</td>
+						<td style="padding:0px 4px">Same as <code>inputBuffer</code>, but related to the space where all output is written. See <a href="structures_outputbuffer.htm"><code>OutputBuffer</code></a> for details.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>defaultConsoleColour</code></td>

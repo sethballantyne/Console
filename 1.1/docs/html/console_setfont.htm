@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<style>
+		body {
+			background-color:navajowhite;
+		}
+		
+		.navigation {
+			position: relative;
+			overflow: hidden;
+		}
+
+		.navigation a{
+			float: left;
+			text-decoration: none;
+		}
+
+		.navigation-centered {
+			loat: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.navigation-centered-title {
+			float: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-weight:bold;
+		}
+
+		.navigation-right {
+			float: right;
+		}
+	</style>
+	<head>
+		<title>Console_SetFont</title>
+		<meta charset="utf-8"/>
+		<meta name="author" content="Seth Ballantyne"/>
+		<meta name="description" content="documentation for the Console_SetFont function"/>
+	</head>
+	<body>
+		<!-------------------------------->
+		<!-- START TOP NAVIGATION BAR   -->
+		<!-------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_SetBackground
+			<div class="navigation-centered-title">
+			Console 1.1 Documentation
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Built-in Commands
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_setbackground.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="built_in_commands.htm">Next</a>
+			</div>
+		</div>
+		<!-------------------------------->
+		<!-- END TOP NAVIGATION BAR     -->
+		<!-------------------------------->
+		
+		<hr>
+		<h1>Console_SetFont</h1>
+		<h2>Summary</h2>
+		<code>
+		#include "console.h"
+		<br><br>
+		int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars,
+							  unsigned int charWidth, unsigned int charHeight, unsigned int startingChar, SDL_Colour* cursorColour)
+		</code>
+		<h2>Description</h2>
+		Sets the console font to the bitmap font specified in <code>fontSurface</code>. If <code>fontSurface</code> evaluates to 
+		<code>nullptr</code>, the console will fallback to the built-in font; this also means that <code>nullptr</code> can be used
+		to clear the current font if you wish. In this case, the values passed to <code>numChars</code>, <code>charWidth</code>,
+		<code>charHeight</code>, <code>startingChar</code> and <code>cursorColour</code> are disregarded. Note that if the console falls back to the default font, you don't need to 
+		create a cursor for it; the console will create one.
+		<br><br>
+		Bitmap fonts passed to Console_SetFont must be formatted thusly:
+		<ul>
+			<li>The first character begins at pixel coordinate 0,0.</li>
+			<li>Each character is assumed to be <code>charWidth</code> x <code>charHeight</code> in size, with each character directly following
+			the previous; there should be no gaps between characters.</li>
+			<li>Every character must be placed on a single horizontal line.</li>
+			<li>Characters must be ordered by their ASCII values, smallest to largest.</li>
+			<li>If using a colour key, it should be using the same colour specified during initilization; see <a href="console_init.htm"><code>Console_Init</code></a>.
+		</ul>
+		An example of a valid bitmap font can be found <a href="imgs/console_setfont_font_example.png">here</a>. This font contains 95 characters starting 
+		from decimal 32 (space) and ending at decimal 126 (the '~' character). Each character is 18x18 pixels in size.
+		<br><br>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>fontSurface</code></td>
+						<td style="padding:0px 4px">the bitmap font the console should use; it's up to the programmer to create
+						this instance of <code>SDL_Surface</code> before calling <code>Console_SetFont</code> and free it when it's no longer needed.
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>numChars</code></td>
+						<td style="padding:0px 4px">the number of characters in the font.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>charWidth</code></td>
+						<td style="padding:0px 4px">the character width of the font, in pixels.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>charHeight</code></td>
+						<td style="padding:0px 4px">the character height of the font, in pixels.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>startingChar</code></td>
+						<td style="padding:0px 4px">the ASCII value of the first character in the font.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>cursorColour</code></td>
+						<td style="padding:0px 4px">the desired colour of the cursor for the new font. If <code>nullptr</code> is passed,
+						the default font colour specified in <code>defaults.h</code> is used.</td>
+					</tr>
+				</tbody>
+		</table>
+		<h2>Return Value</h2>
+		<table>
+				<tbody>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
+						<td style="padding:0px 4px">The console's font was successfully changed to the specified font in <code>fontSurface</code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>CONSOLE_RET_NULLPTR_ARGUMENT</code></td>
+						<td style="padding:0px 4px"><code>fontSurface</code> evaluated to <code>nullptr</code>, resulting in the console
+						falling back to the built-in font.</td>
+					</tr>
+				</tbody>
+		</table>
+		<hr>
+		
+		<!------------------------------------->
+		<!-- BOTTOM TOP NAVIGATION BAR       -->
+		<!------------------------------------->
+		<div class="navigation">
+		<!-- Left-aligned links (default) -->
+			Console_SetBackground
+			<div class="navigation-centered">
+			<a href="functions.htm">Up</a>
+			</div>
+			<!-- Right-aligned links -->
+			<div class="navigation-right">
+				Built-in Commands
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-centered">
+				<a href="../index.htm">Table of Contents</a>
+			</div>
+			<a href="console_setbackground.htm">Previous</a>
+			<div class="navigation-right">
+				<a href="built_in_commands.htm">Next</a>
+			</div>
+		</div>
+		<!------------------------------------->
+		<!-- END BOTTOM TOP NAVIGATION BAR   -->
+		<!------------------------------------->  
+	</body>
+</html>
