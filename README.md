@@ -1,5 +1,5 @@
 # Console
-Console is a quake-style console written in C++ using SDL 1.2. It's designed to be lightweight and easy to use: the API only consists of 10 functions and there's no libraries to link against; just drop `console.cpp`, `console.h` and `defaults.h` into your project and you're ready to go. Full HTML documentation also exists if you like to read. :P
+
 
 Including the console into a project is fairly simple:
 
@@ -65,4 +65,3 @@ Console_RegisterCommand(con, "custom_command", CustomCommandFunc);
 You can programmatically execute a command by calling `Console_ExecuteCommand`, though typically you won't need to do this because part of the job `Console_ProcessInput` is to detect whether commands have been entered and executing them.
 
 A fully working example exists in the documentation. For more information on the API and how the console works, see the documentation (HINT: read the docs!). 
-
