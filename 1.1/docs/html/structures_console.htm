@@ -94,8 +94,9 @@ struct Console
 	std::map&lt;std::string, command_func_ptr&gt; commands;
 	BitmapFont defaultBitmapFont;
 	BitmapFont externalBitmapFont;
-	SDL_Surface *consoleSurface = nullptr;
-	SDL_Surface *backgroundSurface = nullptr;
+	SDL_Surface* consoleSurface = nullptr;
+	SDL_Surface* backgroundSurface = nullptr;
+	SDL_Surface* cursorSurface = nullptr;
 	InputBuffer inputBuffer;
 	OutputBuffer outputBuffer;
 	Uint32 defaultConsoleColour;
@@ -137,6 +138,10 @@ struct Console
 						<td style="vertical-align:top"><code>backgroundSurface</code></td>
 						<td style="padding:0px 4px">The background image provided by a call to <code>Console_SetBackground</code>. If this evaluates to <code>nullptr</code>, the console will 
 						fallback to using a solid colour rectangle, the colour of which is specified in <code>defaultConsoleColour</code>.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>cursorSurface</code></td>
+						<td style="padding:0px 4px">Surface containing the cursor. A new cursor is created every time the font changes.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>inputBuffer<code></td>
