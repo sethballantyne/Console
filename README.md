@@ -21,11 +21,12 @@ if(result != CONSOLE_RET_SUCCESS)
   ..... // error handling here
 }
 ```
-screen is obviously the `SDL_Surface` instance you're using to render to the screen. The `nullptr`'s are telling the Console
-to use the default colours for the console's background, font colour and colour key.
+screen is the `SDL_Surface` instance you're using to render to the screen. The `nullptr`'s are telling the console
+to use the default colours for the console's background, font colour and colour key. The console contains a built-in ASCII font
+which it uses by default. If you want to use a custom bitmap font, you can do so by calling `Console_SetFont` once the console has been initialized.
 
 **3. Enable Unicode in SDL.** 
-The console uses this to retrieve the ASCII values of keys pressed. 
+The console uses this to retrieve the ASCII values of keys pressed. You can do this before the console is initiliazed if you prefer.
 ```
 SDL_EnableUNICODE(1);
 ```
