@@ -5,12 +5,15 @@ projects; there's no libraries to link against, just drop the source files into 
 
 Including the console into a project is fairly simple:
 
-1. Create an instance of the Console structure
+**1. Create an instance of the Console structure**
 ```
+#include "console.h"
+using namespce console;
+
 Console con;
 ```
 
-2. Initialize it:
+**2. Initialize it:**
 ```
 int result = Console_Init(con, screen, nullptr, nullptr, nullptr)
 if(result != CONSOLE_RET_SUCCESS)
@@ -21,12 +24,14 @@ if(result != CONSOLE_RET_SUCCESS)
 screen is obviously the `SDL_Surface` instance you're using to render to the screen. The `nullptr`'s are telling the Console
 to use the default colours for the console's background, font colour and colour key.
 
-3. Enable Unicode in SDL. The console uses this to retrieve the ASCII values of keys pressed. The irony of using unicode to retrieve ASCII values is not lost on me. ;)
+**3. Enable Unicode in SDL.** 
+The console uses this to retrieve the ASCII values of keys pressed. 
 ```
 SDL_EnableUNICODE(1);
 ```
 
-4. In your main loop, call `Console_ProcessInput`. I do this when an `SDL_KEYDOWN` event is being handled:
+**4. In your main loop, call `Console_ProcessInput`.**
+I do this when an `SDL_KEYDOWN` event is being handled:
 
 ```
 ..... // inside an event handler
@@ -51,7 +56,7 @@ case SDL_KEYUP:
 
 Note that you don't have to use the `enabled` member of the Console structure; it's simply provided for your convenience and the console never directly makes use of it. Regardless of which method you use, don't forget to bind the console to a key!
 
-5. Render!
+**5. Render!**
 ```
 Console_Render(con, screen);
 ```
