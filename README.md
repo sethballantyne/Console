@@ -8,7 +8,7 @@ Including the console into a project is fairly simple:
 **1. Create an instance of the Console structure**
 ```
 #include "console.h"
-using namespce console;
+using namespace console;
 
 Console con;
 ```
