@@ -159,7 +159,7 @@ namespace console
 
 
 	/// INTERNAL BITMAP FONT FUNCTIONS ////////////////////////////////////////////////
-	int BitmapFont_InitBuiltInFont(BitmapFont& bitmapFont, SDL_Surface *screen, int numChars, int characterWidth, 
+	int BitmapFont_InitBuiltInFont(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, 
 								   int characterHeight, unsigned char firstChar, unsigned char lastChar, SDL_Colour* fontColour, SDL_Colour* transparency);
 	int BitmapFont_RenderLine(Console& console, BitmapFont& font, std::string& line, int x, int y);
 
@@ -194,9 +194,9 @@ namespace console
 	int Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args);
 	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr commandFuncPtr);
 	void Console_SetBackground(Console& console, SDL_Surface* imageSurface);
-	int Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars, 
-						 unsigned int charWidth, unsigned int charHeight, unsigned char firstChar,
-						 unsigned char lastChar, SDL_Colour* cursorColour);
+	int Console_SetFont(Console& console, SDL_Surface* fontSurface,  
+						 unsigned int charWidth, unsigned int charHeight, unsigned char firstChar, unsigned char lastChar,
+						 SDL_Colour* cursorColour);
 	int Console_CreateCursor(Console& console, SDL_Colour* colour);
 	int Console_ResolutionChanged(Console& console, SDL_Surface *screen);
 }

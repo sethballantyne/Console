@@ -131,17 +131,18 @@ void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 //	return CONSOLE_RET_SUCCESS;
 //}
 
-int console::BitmapFont_InitBuiltInFont(BitmapFont& bitmapfont, SDL_Surface* consoleSurface, int numChars, int characterWidth, int characterHeight, unsigned char firstChar, unsigned char lastChar, SDL_Colour* fontColour, SDL_Colour* transparencyColour)
+int console::BitmapFont_InitBuiltInFont(BitmapFont& bitmapfont, SDL_Surface* consoleSurface, int characterWidth, int characterHeight, unsigned char firstChar, unsigned char lastChar, SDL_Colour* fontColour, SDL_Colour* transparencyColour)
 {
 	SDL_Colour defaultFontColour = { DEFAULT_FONT_COLOUR_R, DEFAULT_FONT_COLOUR_G, DEFAULT_FONT_COLOUR_B, 0 };
 	SDL_Colour defaultTransparencyColour = { DEFAULT_COLOUR_KEY_R, DEFAULT_COLOUR_KEY_G, DEFAULT_COLOUR_KEY_B, 0 };
 
-	int fontSheetWidth = characterWidth * numChars;
 	bitmapfont.characterWidth = characterWidth;
 	bitmapfont.characterHeight = characterHeight;
 	bitmapfont.firstChar = firstChar;
 	bitmapfont.lastChar = lastChar;
-	bitmapfont.numberOfChars = numChars;
+	bitmapfont.numberOfChars = (lastChar - firstChar) + 1;
+
+	int fontSheetWidth = characterWidth * bitmapfont.numberOfChars;
 
 	bitmapfont.fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, fontSheetWidth,
 												  characterHeight, consoleSurface->format->BitsPerPixel, consoleSurface->format->Rmask,
@@ -159,7 +160,7 @@ int console::BitmapFont_InitBuiltInFont(BitmapFont& bitmapfont, SDL_Surface* con
 
 	int xBasePosition = 0;
 
-	for(int i = 0; i < numChars; i++)
+	for(int i = 0; i < bitmapfont.numberOfChars; i++)
 	{
 		for(int j = 0; j < characterHeight; j++)
 		{
@@ -434,9 +435,9 @@ int console::Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* con
 		return CONSOLE_RET_CREATE_SURFACE_FAIL;
 	}
 
-	int result = BitmapFont_InitBuiltInFont(console.defaultBitmapFont, console.consoleSurface, DEFAULT_FONT_NUM_GLYPHS, 
-											DEFAULT_FONT_WIDTH, DEFAULT_FONT_HEIGHT, DEFAULT_FONT_FIRST_CHARACTER, DEFAULT_FONT_LAST_CHARACTER, fontColour, 
-											transparencyColour);
+	int result = BitmapFont_InitBuiltInFont(console.defaultBitmapFont, console.consoleSurface, 
+											DEFAULT_FONT_WIDTH, DEFAULT_FONT_HEIGHT, DEFAULT_FONT_FIRST_CHARACTER,
+											DEFAULT_FONT_LAST_CHARACTER, fontColour, transparencyColour);
 	if(CONSOLE_RET_SUCCESS != result)
 	{
 		return result;
@@ -660,16 +661,17 @@ void console::Console_SetBackground(Console& console, SDL_Surface* imageSurface)
 	}
 }
 
-int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars,
-							  unsigned int charWidth, unsigned int charHeight, unsigned char firstChar,
-							  unsigned char lastChar, SDL_Colour* cursorColour)
+int console::Console_SetFont(Console& console, SDL_Surface* fontSurface, 
+							  unsigned int charWidth, unsigned int charHeight, 
+							  unsigned char firstChar, unsigned char lastChar,
+							  SDL_Colour* cursorColour)
 {
 	console.externalBitmapFont.fontSurface = fontSurface;
 	console.externalBitmapFont.characterHeight = charHeight;
 	console.externalBitmapFont.characterWidth = charWidth;
 	console.externalBitmapFont.firstChar = firstChar;
 	console.externalBitmapFont.lastChar = lastChar;
-	console.externalBitmapFont.numberOfChars = numChars;
+	console.externalBitmapFont.numberOfChars = (lastChar - firstChar) + 1;
 	console.externalBitmapFont.transparencyColour = console.defaultBitmapFont.transparencyColour;
 
 	// changing fonts requires a few things to be recalculated
