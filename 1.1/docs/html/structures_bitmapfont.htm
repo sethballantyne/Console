@@ -97,7 +97,8 @@ struct BitmapFont
 	int characterHeight;
 	int characterWidth;
 	int numberOfChars;
-	char startingChar;
+	unsigned char firstChar;
+	unsigned char lastChar;
 	
 	~BitmapFont()
 	{
@@ -136,8 +137,12 @@ struct BitmapFont
 						<td style="padding:0px 4px">The number of characters in the font.</td>
 					</tr>
 					<tr>
-						<td style="vertical-align:top"><code>startingChar</code></td>
+						<td style="vertical-align:top"><code>firstChar</code></td>
 						<td style="padding:0px 4px">The ASCII value of the first character in the font.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>lastChar</code></td>
+						<td style="padding:0px 4px">The ASCII value of the last character in the font.</td>
 					</tr>
 				</tbody>
 			</table>
