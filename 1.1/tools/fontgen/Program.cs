@@ -5,7 +5,7 @@
 //| || (_) | | | | || (_| |  __/ | | |
 //|_| \___/|_| |_|\__\__, |\___|_| |_|
 //                    __/ |           
-//                   |___/  v1.0
+//                   |___/  v1.1
                   
 /*
 * MIT License
@@ -59,7 +59,10 @@ namespace fontgen
         // the decimal value of the first character in the font.
         // used for writing a comment at the top of each character
         // in the output file.
-        static byte charCounter = 32;
+        static byte firstCharacter = 32;
+
+        // the last character in the font. 126 = tilde.
+        static byte lastCharacter = 126;
 
         static void ExceptionPrompt(string message)
         {
@@ -90,16 +93,6 @@ namespace fontgen
                                 output = splitStr[1];
                             }
                             break;
-                        case "numchars":
-                            try
-                            {
-                                numChars = Convert.ToInt32(splitStr[1]);
-                            }
-                            catch
-                            {
-                                Console.WriteLine("the numchars argument contains an invalid value; using defaults.");
-                            }
-                            break;
                         case "width":
                             try
                             {
@@ -120,10 +113,20 @@ namespace fontgen
                                 Console.WriteLine("the width argument contains an invalid value; using defaults.");
                             }
                             break;
-                        case "initial":
+                        case "firstchar":
                             try
                             {
-                                charCounter = Convert.ToByte(splitStr[1]);
+                                firstCharacter = Convert.ToByte(splitStr[1]);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("the initial argument contains an invalid value; using defaults.");
+                            }
+                            break;
+                        case "lastchar":
+                            try
+                            {
+                                lastCharacter = Convert.ToByte(splitStr[1]);
                             }
                             catch
                             {
@@ -149,7 +152,7 @@ namespace fontgen
                 Console.WriteLine("| || (_) | | | | || (_| |  __/ | | |");
                 Console.WriteLine("|_| \\___/|_| |_|\\__\\__, |\\___|_| |_|");
                 Console.WriteLine("                    __/ |           ");
-                Console.WriteLine("                   |___/  v1.0      ");
+                Console.WriteLine("                   |___/  v1.1      ");
                 Console.WriteLine();
 
                 ParseCommandLineArgs(args);
@@ -175,6 +178,8 @@ namespace fontgen
                             throw new Exception("the specified height value is greater than the height of the font image.");
                         }
 
+                        numChars = (lastCharacter - firstCharacter) + 1;
+
                         Console.WriteLine("Using font {0}", fontFile);
                         Console.WriteLine("Writing output to {0}", output);
                         Console.WriteLine("number of characters: {0}", numChars);
@@ -186,11 +191,14 @@ namespace fontgen
 
                         sw.WriteLine("#define DEFAULT_FONT_HEIGHT\t{0}", glyphHeight);
                         sw.WriteLine("#define DEFAULT_FONT_WIDTH\t{0}", glyphWidth);
-                        sw.WriteLine("#define DEFAULT_FONT_NUM_GLYPHS {0}", numChars);
-                        sw.WriteLine("#define DEFAULT_FONT_FIRST_CHAR {0}", charCounter);
-                        sw.WriteLine("#define DEFAULT_FONT_LAST_CHAR {0}", charCounter + numChars - 1);
+                        sw.WriteLine("#define DEFAULT_FONT_FIRST_CHAR {0}", firstCharacter);
+                        sw.WriteLine("#define DEFAULT_FONT_LAST_CHAR {0}", lastCharacter);
+                        sw.WriteLine("#define DEFAULT_FONT_NUM_GLYPHS (DEFAULT_FONT_LAST_CHARACTER - DEFAULT_FONT_FIRST_CHARACTER) + 1");
+                       
                         sw.WriteLine();
                         sw.WriteLine("const char defaultFont[DEFAULT_FONT_NUM_GLYPHS][DEFAULT_FONT_HEIGHT][DEFAULT_FONT_WIDTH] = {");
+
+                        byte charCounter = firstCharacter;
 
                         for (int i = 0; i < numChars; i++)
                         {
