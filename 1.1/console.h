@@ -67,9 +67,9 @@ namespace console
 
 		int numberOfChars;
 
-		// only used for external fonts loaded in via
-		// Console_SetFont.
-		char startingChar;
+		unsigned char firstChar;
+
+		unsigned char lastChar;
 
 		~BitmapFont()
 		{
@@ -160,23 +160,22 @@ namespace console
 
 	/// INTERNAL BITMAP FONT FUNCTIONS ////////////////////////////////////////////////
 	int BitmapFont_InitBuiltInFont(BitmapFont& bitmapFont, SDL_Surface *screen, int numChars, int characterWidth, 
-								   int characterHeight, char startingChar, SDL_Colour* fontColour, SDL_Colour* transparency);
+								   int characterHeight, unsigned char firstChar, unsigned char lastChar, SDL_Colour* fontColour, SDL_Colour* transparency);
 	int BitmapFont_RenderLine(Console& console, BitmapFont& font, std::string& line, int x, int y);
-	int BitmapFont_RenderLine(Console& console, std::string& line, int x, int y);
 
 	/// INTERNAL INPUTBUFFER FUNCTIONS ////////////////////////////////////////////////
 	void InputBuffer_SplitInput(InputBuffer& inputBuffer, std::string& command, std::vector<std::string>& args);
 	void InputBuffer_Init(Console& console);
-	int InputBuffer_Render(Console& console);
+	int InputBuffer_Render(Console& console, BitmapFont& font);
 
 	/// INTERNAL OUTPUTBUFFER FUNCTIONS //////////////////////////////////////////////
 	void OutputBuffer_Init(Console& console);
-	int OutputBuffer_Render(Console& console);
+	int OutputBuffer_Render(Console& console, BitmapFont& font);
 	void OutputBuffer_ResizeText(Console& console);
 	//void OutputBuffer_Scroll(Console& console, int numberOfLines, int direction);
 
 	/// INTERNAL CURSOR FUNCTIONS ////////////////////////////////////////////////////
-	void Cursor_Render(Console& console);
+	void Cursor_Render(Console& console, BitmapFont& font);
 
 	/********************************************************************************
      * END INTERNAL FUNCTIONS
@@ -196,8 +195,8 @@ namespace console
 	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr commandFuncPtr);
 	void Console_SetBackground(Console& console, SDL_Surface* imageSurface);
 	int Console_SetFont(Console& console, SDL_Surface* fontSurface, unsigned int numChars, 
-						 unsigned int charWidth, unsigned int charHeight, unsigned int startingChar,
-						 SDL_Colour* cursorColour);
+						 unsigned int charWidth, unsigned int charHeight, unsigned char firstChar,
+						 unsigned char lastChar, SDL_Colour* cursorColour);
 	int Console_CreateCursor(Console& console, SDL_Colour* colour);
 	int Console_ResolutionChanged(Console& console, SDL_Surface *screen);
 }
