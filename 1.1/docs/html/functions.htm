@@ -89,6 +89,10 @@
 		This section details the functions used to control the console. With the exception of the Console_*Command functions, you must
 		call <code><a href="console_init.htm">Console_Init</code></a> before using the other functions. The <a href="structures_inputbuffer.htm"><code>InputBuffer</code></a>, <code><a href="structures_outputbuffer.htm">OutputBuffer</a></code> and <a href="structures_bitmapfont.htm"><code>BitmapFont</code></a> data structures described in the previous section 
 		have their own associated functions, but these are intended for internal use only.
+		<br><br>
+		The API doesn't contain any clean up functions, as the <a href="structures_console.htm"><code>Console</code></a> structure contains a destructor that does clean up when it's time. Note that
+		surfaces passed to the console via <a href="console_setfont.htm"><code>Console_SetFont</code></a> and <a href="console_setbackground.htm"><code>Console_SetBackground</code></a> are never freed by the console; it's
+		up to the programmer to do this.
 		<hr>
 		
 		<!------------------------------------->

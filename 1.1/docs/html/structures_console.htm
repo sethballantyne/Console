@@ -127,12 +127,12 @@ struct Console
 						<td style="vertical-align:top"><code>externalBitmapFont</code></td>
 						<td style="padding:0px 4px">contains the font loaded into the console via <code><a href="console_setfont.htm">Console_SetFont</code></a>. When rendering
 						text, the console will attempt to render using this font; if its <code><a href="structures_bitmapfont.htm">fontSurface</a></code> member evaluates to <code>nullptr</code>,
-						it'll fallback to using the built-in font in <code>defaultBitmapFont</code>.</td>
+						it'll fall back to using the built-in font in <code>defaultBitmapFont</code>.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>consoleSurface</code></td>
-						<td style="padding:0px 4px">The surface the font is blitted to when the text is entered into the console. 
-						This is blitted to another surface (usually the screen), when <a href="console_render.htm"><code>Console_Render</code></a> is called.</td>
+						<td style="padding:0px 4px">The surface the font and background are blitted to when <a href="console_render.htm"><code>Console_Render</code></a> is called. This surface is subsequently blitted to the <code>screen</code>
+						argument in <a href="console_render.htm"><code>Console_Render</code></a>.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>backgroundSurface</code></td>
@@ -153,7 +153,7 @@ struct Console
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>defaultConsoleColour</code></td>
-						<td style="padding:0px 4px">The background colour that the console will be filled with. This value is generated
+						<td style="padding:0px 4px">The background colour that the console will be filled with if an image isn't being used. This value is generated
 						by a call to <code>SDL_MapRGB</code> during intitialization.</td>
 					</tr>
 					<tr>
@@ -165,8 +165,9 @@ struct Console
 			</table>
 		<h2>Description</h2>
 		As the name suggests, <code>Console</code> is the structure that reprensents the console itself and it's generally the only
-		structure you'll need to work with when using the console. All members except for <code>commands</code> and <code>enabled</code>
-		are set when <a href="console_init.htm"><code>Console_Init</code></a> is called. Avoid manually modifying these if you don't want to be disappointed.
+		structure you'll need to work with when using the console. All members except for <code>commands</code>, <code>enabled</code> and
+		<code>externalBitmapFont</code> are set when <a href="console_init.htm"><code>Console_Init</code></a> is called. Avoid manually modifying these if you don't want to be disappointed.
+		
 		<hr>
 		<!------------------------------------->
 		<!-- BOTTOM TOP NAVIGATION BAR       -->

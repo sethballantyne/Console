@@ -73,13 +73,13 @@
 		<hr>
 		<h1>1. Introduction</h1>
 		<p>
-		Console is a quake-style drop down console written in C++ 11, using SDL 1.2.
+		Console is a quake-style console written in C++ 11, using SDL 1.2.
 		Given the nature of the project, it's assumed users will want/need to customize Console.
 		For this reason, there's no pre-built libraries, but instead 3 source files that can 
-		be added to an existing code base. Console has been designed so it's relatively fail safe: it contains
-		a built in font and uses solid colours to render the console's background. A tool exists to generate
+		be added to an existing code base. Console has been designed so it's relatively fail safe: by default, the console
+		will use a built-in font and a solid colour to render the console's background. A tool exists to generate
 		fonts from bitmap files into the required 3 dimensional array if you wish to customize the font; see <a href="tools_fontgen.htm">fontgen</a> for
-		details. 
+		details. External bitmap fonts and background images can also be used.
 		<br><br>
 		Console is written by <a href="mailto:seth.ballantyne@gmail.com">Seth Ballantyne</a> and released under the <a href="license.htm">MIT license</a>.
 		The latest version can be found on the projects <a href="https://www.github.com/sethballantyne/Console">Github repository</a>.

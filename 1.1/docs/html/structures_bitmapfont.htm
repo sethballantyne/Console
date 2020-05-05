@@ -142,8 +142,8 @@ struct BitmapFont
 				</tbody>
 			</table>
 		<h2>Description</h2>
-		BitmapFont is used to store the result of converting a built-in font to a format that's usable by SDL. The resulting font stored
-		in <code>fontSurface</code> is formatted in such a way that each character is rendered on a single row with no gaps
+		<code>BitmapFont</code> is used to store the result of converting a built-in font to a format that's usable by SDL. It's also used to hold external fonts loaded in via <code><a href="console_setfont.htm">Console_SetFont</code></a>. 
+		Fonts represented by this structure are stored in such a way that in its surface, each character is rendered on a single row with no gaps
 		between each character. Generally speaking, you won't need to interact with this structure directly, so it's only documented for completeness.
 		<hr>
 		<!------------------------------------->

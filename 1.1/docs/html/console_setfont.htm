@@ -86,7 +86,7 @@
 		<code>charHeight</code>, <code>startingChar</code> and <code>cursorColour</code> are disregarded. Note that if the console falls back to the default font, you don't need to 
 		create a cursor for it; the console will create one.
 		<br><br>
-		Bitmap fonts passed to Console_SetFont must be formatted thusly:
+		Bitmap fonts passed to <code>Console_SetFont</code> must be formatted thusly:
 		<ul>
 			<li>The first character begins at pixel coordinate 0,0.</li>
 			<li>Each character is assumed to be <code>charWidth</code> x <code>charHeight</code> in size, with each character directly following
@@ -107,23 +107,23 @@
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>numChars</code></td>
-						<td style="padding:0px 4px">the number of characters in the font.</td>
+						<td style="padding:0px 4px">The number of characters in the font.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>charWidth</code></td>
-						<td style="padding:0px 4px">the character width of the font, in pixels.</td>
+						<td style="padding:0px 4px">The character width of the font, in pixels.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>charHeight</code></td>
-						<td style="padding:0px 4px">the character height of the font, in pixels.</td>
+						<td style="padding:0px 4px">The character height of the font, in pixels.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>startingChar</code></td>
-						<td style="padding:0px 4px">the ASCII value of the first character in the font.</td>
+						<td style="padding:0px 4px">The ASCII value of the first character in the font.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>cursorColour</code></td>
-						<td style="padding:0px 4px">the desired colour of the cursor for the new font. If <code>nullptr</code> is passed,
+						<td style="padding:0px 4px">The desired colour of the cursor for the new font. If <code>nullptr</code> is passed,
 						the default font colour specified in <code>defaults.h</code> is used.</td>
 					</tr>
 				</tbody>

@@ -86,7 +86,7 @@
 		is printed to the console and <code>CONSOLE_RET_COMMAND_DOESNT_EXIST</code> is returned.
 		<br><br>
 		There's currently no way to determine whether commands successfully execute, as commands don't have a return value; failure
-		or success as has to be managed within the command's implementation. Note that any uppercase characters in <code>command</code>
+		or success has to be managed within the command's implementation. Note that any uppercase characters in <code>command</code>
 		will be converted to lowercase.
 	</p>
 		<h2>Return Value</h2>
@@ -94,16 +94,16 @@
 				<tbody>
 					<tr>
 						<td style="vertical-align:top"><code>CONSOLE_RET_SUCCESS</code></td>
-						<td style="padding:0px 4px">the function executed the specified command.
+						<td style="padding:0px 4px">The function executed the specified command.
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>CONSOLE_RET_NULLPTR_ARGUMENT</code></td>
-						<td style="padding:0px 4px">the function pointer that points to the function implementing the command evaluates to <code>nullptr</code>; this is probably because
+						<td style="padding:0px 4px">The function pointer that points to the function implementing the command evaluates to <code>nullptr</code>; this is probably because
 						a <code>nullptr</code> or garbage value was passed to the <code>command_func_ptr</code> parameter in <code><a href="console_registercommand.htm">Console_RegisterCommand.</a></code></td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>CONSOLE_RET_COMMAND_DOESNT_EXIST</code></td>
-						<td style="padding:0px 4px">the specified command doesn't exist; register it with <code><a href="console_registercommand.htm">Console_RegisterCommand.</code></td>
+						<td style="padding:0px 4px">The specified command doesn't exist; register it with <code><a href="console_registercommand.htm">Console_RegisterCommand.</code></td>
 					</tr>
 				</tbody>
 			</table>

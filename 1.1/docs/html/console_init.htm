@@ -79,17 +79,16 @@
 			int console::Console_Init(console::Console& console, SDL_Surface* screen, SDL_Colour* consoleColour, SDL_Colour* fontColour, SDL_Colour* transparencyColour);
 		</code>
 		<h2>Description</h2>
-		Initializes the console as a software surface; this function also creates the built-in font as an <code>SDL_Surface</code>.
+		Initializes the console, creates the built-in font and associated cursor, and registers the console's built-in commands.
 		During initialization, the console's width will be set to the same as <code>screen</code>, but half its height. If <code>nullptr</code>
-		is passed for any of the colour arguments, a default colour will be used for that argument. <code>Console_Init</code> will also create a cursor for the font which
-		will be the same size and colour as the font.
+		is passed for any of the colour arguments, a default colour will be used for that argument. 
 		<br><br>
 		
 		<table>
 				<tbody>
 					<tr>
 						<td style="vertical-align:top"><code>screen</code></td>
-						<td style="padding:0px 4px">The <code>SDL_Surface</code> being used to render to the screen.</td>
+						<td style="padding:0px 4px">The target surface that the console will render to.</td>
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>consoleColour</code></td>
@@ -115,7 +114,7 @@
 					</tr>
 					<tr>
 						<td style="vertical-align:top"><code>CONSOLE_RET_CREATE_SURFACE_FAIL</code></td>
-						<td style="padding:0px 4px"><code>SDL_CreateRGBSurface</code> failed to create the consoles surface or the
+						<td style="padding:0px 4px"><code>SDL_CreateRGBSurface</code> failed to create the console's surface or the
 						surface for the built-in font.
 						Each surface is created using <code>screen</code>'s pixel format along with its width and height, so
 						verify these are valid. Otherwise, check the implementation of <code>Console_Init</code>: it could be the flags

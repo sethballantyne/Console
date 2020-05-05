@@ -121,8 +121,8 @@ struct InputBuffer
 				</tbody>
 			</table>
 		<h2>Description</h2>
-		InputBuffer is used by Console to manage user input and where it's rendered; it's documented only for completeness as you generally
-		wont need to interact with this structure.  With the exception of <code>buffer</code>, all fields are set when Console_Init is called.
+		<code>InputBuffer</code> is used by <a href="structures_console.htm"><code>Console</code></a> to manage user input and where it's rendered; it's documented only for completeness as you generally
+		wont need to interact with this structure.  With the exception of <code>buffer</code>, all fields are set when <a href="console_init.htm"><code>Console_Init</code></a> is called.
 		Manually setting <code>maxBufferLength</code> to a higher value will result in disappointment, as the buffer doesn't scroll. The general
 		rule of thumb is don't mess with anything in this structure.
 		<hr>

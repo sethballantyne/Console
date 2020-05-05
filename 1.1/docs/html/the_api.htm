@@ -73,16 +73,19 @@
 		<hr>
 		<h1>2. The API</h1>
 		This section describes how to incorporate the console into an existing project. Before any functions are called, you must
-		create an instance of the <a href="structures_console.htm">Console</a> structure. Once this is done, you're free to 
+		create an instance of the <a href="structures_console.htm"><code>Console</code></a> structure. Once this is done, you're free to 
 		<a href="console_init.htm">initialize</a> the console, <a href="console_processinput.htm">poll for input</a> and
-		<a href="console_render.htm">render</a> it to the screen or another instance SDL_Surface. The console supports 
+		<a href="console_render.htm">render</a> it to the screen or another instance of <code>SDL_Surface</code>. The console supports 
 		custom commands should be they be needed; these can be created by calling <a href="console_registercommand.htm"><code>Console_RegisterCommand</code></a> and are executed 
 		by calling <a href="console_executecommand.htm"><code>Console_ExecuteCommand</code></a>. The console must be initialised before any other functions
 		can be called, with the exception of the command-related functions 
 		<a href="console_iscommand.htm"><code>Console_IsCommand</code></a>, <a href="console_registercommand.htm"><code>Console_RegisterCommand</code></a> and <a href="console_executecommand.htm"><code>Console_ExecuteCommand</a></code>.
 		<br><br>
-		You'll only ever need to interact with the <a href="structures_console.htm">Console</a> structure if you're not planning on modifying the source code. There
-		are several other structures within the project that are used internally however, and these have been documented for completeness.
+		External bitmap fonts can be used by calling <a href="console_setfont.htm"><code>Console_SetFont</code></a>, and an image can be used for the console background by calling <a href="console_setbackground.htm"><code>Console_SetBackground</code></a>.
+		When the player changes the game's resolution, the console will need to be updated to reflect the change. You can do this by calling <a href="console_resolutionchanged.htm"><code>Console_ResolutionChanged</code></a>.
+		<br><br>
+		You'll only ever need to interact with the <a href="structures_console.htm"><code>Console</code></a> structure if you're not planning on modifying the source code. There
+		are several other <a href="structures.htm">structures</a> within the project that are used internally however, and these have been documented for completeness.
 		<hr>
 		
 		<!------------------------------------->

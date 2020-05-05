@@ -80,10 +80,10 @@
 		</code>
 		<h2>Description</h2>
 			<code>Console_ResolutionChanged</code> reconfigures the console based on the width and height of the surface passed into <code>screen</code>. 
-			As the name suggests, this function needs to be called after a resolution change has occurred; failing to do so will result in the console
+			As the name suggests, this function needs to be called after a resolution change has occurred; failing to do so may result in the console
 			not operating correctly. Note that this function does not resize images used as console backgrounds; if a custom background
 			is being used, you may need to load in a new image to reflect the change in size by calling <a href="console_setbackground.htm"><code>Console_SetBackground</code></a>
-			after <code>Console_ResolutionChanged</code> has executed. The same applies to extenal bitmap fonts loaded in via <a href="console_setfont.htm"><code>Console_SetFont</code></a>.
+			after <code>Console_ResolutionChanged</code> has executed. The same applies to external bitmap fonts loaded in via <a href="console_setfont.htm"><code>Console_SetFont</code></a>.
 		<h2>Return Value</h2>
 		<table>
 				<tbody>
