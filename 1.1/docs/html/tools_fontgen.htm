@@ -74,7 +74,7 @@
 		<h1>4. Fontgen</h1>
 		<h2>Summary</h2>
 			<code>
-				fontgen [font=&lt;path&gt;] [output=&lt;path&gt;] [numchars=&lt;num&gt;] [width=&lt;character width&gt;] [height=&lt;character height&gt;] [initial=&lt;first character&gt;]
+				fontgen [font=&lt;path&gt;] [output=&lt;path&gt;] [width=&lt;character width&gt;] [height=&lt;character height&gt;] [firstchar=&lt;first character&gt;] [lastchar=&lt;last character&gt;]
 			</code>
 		<h2>Description</h2>
 		Fontgen is a program that's designed to make creating built-in fonts a little less time consuming, by taking an existing bitmap font and converting
@@ -87,11 +87,11 @@
 			<dt><code>DEFAULT_FONT_WIDTH</code></dt>
 			<dd>the pixel width of each character in the font.</dd>
 			<dt><code>DEFAULT_FONT_NUM_GLYPHS</code></dt>
-			<dd>the specified number of characters in the font.</dd>
+			<dd>the number of characters in the font.</dd>
 			<dt><code>DEFAULT_FONT_FIRST_CHAR</code></dt>
-			<dd>The first character in the font.</dd>
+			<dd>the first character in the font.</dd>
 			<dt><code>DEFAULT_FONT_LAST_CHAR</code></dt>
-			<dd>The last character in the font. This is calculated by fontgen based on the decimal value passed for the initial character, plus the number of characters in the font, minus 1 (fontgen starts counting from the initial character).</dd>
+			<dd>the last character in the font.</dd>
 		</dl>
 		The bitmap font specified in the <code>font</code> argument must be laid out in a particular way. Specifically, there must be:
 		<ul>
@@ -122,10 +122,6 @@
 						The default for this option is to write to <code>output.txt</code> in the same directory as fontgen.</td>
 					</tr>
 					<tr>
-						<td style="vertical-align:top"><code>numchars</code></td>
-						<td style="padding:0px 4px">the number of characters in the font; the default is <code>95</code>.</td>
-					</tr>
-					<tr>
 						<td style="vertical-align:top"><code>width</code></td>
 						<td style="padding:0px 4px">How wide each character is in pixels; the default is <code>10</code>.</td>
 					</tr>
@@ -134,18 +130,22 @@
 						<td style="padding:0px 4px">how high each character is in pixels; the default is <code>14</code>.</td>
 					</tr>
 					<tr>
-						<td style="vertical-align:top"><code>initial</code></td>
-						<td style="padding:0px 4px">the decimal value of the first character in the font; the default is <code>32</code> (ASCII code for the space key).</td>
+						<td style="vertical-align:top"><code>firstchar</code></td>
+						<td style="padding:0px 4px">the ASCII value of the first character in the font; the default is <code>32</code> (space).</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>lastchar</code></td>
+						<td style="padding:0px 4px">the ASCII value of the last character in the font; the default is <code>126</code> (tilde).
 					</tr>
 				</tbody>
 			</table>
 			<h2>Example</h2>
 				<code>
-					fontgen font=C:\dir\font.png output=C:\dir\font.txt width=12 height=14 initial=32 numchars=94
+					fontgen font=C:\dir\font.png output=C:\dir\font.txt width=12 height=14 firstchar=65 lastchar=90
 				</code>
 				<br><br>
 				This loads the font from <code>C:\dir\font.png</code>. Each character has been configured to have a width of 12 pixels and a height of 14
-				pixels. The first character in the font is decimal 32 (the space character) and the generated source code will be written to <code>C:\dir\font.txt</code>.
+				pixels. The first character in the font is 'A' and the last is 'Z'. The generated source code will be written to <code>C:\dir\font.txt</code>.
 		<hr>
 		
 		<!------------------------------------->
