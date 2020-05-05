@@ -59,7 +59,10 @@ Note that you don't have to use the `enabled` member of the Console structure; i
 
 **5. Render!**
 ```
-Console_Render(con, screen);
+if(con.enabled)
+{
+  Console_Render(con, screen);
+}
 ```
 
 EASY! It also has facilities to register and execute commands; it's a console after all.
