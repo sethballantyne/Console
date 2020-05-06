@@ -32,23 +32,19 @@ SDL_EnableUNICODE(1);
 ```
 
 **4. In your main loop, call `Console_ProcessInput`.**
-I do this when an `SDL_KEYDOWN` event is being handled:
 
 ```
-..... // inside an event handler
-case SDL_KEYDOWN:
-  if(con.enabled)
-  {
-    // event is the SDL_Event instance you're using to handle events. 
-    Console_ProcessInput(con, event.key.keysym.unicode);
-  }
-break;
-... // continue handling other events
+if(con.enabled)
+{
+  // event is the SDL_Event instance you're using to handle events. 
+  Console_ProcessInput(con, &event);
+}
 
-case SDL_KEYUP:
+... 
+case SDL_KEYUP: 
  switch(event.key.keysym.sym)
  {
-   case SDLK_TAB:
+   case SDLK_TAB: // doesn't have to be the tab key, of course
      con.enabled = !con.enabled;
    break;
    ... // handle other keys
