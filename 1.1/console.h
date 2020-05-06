@@ -49,6 +49,14 @@
 #define CONSOLE_GAP_BETWEEN_BUFFERS         2
 
 #define CONSOLE_GAP_BELOW_INPUT_BUFFER      1
+
+// when you want to apply boolean values with attitude!
+#define TRUE_MOTHERFUCKER true
+#define FALSE_MOTHERFUCKER false
+
+#define CONSOLE_SCROLL_THE_FUCK_UP CONSOLE_SCROLL_DIR_UP
+#define CONSOLE_SCROLL_THE_FUCK_DOWN CONSOLE_SCROLL_DIR_DOWN
+
 namespace console
 {
 	struct BitmapFont
@@ -86,24 +94,24 @@ namespace console
 		int x;
 		int y;
 		int maxBufferLength;
-		//int bufferStartIndex = 0;
-		//int buffeFinishIndex = 0;
-		//char cursorChar;
 	};
 
 	struct OutputBuffer
 	{
 		std::vector<std::string> buffer;
+		SDL_Rect clippingRect;
 		int x;
 		int y;
-		//int endY; // <--- depricated?
 		int bottomLineIndex = 0;
 		int topLineIndex = 0;
+
 		// the maximum number of lines that can be visible to the user.
 		// This is based on the size of the console and the font's height.
 		// pre-calcuated in OutputBuffer_Init()
 		int maxNumLinesOnScreen; 
 		int maxLineLength;
+		int yOffset;
+		int applyOffsetToY = false;
 	};
 
 	struct Console;
@@ -157,6 +165,7 @@ namespace console
 	void console_command_list_commands(Console& console, std::vector<std::string>& args);
 	void console_command_clear(Console& console, std::vector<std::string>& args);
 
+	void RegisterBuiltInCommand(Console& console, const std::string& command, command_func_ptr func);
 
 	/// INTERNAL BITMAP FONT FUNCTIONS ////////////////////////////////////////////////
 	int BitmapFont_InitBuiltInFont(BitmapFont& bitmapFont, SDL_Surface *screen, int characterWidth, 
@@ -167,12 +176,17 @@ namespace console
 	void InputBuffer_SplitInput(InputBuffer& inputBuffer, std::string& command, std::vector<std::string>& args);
 	void InputBuffer_Init(Console& console);
 	int InputBuffer_Render(Console& console, BitmapFont& font);
-
+	void InputBuffer_SubmitBuffer(Console& console);
 	/// INTERNAL OUTPUTBUFFER FUNCTIONS //////////////////////////////////////////////
+
+	void OutputBuffer_Clear(Console& console);
+
+	// call this AFTER the inputbuffer has been initialized!
 	void OutputBuffer_Init(Console& console);
+
 	int OutputBuffer_Render(Console& console, BitmapFont& font);
 	void OutputBuffer_ResizeText(Console& console);
-	//void OutputBuffer_Scroll(Console& console, int numberOfLines, int direction);
+	void OutputBuffer_Scroll(Console& console, int numberOfLines, int direction);
 
 	/// INTERNAL CURSOR FUNCTIONS ////////////////////////////////////////////////////
 	void Cursor_Render(Console& console, BitmapFont& font);
@@ -187,7 +201,7 @@ namespace console
 	int Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* consoleColour, 
 					SDL_Colour* fontColour, SDL_Colour* transparencyColour);
 
-	void Console_ProcessInput(Console& console, Uint16 unicode);
+	void Console_ProcessInput(Console& console, SDL_Event* event);
 	int Console_Render(Console& console, SDL_Surface *screen);
 	void Console_Print(Console& console, std::string line);
 	bool Console_IsCommand(Console& console, std::string command);

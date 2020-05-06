@@ -28,8 +28,6 @@
 #include <sstream>
 #include "console.h"
 
-#define KEY_ENTER    13
-#define KEY_BACKSPACE 8
 
 using namespace std;
 
@@ -45,6 +43,7 @@ string ToLower(string& str)
 	
 	return str;
 }
+
 
 //---------------------------------------------------------------------------
 // BUILT-IN COMMANDS
@@ -82,6 +81,14 @@ void console::console_command_clear(Console& console, vector<string>& args)
 // END BUILT-IN COMMANDS
 //---------------------------------------------------------------------------
 
+void console::RegisterBuiltInCommand(Console& console, const string& command, command_func_ptr func)
+{
+	if(CONSOLE_RET_SUCCESS != Console_RegisterCommand(console, command, func))
+	{
+		Console_Print(console, "Console_Init: failed to register command " + command);
+	}
+}
+
 void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
 	int bpp = surface->format->BytesPerPixel;
@@ -115,21 +122,6 @@ void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 			break;
 	}
 }
-
-//int console::BitmapFont_CreateSurface(SDL_Surface *surface, SDL_Surface *consoleSurface, int numCharacters, int characterWidth, int characterHeight)
-//{
-//	int fontSheetWidth = characterWidth * numCharacters;
-//
-//	surface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, fontSheetWidth, 
-//								   characterHeight, consoleSurface->format->BitsPerPixel, consoleSurface->format->Rmask,
-//								   consoleSurface->format->Gmask, consoleSurface->format->Bmask, consoleSurface->format->Amask);
-//	if(!surface)
-//	{
-//		return CONSOLE_RET_CREATE_SURFACE_FAIL;
-//	}
-//
-//	return CONSOLE_RET_SUCCESS;
-//}
 
 int console::BitmapFont_InitBuiltInFont(BitmapFont& bitmapfont, SDL_Surface* consoleSurface, int characterWidth, int characterHeight, unsigned char firstChar, unsigned char lastChar, SDL_Colour* fontColour, SDL_Colour* transparencyColour)
 {
@@ -209,7 +201,7 @@ int console::BitmapFont_RenderLine(Console& console, BitmapFont& font, string& l
 
 	// check to see if the line is partially off-screen
 	// assumes the top of the console is the top edge of the window.
-	if(y < 0)
+    if(y < 0)
 	{
 		// only rendering a portion of the character because the rest of it
 		// has scrolled off the screen. Multiplying by 1 because we need to
@@ -273,6 +265,24 @@ int console::InputBuffer_Render(Console& console, BitmapFont& font)
 	return BitmapFont_RenderLine(console, font, console.inputBuffer.buffer, console.inputBuffer.x, console.inputBuffer.y);
 }
 
+void console::InputBuffer_SubmitBuffer(Console& console)
+{
+	string command;
+	vector<string> args;
+
+	// delimit the end of the string
+	console.inputBuffer.buffer += ' ';
+
+	InputBuffer_SplitInput(console.inputBuffer, command, args);
+
+	console.inputBuffer.buffer.clear();
+
+	command = ToLower(command);
+	Console_ExecuteCommand(console, command, args);
+}
+
+
+// call this AFTER the inputbuffer has been initialized!
 void console::OutputBuffer_Init(Console& console)
 {
 	BitmapFont& font = (console.externalBitmapFont.fontSurface != nullptr) ? console.externalBitmapFont : console.defaultBitmapFont;
@@ -281,6 +291,11 @@ void console::OutputBuffer_Init(Console& console)
 
 	console.outputBuffer.y = console.inputBuffer.y - font.characterHeight - CONSOLE_GAP_BETWEEN_BUFFERS;
 	
+	console.outputBuffer.clippingRect.x = 0;
+	console.outputBuffer.clippingRect.y = 0;
+	console.outputBuffer.clippingRect.w = console.consoleSurface->w;
+	console.outputBuffer.clippingRect.h = console.inputBuffer.y - CONSOLE_GAP_BETWEEN_BUFFERS;
+
 	// character height is being added to Y because if we divide from Y,
 	// we end up 1 line short.
 	int temp = console.outputBuffer.y + font.characterHeight;
@@ -289,6 +304,10 @@ void console::OutputBuffer_Init(Console& console)
 	console.outputBuffer.maxNumLinesOnScreen = result;
 
 	result = temp % font.characterHeight;
+	console.outputBuffer.yOffset = 0;
+
+	console.outputBuffer.yOffset = (console.outputBuffer.maxNumLinesOnScreen * font.characterHeight) - console.outputBuffer.y;
+
 	if(result > 0)
 	{
 		// there's not enough room to render the top most line, so it'll be partially
@@ -296,13 +315,26 @@ void console::OutputBuffer_Init(Console& console)
 		console.outputBuffer.maxNumLinesOnScreen++;
 	}
 
+	//console.outputBuffer.yOffset = (console.outputBuffer.maxNumLinesOnScreen * font.characterHeight) - console.outputBuffer.y;
+
 	console.outputBuffer.maxLineLength = console.consoleSurface->w / font.characterWidth;
+
 }
 
 int console::OutputBuffer_Render(Console& console, BitmapFont& font)
 {
 	int xPos = console.outputBuffer.x;
 	int yPos = console.outputBuffer.y;
+	
+	SDL_SetClipRect(console.consoleSurface, &console.outputBuffer.clippingRect);
+
+	// ensures the top most line is completely visible when scrolling.
+	// this will only have any effect if the top visible line is normally
+	// partially obscured when text fills the console.
+	if(console.outputBuffer.applyOffsetToY)
+	{
+		yPos += console.outputBuffer.yOffset;
+	}
 	
 	if(console.outputBuffer.buffer.size() > 0)
 	{
@@ -325,87 +357,90 @@ int console::OutputBuffer_Render(Console& console, BitmapFont& font)
 		}
 	}
 
+	SDL_SetClipRect(console.consoleSurface, NULL);
+
 	return CONSOLE_RET_SUCCESS;
 }
 
 void console::OutputBuffer_ResizeText(Console& console)
 {
-	vector<string> newBuffer;
+	vector<string> newBuffer = console.outputBuffer.buffer;
+	OutputBuffer_Clear(console);
 
-	for(auto line : console.outputBuffer.buffer)
+	for(auto line : newBuffer)
 	{
-		int lineLength = line.length();
+		Console_Print(console, line);
+	}	
+}
 
-		if(lineLength > console.inputBuffer.maxBufferLength)
-		{
-			int from = console.inputBuffer.maxBufferLength;
-			int to = from + (lineLength - console.inputBuffer.maxBufferLength);
-			string newLine = line.substr(from, to);
+void console::OutputBuffer_Scroll(Console& console, int numberOfLines, int direction)
+{
+	int numberOfLinesScrolled;
 
-			line.resize(from);
-			newBuffer.push_back(line);
-			newBuffer.push_back(newLine);
-		}
-		else
-		{
-			newBuffer.push_back(line);
-		}
+	// dont bother attempting to scroll if there's not enough lines to fill the screen
+	// because there's nothing to scroll, sucker!
+	if(console.outputBuffer.buffer.size() <= console.outputBuffer.maxNumLinesOnScreen)
+	{
+		return;
 	}
 
-	console.outputBuffer.buffer = newBuffer;
-	console.outputBuffer.bottomLineIndex = console.outputBuffer.buffer.size() - 1;
+	switch(direction)
+	{
+		case CONSOLE_SCROLL_DIR_UP:
+			if(numberOfLines < console.outputBuffer.topLineIndex)
+			{
+				numberOfLinesScrolled = numberOfLines;
+			}
+			else
+			{
+				// the very first that was entered is now visible on the screen 
+				// due to scrolling up. 
+				// Make sure the entirety of the first line is visible and not
+				// partially obscured.
+				console.outputBuffer.applyOffsetToY = true;
+				numberOfLinesScrolled = console.outputBuffer.topLineIndex;
+			}
 
-	if(console.outputBuffer.buffer.size() > console.outputBuffer.maxNumLinesOnScreen)
-	{
-		// we're showing the max number of lines that can appear on the screen at any one time.
-		// incrementing this gives the appearance that the text is scrolling.
-		//console.outputBuffer.topLineIndex++;
-		console.outputBuffer.topLineIndex = console.outputBuffer.bottomLineIndex - console.outputBuffer.maxNumLinesOnScreen;
-	}
-	else
-	{
-		console.outputBuffer.topLineIndex = 0;
+			console.outputBuffer.topLineIndex -= numberOfLinesScrolled;
+			console.outputBuffer.bottomLineIndex -= numberOfLinesScrolled;
+
+		break;
+
+		case CONSOLE_SCROLL_DIR_DOWN:
+			// don't scroll down if we're already at the bottom of the buffer.
+			if(console.outputBuffer.bottomLineIndex < console.outputBuffer.buffer.size() - 1)
+			{
+				if(console.outputBuffer.bottomLineIndex + numberOfLines < console.outputBuffer.buffer.size())
+				{
+					numberOfLinesScrolled = numberOfLines;
+				}
+				else
+				{
+					numberOfLinesScrolled = (console.outputBuffer.buffer.size() - 1) - console.outputBuffer.bottomLineIndex;					
+				}
+
+				console.outputBuffer.applyOffsetToY = FALSE_MOTHERFUCKER;
+				console.outputBuffer.topLineIndex += numberOfLinesScrolled;
+				console.outputBuffer.bottomLineIndex += numberOfLinesScrolled;
+
+				if(console.outputBuffer.bottomLineIndex >= console.outputBuffer.buffer.size())
+				{
+					Console_Print(console, "dd");
+				}
+			}
+			
+			break;
+
+		default:
+			break;
 	}
 }
 
-//void console::OutputBuffer_Scroll(Console& console, int numberOfLines, int direction)
-//{
-//	int numberOfLinesScrolled;
-//
-//	switch(direction)
-//	{
-//		case CONSOLE_SCROLL_DIR_UP:
-//			if(numberOfLines < console.outputBuffer.topLineIndex)
-//			{
-//				numberOfLinesScrolled = numberOfLines;
-//			}
-//			else
-//			{
-//				numberOfLinesScrolled = console.outputBuffer.topLineIndex;
-//			}
-//
-//			console.outputBuffer.topLineIndex -= numberOfLinesScrolled;
-//			console.outputBuffer.bottomLineIndex -= numberOfLinesScrolled;
-//			break;
-//
-//		case CONSOLE_SCROLL_DIR_DOWN:
-//			if(console.outputBuffer.bottomLineIndex + numberOfLines < console.outputBuffer.buffer.size())
-//			{
-//				numberOfLinesScrolled = numberOfLines;
-//			}
-//			else
-//			{
-//				numberOfLinesScrolled = console.outputBuffer.buffer.size() - console.outputBuffer.bottomLineIndex;
-//			}
-//
-//			console.outputBuffer.topLineIndex += numberOfLinesScrolled;
-//			console.outputBuffer.bottomLineIndex += numberOfLinesScrolled;
-//			break;
-//
-//		default:
-//			break;
-//	}
-//}
+void console::OutputBuffer_Clear(Console& console)
+{
+	console.outputBuffer.buffer.clear();
+	console.outputBuffer.bottomLineIndex = console.outputBuffer.topLineIndex = 0;
+}
 
 void console::Cursor_Render(Console& console, BitmapFont& font)
 {
@@ -451,20 +486,9 @@ int console::Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* con
 	InputBuffer_Init(console);
 	OutputBuffer_Init(console);
 
-	if(CONSOLE_RET_SUCCESS != Console_RegisterCommand(console, "cv", console_command_version))
-	{
-		Console_Print(console, "Console_Init: failed to register command \'cv\'");
-	}
-
-	if(CONSOLE_RET_SUCCESS != Console_RegisterCommand(console, "clist", console_command_list_commands))
-	{
-		Console_Print(console, "Console_Init: failed to register command \'clist\'");
-	}
-
-	if(CONSOLE_RET_SUCCESS != Console_RegisterCommand(console, "cls", console_command_clear))
-	{
-		Console_Print(console, "Console_Init: failed to register command \'cls\'");
-	}
+	RegisterBuiltInCommand(console, "cv", console_command_version);
+	RegisterBuiltInCommand(console, "clist", console_command_list_commands);
+	RegisterBuiltInCommand(console, "cls", console_command_clear);
 	
 	return CONSOLE_RET_SUCCESS;
 }
@@ -520,38 +544,51 @@ int console::Console_Render(Console& console, SDL_Surface *screen)
 	return CONSOLE_RET_SUCCESS;
 }
 
-void console::Console_ProcessInput(Console& console, Uint16 unicode)
+void console::Console_ProcessInput(Console& console, SDL_Event* event)
 {
 	BitmapFont& font = (console.externalBitmapFont.fontSurface != nullptr) ? console.externalBitmapFont : console.defaultBitmapFont;
 
 	// only ASCII characters space to '~' are supported
-	if(unicode >= font.firstChar && 
-	   unicode <= font.lastChar &&
+	if(event->key.keysym.unicode >= font.firstChar && 
+	   event->key.keysym.unicode <= font.lastChar &&
 	   console.inputBuffer.buffer.length() < console.inputBuffer.maxBufferLength)
 	{
-		console.inputBuffer.buffer += unicode;
+		console.inputBuffer.buffer += event->key.keysym.unicode;
 	}
-	else if(KEY_BACKSPACE == unicode)	// backspace
+	else
 	{
-		if(console.inputBuffer.buffer.length() > 0)
+		switch(event->type)
 		{
-			console.inputBuffer.buffer.erase(console.inputBuffer.buffer.length() - 1);
+			case SDL_KEYDOWN:
+				switch(event->key.keysym.sym)
+				{
+					case SDLK_BACKSPACE:
+						if(console.inputBuffer.buffer.length() > 0)
+						{
+							console.inputBuffer.buffer.erase(console.inputBuffer.buffer.length() - 1);
+						}
+					break;
+
+					case SDLK_RETURN:
+						InputBuffer_SubmitBuffer(console);
+					break;
+
+					case SDLK_PAGEUP:
+						OutputBuffer_Scroll(console, 5, CONSOLE_SCROLL_THE_FUCK_UP);
+					break;
+
+					case SDLK_PAGEDOWN:
+						OutputBuffer_Scroll(console, 5, CONSOLE_SCROLL_THE_FUCK_DOWN);
+					break;
+
+					default:
+						break;
+				}
+			break;
+
+			default:
+				break;
 		}
-	}
-	else if(KEY_ENTER == unicode)	// enter was pressed
-	{
-		string command;
-		vector<string> args;
-
-		// delimit the end of the string
-		console.inputBuffer.buffer += ' ';
-
-		InputBuffer_SplitInput(console.inputBuffer, command, args);
-
-		console.inputBuffer.buffer.clear();
-
-		command = ToLower(command);
-		Console_ExecuteCommand(console, command, args);
 	}
 }
 
@@ -592,9 +629,12 @@ void console::Console_Print(Console& console, string line)
 			// we're showing the max number of lines that can appear on the screen at any one time.
 			// incrementing this gives the appearance that the text is scrolling.
 			console.outputBuffer.topLineIndex++;
+			console.outputBuffer.bottomLineIndex++;
 		}
-
-		console.outputBuffer.bottomLineIndex = console.outputBuffer.buffer.size() - 1;
+		else
+		{
+			console.outputBuffer.bottomLineIndex = console.outputBuffer.buffer.size() - 1;
+		}
 	}
 }
 
@@ -681,6 +721,24 @@ int console::Console_SetFont(Console& console, SDL_Surface* fontSurface,
 	// for the font argument and reconfigure the console to use the built-in font.
 	InputBuffer_Init(console);
 	OutputBuffer_Init(console);
+
+	if(console.outputBuffer.buffer.size() > 0)
+	{
+		// the buffer is currently in use, so the indices for the buffer need to be recalculated.
+		// if we've been scrolling through the text, this will scroll the text so we're
+		// back at the bottom, viewing the last line that was entered.
+		if(console.outputBuffer.buffer.size() > console.outputBuffer.maxNumLinesOnScreen)
+		{
+			// if we were at the very top of the output buffer when the font changed,
+			// applyOffsetToY was probably true, meaning the bottom line was likely partially
+			// obscured. Setting it to false makes sure the bottom line renders properly 
+			// (ie, we can see the entire line) when we reset the indices. 
+			console.outputBuffer.applyOffsetToY = false;
+
+			console.outputBuffer.bottomLineIndex = console.outputBuffer.buffer.size() - 1;
+			console.outputBuffer.topLineIndex = (console.outputBuffer.bottomLineIndex - (console.outputBuffer.maxNumLinesOnScreen - 1));
+		}
+	}
 
 	if(fontSurface != nullptr)
 	{
