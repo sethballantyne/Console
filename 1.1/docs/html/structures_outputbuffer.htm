@@ -98,6 +98,8 @@ struct OutputBuffer
 	int topLineIndex = 0;
 	int maxNumLinesOnScreen; 
 	int maxLineLength;
+	int yOffset;
+	bool applyOffsetToY = false;
 };
 			</code>
 		</pre>
@@ -132,6 +134,14 @@ struct OutputBuffer
 					<tr>
 						<td style="vertical-align:top"><code>maxLineLength</code></td>
 						<td style="padding:0px 4px">The maximum number of characters that can fit into one line.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>yOffset</code></td>
+						<td style="padding:0px 4px">How much of each character needs to be hidden when rendering partially visible lines.</td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top"><code>applyOffsetToY</code></td>
+						<td style="padding:0px 4px">Whether the offset in <code>yOffset</code> should be applied when rendering a line. This will only occur when scrolling text.</td>
 					</tr>
 				</tbody>
 			</table>

@@ -84,8 +84,8 @@
 		How much text the input buffer can hold is determined when <a href="console_init.htm"><code>Console_Init</code></a> is called; at the time of writing this is based on
 		the width of the console, divided by the width of the font being used. The output buffer will hold the same amount of text in
 		each line and if text is printed via <a href="console_print.htm"><code>Console_Print</code></a> that exceeds this length, it'll be split up into multiple lines. The input buffer
-		doesn't horizontally scroll, so once you reach the limit that's it; you'll need to hit backspace or enter to clear it. The output buffer will scroll on its own accord once
-		the screen is full, but you can't press a key to scroll it up or down; these are features planned for a future release. The built-in
+		doesn't horizontally scroll, so once you reach the limit that's it; you'll need to press <code>Backspace</code> or <code>Enter</code> to clear it. 
+		You can press the <code>Page Up</code> or <code>Page Down</code> keys to manually scroll output text upwards or downwards. The built-in
 		console command <a href="command_cls.htm"><code>cls</code></a> will clear the output buffer when desired.
 		<br><br>
 		As noted in the API section, with the exception of the command-related fuctions, <a href="console_init.htm"><code>Console_Init</code></a> must be called before any of the 
