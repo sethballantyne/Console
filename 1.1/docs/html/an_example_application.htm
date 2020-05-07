@@ -152,16 +152,15 @@ int main(int argc, char *argv[])
 	{
 		if(SDL_PollEvent(&event) > 0)
 		{
+			if(con.enabled)
+			{
+				// if you don't call Console_ProcessInput, no input will be 
+				// printed to the input buffer when keys are pressed.
+				Console_ProcessInput(con, &event);
+			}
+					
 			switch(event.type)
 			{
-				case SDL_KEYDOWN:
-					if(con.enabled)
-					{
-						// if you don't call Console_ProcessInput, no input will be 
-						// printed to the input buffer when keys are pressed.
-						Console_ProcessInput(con, event.key.keysym.unicode);
-					}
-					break;
 
 				case SDL_KEYUP:
 					switch(event.key.keysym.sym)
