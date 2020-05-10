@@ -419,7 +419,7 @@ void console::OutputBuffer_Scroll(Console& console, int numberOfLines, int direc
 					numberOfLinesScrolled = (console.outputBuffer.buffer.size() - 1) - console.outputBuffer.bottomLineIndex;					
 				}
 
-				console.outputBuffer.applyOffsetToY = FALSE_MOTHERFUCKER;
+				console.outputBuffer.applyOffsetToY = false;
 				console.outputBuffer.topLineIndex += numberOfLinesScrolled;
 				console.outputBuffer.bottomLineIndex += numberOfLinesScrolled;
 
@@ -574,11 +574,11 @@ void console::Console_ProcessInput(Console& console, SDL_Event* event)
 					break;
 
 					case SDLK_PAGEUP:
-						OutputBuffer_Scroll(console, 5, CONSOLE_SCROLL_THE_FUCK_UP);
+						OutputBuffer_Scroll(console, 5, CONSOLE_SCROLL_DIR_UP);
 					break;
 
 					case SDLK_PAGEDOWN:
-						OutputBuffer_Scroll(console, 5, CONSOLE_SCROLL_THE_FUCK_DOWN);
+						OutputBuffer_Scroll(console, 5, CONSOLE_SCROLL_DIR_DOWN);
 					break;
 
 					default:

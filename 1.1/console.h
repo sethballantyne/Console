@@ -50,12 +50,6 @@
 
 #define CONSOLE_GAP_BELOW_INPUT_BUFFER      1
 
-// when you want to apply boolean values with attitude!
-#define TRUE_MOTHERFUCKER true
-#define FALSE_MOTHERFUCKER false
-
-#define CONSOLE_SCROLL_THE_FUCK_UP CONSOLE_SCROLL_DIR_UP
-#define CONSOLE_SCROLL_THE_FUCK_DOWN CONSOLE_SCROLL_DIR_DOWN
 
 namespace console
 {
@@ -111,7 +105,7 @@ namespace console
 		int maxNumLinesOnScreen; 
 		int maxLineLength;
 		int yOffset;
-		int applyOffsetToY = false;
+		bool applyOffsetToY = false;
 	};
 
 	struct Console;
