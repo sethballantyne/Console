@@ -44,6 +44,16 @@ string ToLower(string& str)
 	return str;
 }
 
+bool StringContainsWhiteSpace(const string& str)
+{
+	if(str.find(' ') == string::npos && str.find('\t') == string::npos)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 
 //---------------------------------------------------------------------------
 // BUILT-IN COMMANDS
@@ -674,16 +684,21 @@ int console::Console_ExecuteCommand(Console& console, std::string command, std::
 
 int console::Console_RegisterCommand(Console& console, string command, command_func_ptr commandFuncPtr)
 {
+	if(command.length() == 0 || StringContainsWhiteSpace(command))
+	{
+		return CONSOLE_RET_COMMAND_INVALID;
+	}
+	
+	if(nullptr == commandFuncPtr)
+	{
+		return CONSOLE_RET_NULLPTR_ARGUMENT;
+	}
+
 	command = ToLower(command);
 
 	if(Console_IsCommand(console, command))
 	{
 		return CONSOLE_RET_COMMAND_EXISTS;
-	}
-
-	if(nullptr == commandFuncPtr)
-	{
-		return CONSOLE_RET_NULLPTR_ARGUMENT;
 	}
 
 	console.commands[command] = commandFuncPtr;

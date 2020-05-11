@@ -38,6 +38,7 @@
 #define CONSOLE_RET_NULLPTR_ARGUMENT        4
 #define CONSOLE_RET_FILL_RECT_FAILED        5
 #define CONSOLE_RET_BLIT_FAILED             6
+#define CONSOLE_RET_COMMAND_INVALID	        7
 
 #define CONSOLE_SCROLL_DIR_UP               0
 #define CONSOLE_SCROLL_DIR_DOWN             1
