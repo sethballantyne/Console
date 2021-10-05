@@ -99,7 +99,7 @@ void console::RegisterBuiltInCommand(Console& console, const string& command, co
 	}
 }
 
-void draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+void draw_pixel(SDL_Surface* surface, int x, int y, Uint32 pixel)
 {
 	int bpp = surface->format->BytesPerPixel;
 	/* Here p is the address to the pixel we want to set */
@@ -503,7 +503,7 @@ int console::Console_Init(Console& console, SDL_Surface* screen, SDL_Colour* con
 	return CONSOLE_RET_SUCCESS;
 }
 
-int console::Console_Render(Console& console, SDL_Surface *screen)
+int console::Console_Render(Console& console, SDL_Surface* screen)
 {
 	SDL_Rect rect;
 	rect.x = rect.y = 0;
@@ -824,7 +824,7 @@ int console::Console_CreateCursor(console::Console& console, SDL_Colour* colour)
 	return CONSOLE_RET_SUCCESS;
 }
 
-int console::Console_ResolutionChanged(Console& console, SDL_Surface *screen)
+int console::Console_ResolutionChanged(Console& console, SDL_Surface* screen)
 {
     SDL_FreeSurface(console.consoleSurface);
 	console.consoleSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, screen->w, screen->h / 2, screen->format->BitsPerPixel,
