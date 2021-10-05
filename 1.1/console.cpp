@@ -602,7 +602,7 @@ void console::Console_ProcessInput(Console& console, SDL_Event* event)
 	}
 }
 
-void console::Console_Print(Console& console, string line)
+void console::Console_Print(Console& console, const string& line)
 {
 	vector<string> lines;
 
@@ -648,7 +648,7 @@ void console::Console_Print(Console& console, string line)
 	}
 }
 
-bool console::Console_IsCommand(Console& console, string command)
+bool console::Console_IsCommand(Console& console, const string& command)
 {
 	auto result = console.commands.find(command);
 	if(console.commands.end() != result)
@@ -659,7 +659,7 @@ bool console::Console_IsCommand(Console& console, string command)
 	return false;
 }
 
-int console::Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args)
+int console::Console_ExecuteCommand(Console& console, const std::string& command, std::vector<std::string>& args)
 {
 	if(!Console_IsCommand(console, command))
 	{
@@ -682,7 +682,7 @@ int console::Console_ExecuteCommand(Console& console, std::string command, std::
 	return CONSOLE_RET_SUCCESS;
 }
 
-int console::Console_RegisterCommand(Console& console, string command, command_func_ptr commandFuncPtr)
+int console::Console_RegisterCommand(Console& console, const string& command, command_func_ptr commandFuncPtr)
 {
 	if(command.length() == 0 || StringContainsWhiteSpace(command))
 	{
@@ -694,14 +694,14 @@ int console::Console_RegisterCommand(Console& console, string command, command_f
 		return CONSOLE_RET_NULLPTR_ARGUMENT;
 	}
 
-	command = ToLower(command);
+	string& loweredCommand = ToLower(const_cast<string&>(command));
 
-	if(Console_IsCommand(console, command))
+	if(Console_IsCommand(console, loweredCommand))
 	{
 		return CONSOLE_RET_COMMAND_EXISTS;
 	}
 
-	console.commands[command] = commandFuncPtr;
+	console.commands[loweredCommand] = commandFuncPtr;
 
 	return CONSOLE_RET_SUCCESS;
 }

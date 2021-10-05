@@ -198,10 +198,10 @@ namespace console
 
 	void Console_ProcessInput(Console& console, SDL_Event* event);
 	int Console_Render(Console& console, SDL_Surface *screen);
-	void Console_Print(Console& console, std::string line);
-	bool Console_IsCommand(Console& console, std::string command);
-	int Console_ExecuteCommand(Console& console, std::string command, std::vector<std::string>& args);
-	int Console_RegisterCommand(Console& console, std::string command, command_func_ptr commandFuncPtr);
+	void Console_Print(Console& console, const std::string& line);
+	bool Console_IsCommand(Console& console, const std::string& command);
+	int Console_ExecuteCommand(Console& console, const std::string& command, std::vector<std::string>& args);
+	int Console_RegisterCommand(Console& console, const std::string& command, command_func_ptr commandFuncPtr);
 	void Console_SetBackground(Console& console, SDL_Surface* imageSurface);
 	int Console_SetFont(Console& console, SDL_Surface* fontSurface,  
 						 unsigned int charWidth, unsigned int charHeight, unsigned char firstChar, unsigned char lastChar,
