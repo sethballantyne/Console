@@ -15,7 +15,7 @@ Console con;
 
 **2. Initialize it:**
 ```
-int result = Console_Init(con, screen, nullptr, nullptr, nullptr)
+int result = Console_Init(con, screen, nullptr, nullptr, nullptr);
 if(result != CONSOLE_RET_SUCCESS)
 {
   ..... // error handling here
